@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin bản làng — Trợ lý giọng nói tiếng Mông & Tiếng Việt (Phiên bản Đậm chất Vùng cao & Tối thượng)."""
+"""Cổng thông tin bản làng — Trợ lý giọng nói tiếng Mông & Tiếng Việt (Bố cục tối ưu, phân cấp trực quan)."""
 from __future__ import annotations
 
 import base64
@@ -26,7 +26,7 @@ ss.setdefault("cau_noi", "")
 ss.setdefault("audio_da_xu_ly", "")
 ss.setdefault("la_tieng_mong", True)
 
-# Giao diện đậm chất bản làng, ấm áp, màu chàm kết hợp thổ cẩm, nút micro khổng lồ thu hút tuyệt đối
+# Bố cục phân cấp rõ ràng: Màu sắc ấm áp bản làng, tập trung tuyệt đối vào Micro ở trung tâm
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -34,124 +34,98 @@ st.markdown("""
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
         color: #1e293b;
-        background-color: #f4f6f0;
+        background-color: #f8fafc;
     }
     .block-container {
         padding-top: 2rem;
-        padding-bottom: 5rem;
-        max-width: 860px;
+        padding-bottom: 6rem;
+        max-width: 820px;
     }
 
-    /* Tiêu đề bản làng ấm cúng */
-    .village-header {
+    /* Tiêu đề trang */
+    .hero-banner {
         background: linear-gradient(135deg, #1e3a8a 0%, #312e81 100%);
         color: white;
-        padding: 32px 24px;
-        border-radius: 28px;
+        padding: 28px 24px;
+        border-radius: 24px;
         text-align: center;
-        margin-bottom: 28px;
-        box-shadow: 0 15px 35px -10px rgba(30, 58, 138, 0.3);
-        border: 2px solid #3b82f6;
+        margin-bottom: 24px;
+        box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.25);
     }
-    .village-badge {
+    .hero-tag {
         display: inline-block;
         background: #f59e0b;
         color: #ffffff;
         font-weight: 700;
-        font-size: 12px;
-        padding: 6px 16px;
+        font-size: 11px;
+        padding: 5px 14px;
         border-radius: 20px;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 12px;
-        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        letter-spacing: 0.8px;
+        margin-bottom: 10px;
     }
-    .village-title {
-        font-size: 30px;
+    .hero-title {
+        font-size: 26px;
         font-weight: 800;
-        letter-spacing: -0.5px;
-        margin-bottom: 8px;
-        color: #ffffff;
+        margin-bottom: 6px;
+        letter-spacing: -0.4px;
     }
-    .village-subtitle {
-        font-size: 15px;
-        color: #e0e7ff;
-        font-weight: 400;
+    .hero-desc {
+        font-size: 14px;
+        color: #cbd5e1;
     }
 
-    /* KHỐI MICRO SIÊU TO - TÂM ĐIỂM SỐ 1 */
-    .mic-epic-box {
+    /* KHỐI TÂM ĐIỂM: MICRO & NGÔN NGỮ */
+    .primary-action-section {
         background: #ffffff;
-        border: 4px solid #f59e0b;
-        border-radius: 36px;
-        padding: 40px 32px;
+        border: 3px solid #f59e0b;
+        border-radius: 30px;
+        padding: 32px;
+        box-shadow: 0 20px 40px -10px rgba(245, 158, 11, 0.2);
+        margin-bottom: 28px;
         text-align: center;
-        box-shadow: 0 25px 60px -15px rgba(245, 158, 11, 0.25);
-        margin-bottom: 32px;
-        position: relative;
     }
-    .mic-epic-box::before {
-        content: '🎤 HÃY BẤM VÀ NÓI';
-        position: absolute;
-        top: -18px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #f59e0b;
-        color: white;
-        font-weight: 800;
-        font-size: 13px;
-        padding: 6px 20px;
-        border-radius: 20px;
-        letter-spacing: 0.5px;
-        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-    }
-    .mic-instruction-text {
-        font-size: 20px;
+    .section-label {
+        font-size: 15px;
         font-weight: 800;
         color: #1e3a8a;
-        margin-bottom: 8px;
-    }
-    .mic-sub-text {
-        font-size: 14px;
-        color: #64748b;
-        margin-bottom: 24px;
+        margin-bottom: 12px;
     }
 
-    /* Thẻ kết quả nổi bật */
-    .result-card {
+    /* Thẻ kết quả */
+    .result-box {
         background: #ffffff;
         border: 2px solid #e2e8f0;
-        border-radius: 28px;
-        padding: 36px;
-        box-shadow: 0 15px 35px -10px rgba(0,0,0,0.06);
-        margin-top: 24px;
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 10px 30px -8px rgba(0,0,0,0.05);
+        margin-top: 20px;
     }
-    .info-pill {
+    .meta-tag {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: #f8fafc;
-        padding: 8px 16px;
-        border-radius: 14px;
-        font-size: 14px;
+        background: #f1f5f9;
+        padding: 6px 14px;
+        border-radius: 12px;
+        font-size: 13px;
         font-weight: 600;
         color: #334155;
-        margin-right: 10px;
-        margin-bottom: 10px;
+        margin-right: 8px;
+        margin-bottom: 8px;
         border: 1px solid #cbd5e1;
     }
 
-    /* Tùy chỉnh nút bấm chung */
     .stButton > button {
-        border-radius: 14px;
+        border-radius: 12px;
         font-weight: 700;
-        padding: 0.75rem 1.5rem;
+        padding: 0.7rem 1.4rem;
         transition: all 0.2s ease;
         border: none;
     }
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.1);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -197,12 +171,11 @@ def _audio_b64(duong_dan: str) -> tuple[str, str]:
     return base64.b64encode(p.read_bytes()).decode(), mime
 
 
-# Nút Loa màu xanh dương nổi bật (Voice Output)
-_SVG_LOA = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="white">'
+_SVG_LOA = ('<svg width="18" height="18" viewBox="0 0 24 24" fill="white">'
             '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05'
             'c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 '
             '5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>')
-_SVG_DUNG = ('<svg width="18" height="18" viewBox="0 0 24 24" fill="white">'
+_SVG_DUNG = ('<svg width="16" height="16" viewBox="0 0 24 24" fill="white">'
              '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>')
 
 
@@ -216,15 +189,15 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
     tu_phat_js = ("a.play().then(function(){}).catch(function(){"
                   "tt.textContent='Bấm để nghe âm thanh';});") if tu_phat else ""
     _html(f"""
-<div style="display:flex;align-items:center;gap:16px;background:#ffffff;border:2px solid #3b82f6;border-radius:20px;padding:16px 24px;margin:16px 0;box-shadow:0 6px 20px rgba(59,130,246,0.15);">
+<div style="display:flex;align-items:center;gap:14px;background:#ffffff;border:2px solid #2563eb;border-radius:16px;padding:14px 20px;margin:12px 0;box-shadow:0 4px 15px rgba(37,99,235,0.12);">
   <button id="b" aria-label="Nghe" style="
-      width:52px;height:52px;min-width:52px;border-radius:50%;border:none;
+      width:46px;height:46px;min-width:46px;border-radius:50%;border:none;
       background:linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);cursor:pointer;display:flex;align-items:center;
-      justify-content:center;box-shadow:0 6px 16px rgba(37,99,235,0.4);
+      justify-content:center;box-shadow:0 4px 12px rgba(37,99,235,0.35);
       transition:all 0.2s;"></button>
   <div style="flex-grow:1;">
-    <div style="font-size:16px;font-weight:800;color:#1e3a8a;">{nhan}</div>
-    <div id="tt" style="font-size:13px;color:#475569;margin-top:3px;font-weight:500;">Chạm vào nút xanh để nghe âm thanh</div>
+    <div style="font-size:15px;font-weight:700;color:#1e3a8a;">{nhan}</div>
+    <div id="tt" style="font-size:12px;color:#475569;margin-top:2px;font-weight:500;">Chạm vào nút xanh để nghe phản hồi</div>
   </div>
   <audio id="a" src="data:{mime};base64,{b64}" preload="auto"></audio>
 </div>
@@ -236,7 +209,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
   function ve(dangPhat){{ b.innerHTML = dangPhat ? DUNG : LOA; }}
   ve(false);
   b.onclick=function(){{ if(a.paused){{a.play();}} else {{a.pause();}} }};
-  b.onmousedown=function(){{ b.style.transform='scale(0.93)'; }};
+  b.onmousedown=function(){{ b.style.transform='scale(0.94)'; }};
   b.onmouseup=function(){{ b.style.transform='scale(1)'; }};
   a.onplay =function(){{ ve(true);  tt.textContent='Đang phát âm thanh...'; }};
   a.onpause=function(){{ ve(false); tt.textContent='Đã tạm dừng'; }};
@@ -244,7 +217,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
   {tu_phat_js}
 }})();
 </script>
-""", height=94)
+""", height: 86)
     return True
 
 
@@ -307,26 +280,30 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Tiêu đề trang gần gũi bản làng
+# Tiêu đề giao diện
 st.markdown("""
-<div class="village-header">
-    <div class="village-badge">🏛️ Cổng Dịch Vụ Công Bản Làng</div>
-    <div class="village-title">Luật Gần Bà Con — Nói Là Hiểu, Hỏi Là Biết</div>
-    <div class="village-subtitle">Trợ lý giọng nói thông minh hỗ trợ đồng bào tra cứu thủ tục hành chính dễ dàng bằng tiếng Mông và tiếng Việt.</div>
+<div class="hero-banner">
+    <div class="hero-tag">🏛️ Cổng Thông Tin Bản Làng</div>
+    <div class="hero-title">Luật Gần Bà Con — Nói Là Hiểu, Hỏi Là Biết</div>
+    <div class="hero-desc">Hệ thống trợ lý giọng nói thủ tục hành chính dành riêng cho đồng bào</div>
 </div>
 """, unsafe_allow_html=True)
 
-# KHỐI MICRO SIÊU NỔI BẬT & MẶC ĐỊNH TIẾNG MÔNG (Yêu cầu trọng tâm)
+# BỐ CỤC CHÍNH: KHỐI MICRO VÀ CHỌN NGÔN NGỮ ĐƯỢC ĐẶT TRỌNG TÂM RÕ RÀNG
 st.markdown("""
-<div class="mic-epic-box">
-    <div class="mic-instruction-text">🎙️ Bấm vào Micro bên dưới để nói yêu cầu của bà con</div>
-    <div class="mic-sub-text">Hệ thống sẽ lắng nghe trực tiếp giọng nói của bạn</div>
+<div class="primary-action-section">
+    <div style="font-size: 18px; font-weight: 800; color: #1e3a8a; margin-bottom: 6px;">
+        🎙️ Bấm vào Micro bên dưới để nói yêu cầu của bà con
+    </div>
+    <div style="font-size: 13px; color: #64748b; margin-bottom: 20px;">
+        Hệ thống sẽ tự động lắng nghe và tra cứu thủ tục chính xác nhất cho bạn
+    </div>
 """, unsafe_allow_html=True)
 
-col_lang, col_mic = st.columns([1, 1.3], gap="large")
+col_ngon_ngu, col_micro = st.columns([1, 1.3], gap="large")
 
-with col_lang:
-    st.markdown("<div style='font-size:14px; font-weight:700; color:#1e3a8a; margin-bottom:8px; text-align:left;'>Chọn ngôn ngữ trò chuyện:</div>", unsafe_allow_html=True)
+with col_ngon_ngu:
+    st.markdown("<div class='section-label' style='text-align: left;'>1. Chọn ngôn ngữ trò chuyện:</div>", unsafe_allow_html=True)
     LUA_CHON = ["🌐 Tiếng Mông (Hmoob) [Mặc định]", "🇻🇳 Tiếng Việt"]
     # Mặc định ưu tiên Tiếng Mông
     ngon_ngu = st.segmented_control(
@@ -336,8 +313,8 @@ with col_lang:
     la_tieng_mong = "Tiếng Mông" in ngon_ngu
     ss.la_tieng_mong = la_tieng_mong
 
-with col_mic:
-    st.markdown("<div style='font-size:14px; font-weight:700; color:#1e3a8a; margin-bottom:8px; text-align:left;'>Nút ghi âm giọng nói:</div>", unsafe_allow_html=True)
+with col_micro:
+    st.markdown("<div class='section-label' style='text-align: left;'>2. Bấm nút micro để ghi âm:</div>", unsafe_allow_html=True)
     audio_in = st.audio_input("Micro chính", label_visibility="collapsed")
 
 st.markdown("</div>", unsafe_allow_html=True)
@@ -356,7 +333,7 @@ if audio_in is not None:
             if la_tieng_mong:
                 dong_vi = [l for l in van_ban.splitlines() if l.startswith("VI:")]
                 van_ban = (dong_vi[0][3:].strip() if dong_vi else dich_sang_viet(van_ban))
-            st.success(f"Nội dung hệ thống nhận diện: *{van_ban}*")
+            st.success(f"Nội dung nhận diện: *{van_ban}*")
             xu_ly_cau_noi(van_ban)
 
 
@@ -391,17 +368,17 @@ def hien_ket_qua(kq: dict) -> None:
     dg = kq["don_gian"]
     
     st.markdown(f"""
-    <div class="result-card">
-        <div style="font-size: 24px; font-weight: 800; color: #1e3a8a; margin-bottom: 14px; letter-spacing: -0.4px;">
+    <div class="result-box">
+        <div style="font-size: 22px; font-weight: 800; color: #1e3a8a; margin-bottom: 12px; letter-spacing: -0.3px;">
             📋 {tt.ten}
         </div>
-        <div style="font-size: 17px; color: #334155; line-height: 1.7; margin-bottom: 22px; font-weight: 600;">
+        <div style="font-size: 16px; color: #334155; line-height: 1.7; margin-bottom: 20px; font-weight: 600;">
             {dg.get('tom_tat_1_cau','')}
         </div>
         <div>
-            <span class="info-pill">📍 <b>Nơi làm:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
-            <span class="info-pill">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
-            <span class="info-pill">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
+            <span class="meta-tag">📍 <b>Nơi làm:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
+            <span class="meta-tag">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
+            <span class="meta-tag">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
         </div>
     """, unsafe_allow_html=True)
 
@@ -432,7 +409,7 @@ def hien_ket_qua(kq: dict) -> None:
 if ss.ket_qua:
     hien_ket_qua(ss.ket_qua)
 
-# 6. Thu gọn nhập liệu bàn phím về góc dưới cùng dưới dạng đường dẫn phụ, không làm phân tâm người dùng giọng nói
+# BÀN PHÍM PHỤ ĐƯỢC THU GỌN VỀ GÓC DƯỚI CÙNG (KHÔNG LÀM PHÂN TÂM NGƯỜI DÙNG GIỌNG NÓI)
 st.markdown("<br>", unsafe_allow_html=True)
 with st.expander("⌨️ Bàn phím phụ: Gõ chữ trực tiếp hoặc chọn từ danh mục (Dành cho trường hợp cần thiết)"):
     t_go, t_chon = st.tabs(["Gõ câu hỏi trực tiếp", "Chọn từ danh mục thủ tục"])
