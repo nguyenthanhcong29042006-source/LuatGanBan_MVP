@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giao diện thân thiện, ấm cúng bản làng."""
+"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giao diện ấm áp, rực rỡ và nổi bật mang sắc màu bản làng."""
 from __future__ import annotations
 
 import base64
@@ -36,8 +36,8 @@ st.markdown("""
 
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
-        color: #1e293b;
-        background: #fbfbfa;
+        color: #111827;
+        background: #fffbf5;
     }
     .block-container {
         padding-top: 1.5rem;
@@ -45,9 +45,9 @@ st.markdown("""
         max-width: 840px;
     }
 
-    /* Giao diện thân thiện, ấm cúng với tông màu xanh thiên nhiên bản làng */
-    .village-header {
-        background: linear-gradient(135deg, #1b5e3b 0%, #0f3822 100%);
+    /* Tiêu đề rực rỡ, ấm áp mang sắc màu thổ cẩm và văn hóa vùng cao */
+    .vibrant-header {
+        background: linear-gradient(135deg, #e11d48 0%, #be123c 50%, #9f1239 100%);
         color: white;
         border-radius: 20px;
         padding: 22px 28px;
@@ -55,53 +55,53 @@ st.markdown("""
         align-items: center;
         justify-content: space-between;
         margin-bottom: 20px;
-        box-shadow: 0 8px 20px -6px rgba(27, 94, 59, 0.25);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 10px 25px -6px rgba(225, 29, 72, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.2);
     }
 
-    /* Trạm tương tác giọng nói ấm áp, gần gũi */
-    .village-voice-box {
+    /* Trạm tương tác giọng nói nổi bật, sinh động */
+    .vibrant-voice-box {
         background: #ffffff;
-        border: 2px solid #e2e8f0;
+        border: 2px solid #fecdd3;
         border-radius: 24px;
         padding: 24px 28px;
-        box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 10px 25px -6px rgba(225, 29, 72, 0.08);
         margin-bottom: 20px;
         text-align: center;
         position: relative;
         overflow: hidden;
     }
-    .village-voice-box::before {
+    .vibrant-voice-box::before {
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #22c55e, #16a34a, #15803d);
+        height: 5px;
+        background: linear-gradient(90deg, #e11d48, #f59e0b, #10b981, #3b82f6);
     }
 
-    /* Thẻ kết quả thân thiện */
-    .village-result-card {
+    /* Thẻ kết quả nổi bật, thu hút */
+    .vibrant-result-card {
         background: #ffffff;
-        border: 1px solid #d1d5db;
+        border: 2px solid #fbcfe8;
         border-radius: 24px;
         padding: 28px;
-        box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 10px 25px -6px rgba(225, 29, 72, 0.08);
         margin-top: 20px;
     }
 
-    .village-pill {
+    .vibrant-pill {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: #f0fdf4;
+        background: #fff1f2;
         padding: 8px 14px;
         border-radius: 12px;
         font-size: 13px;
         font-weight: 700;
-        color: #166534;
+        color: #be123c;
         margin-right: 8px;
         margin-bottom: 8px;
-        border: 1px solid #bbf7d0;
+        border: 1px solid #fecdd3;
     }
 
     .stButton > button {
@@ -110,13 +110,13 @@ st.markdown("""
         padding: 0.6rem 1.4rem;
         transition: all 0.2s ease;
         border: none;
-        background: #16a34a;
+        background: #e11d48;
         color: white;
     }
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(22, 163, 74, 0.3);
-        background: #15803d;
+        box-shadow: 0 8px 20px rgba(225, 29, 72, 0.35);
+        background: #be123c;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -180,15 +180,15 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
     tu_phat_js = ("a.play().then(function(){}).catch(function(){"
                   "tt.textContent='Chạm để nghe lại';});") if tu_phat else ""
     _html(f"""
-<div style="display:flex;align-items:center;gap:14px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:12px 18px;margin:12px 0;">
+<div style="display:flex;align-items:center;gap:14px;background:#fff1f2;border:1px solid #fecdd3;border-radius:14px;padding:12px 18px;margin:12px 0;">
   <button id="b" aria-label="Nghe" style="
       width:42px;height:42px;min-width:42px;border-radius:50%;border:none;
-      background:#16a34a;cursor:pointer;display:flex;align-items:center;
-      justify-content:center;box-shadow:0 4px 12px rgba(22,163,74,0.3);
+      background:#e11d48;cursor:pointer;display:flex;align-items:center;
+      justify-content:center;box-shadow:0 4px 12px rgba(225,29,72,0.3);
       transition:all 0.2s;"></button>
   <div style="flex-grow:1;">
-    <div style="font-size:14px;font-weight:700;color:#166534;">{nhan}</div>
-    <div id="tt" style="font-size:11px;color:#15803d;margin-top:2px;font-weight:600;">Chạm để nghe tiếng nói hướng dẫn</div>
+    <div style="font-size:14px;font-weight:700;color:#be123c;">{nhan}</div>
+    <div id="tt" style="font-size:11px;color:#9f1239;margin-top:2px;font-weight:600;">Chạm để nghe tiếng nói hướng dẫn</div>
   </div>
   <audio id="a" src="data:{mime};base64,{b64}" preload="auto"></audio>
 </div>
@@ -271,26 +271,26 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Tiêu đề thân thuộc, ấm cúng
+# Tiêu đề rực rỡ, ấm cúng, nổi bật
 st.markdown("""
-<div class="village-header">
+<div class="vibrant-header">
     <div>
         <div style="font-size: 19px; font-weight: 800; letter-spacing: -0.3px; color: #ffffff;">TRỢ LÝ BẢN LÀNG — DỊCH VỤ CÔNG</div>
-        <div style="font-size: 13px; font-weight: 500; color: #bbf7d0; margin-top: 2px;">Đồng hành cùng bà con giải quyết thủ tục nhanh chóng, dễ hiểu</div>
+        <div style="font-size: 13px; font-weight: 500; color: #ffe4e6; margin-top: 2px;">Đồng hành cùng bà con giải quyết thủ tục nhanh chóng, dễ hiểu</div>
     </div>
-    <div style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 700; border: 1px solid rgba(255,255,255,0.2); color: #ffffff; white-space: nowrap;">
-        🌿 Gần gũi & Tiện lợi
+    <div style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 700; border: 1px solid rgba(255,255,255,0.3); color: #ffffff; white-space: nowrap;">
+        🌸 Thân thiện & Nổi bật
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Trạm tương tác giọng nói thân thiện
+# Trạm tương tác giọng nói nổi bật
 st.markdown("""
-<div class="village-voice-box">
-    <div style="font-size: 18px; font-weight: 800; color: #166534; margin-bottom: 4px; letter-spacing: -0.2px;">
+<div class="vibrant-voice-box">
+    <div style="font-size: 18px; font-weight: 800; color: #be123c; margin-bottom: 4px; letter-spacing: -0.2px;">
         🎙️ Trò Chuyện Cùng Trợ Lý Bản Làng
     </div>
-    <div style="font-size: 13px; color: #475569; font-weight: 500; margin-bottom: 16px;">
+    <div style="font-size: 13px; color: #4b5563; font-weight: 500; margin-bottom: 16px;">
         Bà con hãy chọn tiếng nói quen thuộc, sau đó bấm vào nút Micro để nói việc cần làm nhé
     </div>
 """, unsafe_allow_html=True)
@@ -356,23 +356,23 @@ def hien_ket_qua(kq: dict) -> None:
     dg = kq["don_gian"]
     
     st.markdown(f"""
-    <div class="village-result-card">
-        <div style="font-size: 20px; font-weight: 800; color: #166534; margin-bottom: 10px; letter-spacing: -0.2px;">
+    <div class="vibrant-result-card">
+        <div style="font-size: 20px; font-weight: 800; color: #be123c; margin-bottom: 10px; letter-spacing: -0.2px;">
             📋 {tt.ten}
         </div>
-        <div style="font-size: 14px; color: #334155; line-height: 1.6; margin-bottom: 18px; font-weight: 600;">
+        <div style="font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 18px; font-weight: 600;">
             {dg.get('tom_tat_1_cau','')}
         </div>
         <div>
-            <span class="village-pill">📍 <b>Nơi làm:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
-            <span class="village-pill">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
-            <span class="village-pill">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
+            <span class="vibrant-pill">📍 <b>Nơi làm:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
+            <span class="vibrant-pill">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
+            <span class="vibrant-pill">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
         </div>
     """, unsafe_allow_html=True)
 
     bb = [m for m in dg.get("mang_gi", []) if m.get("bat_buoc")]
     if bb:
-        st.markdown("<div style='margin-top: 16px; font-size: 15px; font-weight: 800; color: #166534;'>🎒 Giấy tờ bà con cần chuẩn bị mang theo:</div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 16px; font-size: 15px; font-weight: 800; color: #be123c;'>🎒 Giấy tờ bà con cần chuẩn bị mang theo:</div>", unsafe_allow_html=True)
         for m in bb:
             sl = f" ({m['so_luong']})" if m.get("so_luong") else ""
             st.markdown(f"- {m['ten_don_gian']}{sl}")
