@@ -286,21 +286,21 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Tiêu đề cao cấp, ấm cúng và thân thuộc
+# Tiêu đề cao cấp, thay đổi câu chữ thêm phần ấm áp, gần gũi
 st.markdown("""
 <div class="village-header">
     <div>
         <div style="font-size: 22px; font-weight: 800; letter-spacing: -0.3px; color: #ffffff;">TRỢ LÝ BẢN LÀNG — DỊCH VỤ CÔNG</div>
-        <div style="font-size: 13px; font-weight: 500; color: #d1fae5; margin-top: 4px;">Luôn sẵn sàng bên bà con, giải quyết thủ tục nhanh gọn và dễ hiểu nhất</div>
+        <div style="font-size: 13px; font-weight: 500; color: #d1fae5; margin-top: 4px;">Việc xã việc bản, có trợ lý lo — Cứ thong thả, đâu vào đấy hết nha!</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Trạm tương tác giọng nói với lời văn thân thương, gần gũi đã được đổi mới
+# Trạm tương tác giọng nói với lời văn thân thương, tự nhiên như người nhà
 st.markdown("""
 <div class="village-voice-box">
     <div style="font-size: 20px; font-weight: 800; color: #b45309; margin-bottom: 6px; letter-spacing: -0.2px;">
-        🍃 Bà Con Cứ Nói, Trợ Lý Đang Lắng Nghe Nè
+        ☕ Trợ lý đang ở đây nè, bà con cứ thong thả nói nha!
     </div>
     <div style="font-size: 13px; color: #57534e; font-weight: 500; margin-bottom: 20px;">
         Chọn tiếng nói quen thuộc của mình bên dưới, rồi bấm vào Micro để thủ thỉ việc cần làm nhé!
