@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói tối ưu Voice First."""
+"""Cổng người dân — Giao diện sang trọng, đậm đà bản sắc vùng cao, thân thiện tối đa với bà con."""
 from __future__ import annotations
 
 import hashlib
@@ -17,7 +17,6 @@ from core.stt import nghe
 from core.translate import dich_sang_mong, dich_sang_viet
 from core.tts import phat_tieng_mong, tts_tieng_viet
 
-# Danh mục thủ tục dự phòng đảm bảo không lỗi Import
 DANH_MUC_THU_TUC = {
     "khai_sinh": "Đăng ký khai sinh",
     "ket_hon": "Đăng ký kết hôn",
@@ -37,42 +36,97 @@ if not kb.load_kb():
     st.error("**Kho dữ liệu trống.** Hãy chạy: `python tools/extract_tthc.py`")
     st.stop()
 
+# Giao diện nâng cấp: Kết hợp giữa phong cách cao cấp (Luxury) và văn hóa vùng cao ấm áp
 st.markdown("""
 <style>
+  /* Phông nền chung và màu sắc chủ đạo tinh tế */
+  .stApp {
+      background: linear-gradient(180deg, #fdfbf7 0%, #f4f7f6 100%);
+  }
+
+  /* Banner chào mừng đậm chất bản sắc vùng cao sang trọng */
+  .hero-banner {
+      background: linear-gradient(135deg, #0B2545 0%, #134074 100%);
+      color: #ffffff;
+      padding: 24px 20px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(11, 37, 69, 0.15);
+      margin-bottom: 25px;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+  }
+  .hero-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #FFD700;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+  }
+  .hero-subtitle {
+      font-size: 15px;
+      color: #E2E8F0;
+      font-weight: 400;
+  }
+
+  /* Tùy chỉnh lựa chọn ngôn ngữ dạng thẻ nút bấm cao cấp */
   .stRadio > div {
       display: flex;
       justify-content: center;
       gap: 15px;
   }
   .stRadio label {
-      background-color: #f8fafc;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 8px 20px;
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 10px 24px;
       font-weight: 600;
-      color: #1e293b;
+      color: #0B2545;
       cursor: pointer;
-      transition: all 0.2s ease-in-out;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+      transition: all 0.3s ease;
   }
   .stRadio label:hover {
-      border-color: #003366;
-      background-color: #f0f7ff;
+      border-color: #D4AF37;
+      background: #fffdf5;
+      transform: translateY(-2px);
   }
+
+  /* Khung Micro sinh động, hiện đại */
   .voice-box-wrapper {
-      background: linear-gradient(135deg, #f0f7ff 0%, #e0f2fe 100%);
-      border: 2px solid #bae6fd;
-      border-radius: 20px;
-      padding: 20px;
+      background: linear-gradient(145deg, #ffffff 0%, #f0f4f8 100%);
+      border: 2px dashed #89C2D9;
+      border-radius: 24px;
+      padding: 24px;
       text-align: center;
-      box-shadow: 0 4px 12px rgba(0, 51, 102, 0.08);
-      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(137, 194, 217, 0.2);
+      margin-bottom: 25px;
+      transition: all 0.3s ease;
   }
+  .voice-box-wrapper:hover {
+      border-color: #0B2545;
+      box-shadow: 0 12px 28px rgba(11, 37, 69, 0.12);
+  }
+
+  /* Thẻ hiển thị kết quả sang trọng, rõ ràng */
   .the-ket-qua-dep {
       background: #ffffff;
-      border-left: 6px solid #003366;
-      padding: 16px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border-left: 6px solid #D4AF37;
+      border-right: 1px solid #e2e8f0;
+      border-top: 1px solid #e2e8f0;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 22px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+      margin-top: 15px;
+      margin-bottom: 15px;
+  }
+  .the-tra-loi {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #1e293b;
+  }
+  .the-tra-loi b {
+      color: #0B2545;
   }
 </style>
 """, unsafe_allow_html=True)
@@ -154,7 +208,7 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
                 kq["canh_bao"] = "Phần âm thanh tiếng Mông đang bận, đã hiển thị đầy đủ văn bản."
         
         kq["thoi_gian"]["tong"] = time.perf_counter() - t0
-        box.update(label="✅ Đã hoàn thành hướng dẫn!", state="complete", expanded=False)
+        box.update(label="✨ Đã hoàn thành hướng dẫn!", state="complete", expanded=False)
     return kq
 
 
@@ -163,8 +217,15 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = chay_pipeline(van_ban)
 
 
-st.markdown("<h2 style='text-align: center; color: #003366; margin-bottom: 5px;'>🎙️ HỎI ĐÁP THỦ TỤC BẰNG GIỌNG NÓI</h2>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #475569; font-size: 15px; margin-bottom: 20px;'>Bấm vào biểu tượng micro bên dưới và nói yêu cầu của bà con</p>", unsafe_allow_html=True)
+# ==========================================================================
+# KHU VỰC HERO BANNER & GIAO DIỆN THOẠI
+# ==========================================================================
+st.markdown("""
+<div class="hero-banner">
+  <div class="hero-title">🎙️ HỎI ĐÁP THỦ TỤC THÔNG MINH</div>
+  <div class="hero-subtitle">Bấm vào biểu tượng micro bên dưới, nói bằng tiếng Mông hoặc tiếng Việt để nhận hướng dẫn chi tiết</div>
+</div>
+""", unsafe_allow_html=True)
 
 ngon_ngu = st.radio(
     "Chọn ngôn ngữ", 
@@ -184,7 +245,7 @@ if audio_in is not None:
     is_mong = ("Tiếng Mông" in ngon_ngu)
     if van_tay != ss.audio_da_xu_ly and len(raw) > 2000:
         ss.audio_da_xu_ly = van_tay
-        with st.spinner("🎧 Máy đang lắng nghe yêu cầu…"):
+        with st.spinner("🎧 Máy đang lắng nghe yêu cầu của bà con…"):
             van_ban, _nguon = nghe(audio_in, tieng_mong=is_mong)
         if not van_ban:
             st.error("Máy chưa nghe rõ, bà con bấm nói lại nhé.")
@@ -198,6 +259,9 @@ if audio_in is not None:
         st.warning("Bản ghi quá ngắn. Bà con bấm micro và nói rõ hơn một chút nhé.")
 
 
+# ==========================================================================
+# KHU VỰC KẾT QUẢ HIỂN THỊ
+# ==========================================================================
 def nut_goi_can_bo(kq: dict) -> None:
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🙋 CẦN CÁN BỘ / TÌNH NGUYỆN VIÊN HỖ TRỢ TRỰC TIẾP",
@@ -229,7 +293,7 @@ def hien_ket_qua(kq: dict) -> None:
         return
 
     dg = kq["don_gian"]
-    st.success(f"🏷️ **{tt.ten}**  ·  Mã thủ tục: `{tt.ma_thu_tuc}`")
+    st.success(f"📌 **{tt.ten}**  ·  Mã thủ tục: `{tt.ma_thu_tuc}`")
 
     st.markdown('<div class="the-ket-qua-dep">', unsafe_allow_html=True)
     st.markdown(f"<div class='the-tra-loi'><b>{dg.get('tom_tat_1_cau','')}</b></div>", unsafe_allow_html=True)
