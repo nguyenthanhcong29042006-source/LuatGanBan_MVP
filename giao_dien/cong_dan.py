@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giao diện ấm áp, rực rỡ và nổi bật mang sắc màu bản làng."""
+"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giao diện lấy cảm hứng từ vải chàm Tây Bắc và sắc màu thổ cẩm rực rỡ."""
 from __future__ import annotations
 
 import base64
@@ -36,8 +36,8 @@ st.markdown("""
 
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
-        color: #111827;
-        background: #fffbf5;
+        color: #1e1b4b;
+        background: #f8fafc;
     }
     .block-container {
         padding-top: 1.5rem;
@@ -45,63 +45,63 @@ st.markdown("""
         max-width: 840px;
     }
 
-    /* Tiêu đề rực rỡ, ấm áp mang sắc màu thổ cẩm và văn hóa vùng cao */
-    .vibrant-header {
-        background: linear-gradient(135deg, #e11d48 0%, #be123c 50%, #9f1239 100%);
+    /* Tiêu đề mang sắc chàm truyền thống kết hợp thổ cẩm rực rỡ (Indigo & Brocade Gradient) */
+    .highland-header {
+        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #be123c 100%);
         color: white;
-        border-radius: 20px;
-        padding: 22px 28px;
+        border-radius: 22px;
+        padding: 24px 30px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 20px;
-        box-shadow: 0 10px 25px -6px rgba(225, 29, 72, 0.3);
+        margin-bottom: 22px;
+        box-shadow: 0 12px 30px -8px rgba(30, 27, 75, 0.35);
         border: 2px solid rgba(255, 255, 255, 0.2);
     }
 
-    /* Trạm tương tác giọng nói nổi bật, sinh động */
-    .vibrant-voice-box {
+    /* Trạm tương tác giọng nói đậm chất bản làng, thu hút và nổi bật */
+    .highland-voice-box {
         background: #ffffff;
-        border: 2px solid #fecdd3;
-        border-radius: 24px;
-        padding: 24px 28px;
-        box-shadow: 0 10px 25px -6px rgba(225, 29, 72, 0.08);
-        margin-bottom: 20px;
+        border: 2px solid #c7d2fe;
+        border-radius: 26px;
+        padding: 26px 30px;
+        box-shadow: 0 10px 25px -6px rgba(49, 46, 129, 0.08);
+        margin-bottom: 22px;
         text-align: center;
         position: relative;
         overflow: hidden;
     }
-    .vibrant-voice-box::before {
+    .highland-voice-box::before {
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0;
-        height: 5px;
-        background: linear-gradient(90deg, #e11d48, #f59e0b, #10b981, #3b82f6);
+        height: 6px;
+        background: linear-gradient(90deg, #312e81, #f59e0b, #e11d48, #06b6d4);
     }
 
-    /* Thẻ kết quả nổi bật, thu hút */
-    .vibrant-result-card {
+    /* Thẻ kết quả nổi bật, sang trọng và gần gũi */
+    .highland-result-card {
         background: #ffffff;
-        border: 2px solid #fbcfe8;
-        border-radius: 24px;
-        padding: 28px;
-        box-shadow: 0 10px 25px -6px rgba(225, 29, 72, 0.08);
-        margin-top: 20px;
+        border: 2px solid #ddd6fe;
+        border-radius: 26px;
+        padding: 30px;
+        box-shadow: 0 12px 30px -8px rgba(49, 46, 129, 0.08);
+        margin-top: 22px;
     }
 
-    .vibrant-pill {
+    .highland-pill {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: #fff1f2;
+        background: #eef2ff;
         padding: 8px 14px;
         border-radius: 12px;
         font-size: 13px;
         font-weight: 700;
-        color: #be123c;
+        color: #312e81;
         margin-right: 8px;
         margin-bottom: 8px;
-        border: 1px solid #fecdd3;
+        border: 1px solid #c7d2fe;
     }
 
     .stButton > button {
@@ -110,13 +110,14 @@ st.markdown("""
         padding: 0.6rem 1.4rem;
         transition: all 0.2s ease;
         border: none;
-        background: #e11d48;
+        background: #312e81;
         color: white;
+        box-shadow: 0 4px 12px rgba(49, 46, 129, 0.25);
     }
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(225, 29, 72, 0.35);
-        background: #be123c;
+        box-shadow: 0 8px 20px rgba(49, 46, 129, 0.35);
+        background: #1e1b4b;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -180,15 +181,15 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
     tu_phat_js = ("a.play().then(function(){}).catch(function(){"
                   "tt.textContent='Chạm để nghe lại';});") if tu_phat else ""
     _html(f"""
-<div style="display:flex;align-items:center;gap:14px;background:#fff1f2;border:1px solid #fecdd3;border-radius:14px;padding:12px 18px;margin:12px 0;">
+<div style="display:flex;align-items:center;gap:14px;background:#eef2ff;border:1px solid #c7d2fe;border-radius:14px;padding:12px 18px;margin:12px 0;">
   <button id="b" aria-label="Nghe" style="
       width:42px;height:42px;min-width:42px;border-radius:50%;border:none;
-      background:#e11d48;cursor:pointer;display:flex;align-items:center;
-      justify-content:center;box-shadow:0 4px 12px rgba(225,29,72,0.3);
+      background:#312e81;cursor:pointer;display:flex;align-items:center;
+      justify-content:center;box-shadow:0 4px 12px rgba(49,46,129,0.3);
       transition:all 0.2s;"></button>
   <div style="flex-grow:1;">
-    <div style="font-size:14px;font-weight:700;color:#be123c;">{nhan}</div>
-    <div id="tt" style="font-size:11px;color:#9f1239;margin-top:2px;font-weight:600;">Chạm để nghe tiếng nói hướng dẫn</div>
+    <div style="font-size:14px;font-weight:700;color:#312e81;">{nhan}</div>
+    <div id="tt" style="font-size:11px;color:#4f46e5;margin-top:2px;font-weight:600;">Chạm để nghe tiếng nói hướng dẫn</div>
   </div>
   <audio id="a" src="data:{mime};base64,{b64}" preload="auto"></audio>
 </div>
@@ -271,26 +272,26 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Tiêu đề rực rỡ, ấm cúng, nổi bật
+# Tiêu đề mang âm hưởng văn hóa chàm và thổ cẩm Tây Bắc
 st.markdown("""
-<div class="vibrant-header">
+<div class="highland-header">
     <div>
-        <div style="font-size: 19px; font-weight: 800; letter-spacing: -0.3px; color: #ffffff;">TRỢ LÝ BẢN LÀNG — DỊCH VỤ CÔNG</div>
-        <div style="font-size: 13px; font-weight: 500; color: #ffe4e6; margin-top: 2px;">Đồng hành cùng bà con giải quyết thủ tục nhanh chóng, dễ hiểu</div>
+        <div style="font-size: 20px; font-weight: 800; letter-spacing: -0.3px; color: #ffffff;">TRỢ LÝ BẢN LÀNG — DỊCH VỤ CÔNG</div>
+        <div style="font-size: 13px; font-weight: 500; color: #e0e7ff; margin-top: 3px;">Đồng hành cùng bà con giải quyết thủ tục nhanh chóng, dễ hiểu</div>
     </div>
-    <div style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 700; border: 1px solid rgba(255,255,255,0.3); color: #ffffff; white-space: nowrap;">
-        🌸 Thân thiện & Nổi bật
+    <div style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); padding: 6px 14px; border-radius: 12px; font-size: 11px; font-weight: 700; border: 1px solid rgba(255,255,255,0.25); color: #ffffff; white-space: nowrap;">
+        ✨ Sắc Chàm & Thổ Cẩm
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Trạm tương tác giọng nói nổi bật
+# Trạm tương tác giọng nói nổi bật, cuốn hút
 st.markdown("""
-<div class="vibrant-voice-box">
-    <div style="font-size: 18px; font-weight: 800; color: #be123c; margin-bottom: 4px; letter-spacing: -0.2px;">
+<div class="highland-voice-box">
+    <div style="font-size: 18px; font-weight: 800; color: #312e81; margin-bottom: 4px; letter-spacing: -0.2px;">
         🎙️ Trò Chuyện Cùng Trợ Lý Bản Làng
     </div>
-    <div style="font-size: 13px; color: #4b5563; font-weight: 500; margin-bottom: 16px;">
+    <div style="font-size: 13px; color: #475569; font-weight: 500; margin-bottom: 16px;">
         Bà con hãy chọn tiếng nói quen thuộc, sau đó bấm vào nút Micro để nói việc cần làm nhé
     </div>
 """, unsafe_allow_html=True)
@@ -356,23 +357,23 @@ def hien_ket_qua(kq: dict) -> None:
     dg = kq["don_gian"]
     
     st.markdown(f"""
-    <div class="vibrant-result-card">
-        <div style="font-size: 20px; font-weight: 800; color: #be123c; margin-bottom: 10px; letter-spacing: -0.2px;">
+    <div class="highland-result-card">
+        <div style="font-size: 20px; font-weight: 800; color: #312e81; margin-bottom: 10px; letter-spacing: -0.2px;">
             📋 {tt.ten}
         </div>
-        <div style="font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 18px; font-weight: 600;">
+        <div style="font-size: 14px; color: #334155; line-height: 1.6; margin-bottom: 18px; font-weight: 600;">
             {dg.get('tom_tat_1_cau','')}
         </div>
         <div>
-            <span class="vibrant-pill">📍 <b>Nơi làm:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
-            <span class="vibrant-pill">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
-            <span class="vibrant-pill">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
+            <span class="highland-pill">📍 <b>Nơi làm:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
+            <span class="highland-pill">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
+            <span class="highland-pill">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
         </div>
     """, unsafe_allow_html=True)
 
     bb = [m for m in dg.get("mang_gi", []) if m.get("bat_buoc")]
     if bb:
-        st.markdown("<div style='margin-top: 16px; font-size: 15px; font-weight: 800; color: #be123c;'>🎒 Giấy tờ bà con cần chuẩn bị mang theo:</div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 16px; font-size: 15px; font-weight: 800; color: #312e81;'>🎒 Giấy tờ bà con cần chuẩn bị mang theo:</div>", unsafe_allow_html=True)
         for m in bb:
             sl = f" ({m['so_luong']})" if m.get("so_luong") else ""
             st.markdown(f"- {m['ten_don_gian']}{sl}")
