@@ -271,7 +271,7 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Tiêu đề sang trọng, trang nghiêm và chuyên nghiệp
+# Tiêu đề sang trọng, trang nghiêm với huy hiệu phù hợp với dự án chuyển đổi số bản làng / vùng cao
 st.markdown("""
 <div class="elite-header">
     <div>
@@ -279,7 +279,7 @@ st.markdown("""
         <div style="font-size: 14px; font-weight: 500; color: #94a3b8; margin-top: 4px;">Trợ lý ảo giọng nói đa ngôn ngữ — Hỗ trợ đồng bào dân tộc và nhân dân</div>
     </div>
     <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 8px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; border: 1px solid rgba(255,255,255,0.15); color: #e2e8f0;">
-        🌟 Smart Public Service
+        🎯 Chuyển đổi số bao trùm
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -372,7 +372,7 @@ def hien_ket_qua(kq: dict) -> None:
 
     bb = [m for m in dg.get("mang_gi", []) if m.get("bat_buoc")]
     if bb:
-        st.markdown("<div style='margin-top: 20px; font-size: 16px; font-weight: 8000; color: #0f172a;'>🎒 Danh mục giấy tờ bắt buộc cần chuẩn bị:</div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 20px; font-size: 16px; font-weight: 800; color: #0f172a;'>🎒 Danh mục giấy tờ bắt buộc cần chuẩn bị:</div>", unsafe_allow_html=True)
         for m in bb:
             sl = f" ({m['so_luong']})" if m.get("so_luong") else ""
             st.markdown(f"- {m['ten_don_gian']}{sl}")
