@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giải pháp chuyển đổi số bao trùm (Modern Neo-Card Edition)."""
+"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giải pháp chuyển đổi số bao trùm (Master SaaS Edition)."""
 from __future__ import annotations
 
 import base64
@@ -36,58 +36,61 @@ st.markdown("""
 
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
-        color: #1e293b;
-        background: #f1f5f9;
+        color: #0f172a;
+        background: #f8fafc;
     }
     .block-container {
-        padding-top: 2rem;
+        padding-top: 2.5rem;
         padding-bottom: 6rem;
-        max-width: 800px;
+        max-width: 840px;
     }
 
-    .app-header-box {
-        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
-        color: white;
+    /* Header hiện đại phong cách SaaS */
+    .saas-header {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
         border-radius: 24px;
-        padding: 24px 32px;
+        padding: 20px 28px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 28px;
-        box-shadow: 0 10px 25px -5px rgba(49, 46, 129, 0.3);
+        margin-bottom: 24px;
+        box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.05);
     }
 
-    .voice-interactive-card {
-        background: #ffffff;
-        border-radius: 28px;
-        padding: 36px;
-        box-shadow: 0 15px 35px -10px rgba(15, 23, 42, 0.08);
-        border: 1px solid #e2e8f0;
+    /* Trạm Micro tương tác trung tâm */
+    .saas-voice-box {
+        background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+        border: 1px solid #cbd5e1;
+        border-radius: 32px;
+        padding: 38px;
+        box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08);
         margin-bottom: 28px;
         text-align: center;
     }
 
-    .result-display-card {
+    /* Thẻ hiển thị kết quả */
+    .saas-result-card {
         background: #ffffff;
-        border-radius: 24px;
-        padding: 32px;
-        box-shadow: 0 10px 30px -8px rgba(15, 23, 42, 0.06);
         border: 1px solid #e2e8f0;
+        border-radius: 24px;
+        padding: 36px;
+        box-shadow: 0 12px 30px -10px rgba(15, 23, 42, 0.06);
         margin-top: 24px;
     }
 
-    .info-pill {
+    .saas-badge {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        background: #f8fafc;
-        padding: 8px 14px;
-        border-radius: 12px;
+        gap: 8px;
+        background: #f1f5f9;
+        padding: 8px 16px;
+        border-radius: 14px;
         font-size: 13px;
         font-weight: 700;
-        color: #475569;
+        color: #334155;
         margin-right: 8px;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         border: 1px solid #e2e8f0;
     }
 
@@ -100,7 +103,7 @@ st.markdown("""
     }
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -164,14 +167,14 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
     tu_phat_js = ("a.play().then(function(){}).catch(function(){"
                   "tt.textContent='Chạm để nghe lại';});") if tu_phat else ""
     _html(f"""
-<div style="display:flex;align-items:center;gap:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:14px 20px;margin:12px 0;">
+<div style="display:flex;align-items:center;gap:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:14px 20px;margin:14px 0;">
   <button id="b" aria-label="Nghe" style="
       width:48px;height:48px;min-width:48px;border-radius:50%;border:none;
-      background:#4f46e5;cursor:pointer;display:flex;align-items:center;
-      justify-content:center;box-shadow:0 4px 12px rgba(79,70,229,0.3);
+      background:#2563eb;cursor:pointer;display:flex;align-items:center;
+      justify-content:center;box-shadow:0 4px 12px rgba(37,99,235,0.3);
       transition:all 0.2s;"></button>
   <div style="flex-grow:1;">
-    <div style="font-size:15px;font-weight:700;color:#1e293b;">{nhan}</div>
+    <div style="font-size:15px;font-weight:700;color:#0f172a;">{nhan}</div>
     <div id="tt" style="font-size:12px;color:#64748b;margin-top:2px;font-weight:600;">Chạm để phát âm thanh</div>
   </div>
   <audio id="a" src="data:{mime};base64,{b64}" preload="auto"></audio>
@@ -192,7 +195,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
   {tu_phat_js}
 }})();
 </script>
-""", height=84)
+""", height=86)
     return True
 
 
@@ -255,22 +258,27 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
+# Header tinh tế
 st.markdown("""
-<div class="app-header-box">
-    <div>
-        <div style="font-size: 20px; font-weight: 800; letter-spacing: -0.3px;">⛰️ Cổng Thông Tin Bản Làng</div>
-        <div style="font-size: 13px; font-weight: 500; color: #cbd5e1; margin-top: 2px;">Trợ lý Giọng nói Đa ngôn ngữ Thông minh</div>
+<div class="saas-header">
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <span style="font-size: 26px;">🏔️</span>
+        <div>
+            <div style="font-size: 18px; font-weight: 800; color: #0f172a; letter-spacing: -0.3px;">Cổng Thông Tin Bản Làng</div>
+            <div style="font-size: 12px; font-weight: 600; color: #64748b;">Trợ lý Giọng nói Đa ngôn ngữ Thông minh</div>
+        </div>
     </div>
-    <div style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); padding: 6px 14px; border-radius: 12px; font-size: 12px; font-weight: 700; border: 1px solid rgba(255,255,255,0.2);">
-        ✨ Voice AI Standard
+    <div style="font-size: 12px; font-weight: 700; color: #2563eb; background: #eff6ff; padding: 6px 14px; border-radius: 12px; border: 1px solid #bfdbfe;">
+        ✨ UNDP Standard
     </div>
 </div>
 """, unsafe_allow_html=True)
 
+# Khối Micro trung tâm tối ưu trải nghiệm
 st.markdown("""
-<div class="voice-interactive-card">
-    <div style="font-size: 19px; font-weight: 800; color: #1e293b; margin-bottom: 6px;">
-        🎙️ Trợ lý Giọng nói Bản Làng
+<div class="saas-voice-box">
+    <div style="font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 6px; letter-spacing: -0.3px;">
+        🎙️ Trợ lý Giọng nói Thông minh
     </div>
     <div style="font-size: 14px; color: #64748b; font-weight: 500; margin-bottom: 20px;">
         Chọn ngôn ngữ và bấm Micro để nói yêu cầu của bạn
@@ -338,23 +346,23 @@ def hien_ket_qua(kq: dict) -> None:
     dg = kq["don_gian"]
     
     st.markdown(f"""
-    <div class="result-display-card">
-        <div style="font-size: 21px; font-weight: 800; color: #1e293b; margin-bottom: 10px;">
+    <div class="saas-result-card">
+        <div style="font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 10px; letter-spacing: -0.3px;">
             📋 {tt.ten}
         </div>
         <div style="font-size: 15px; color: #334155; line-height: 1.6; margin-bottom: 20px; font-weight: 600;">
             {dg.get('tom_tat_1_cau','')}
         </div>
         <div>
-            <span class="info-pill">📍 <b>Nơi thực hiện:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
-            <span class="info-pill">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
-            <span class="info-pill">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
+            <span class="saas-badge">📍 <b>Nơi thực hiện:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
+            <span class="saas-badge">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
+            <span class="saas-badge">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
         </div>
     """, unsafe_allow_html=True)
 
     bb = [m for m in dg.get("mang_gi", []) if m.get("bat_buoc")]
     if bb:
-        st.markdown("<div style='margin-top: 16px; font-weight: 800; color: #1e293b;'>🎒 Danh mục giấy tờ cần chuẩn bị:</div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 18px; font-weight: 800; color: #0f172a;'>🎒 Danh mục giấy tờ cần chuẩn bị:</div>", unsafe_allow_html=True)
         for m in bb:
             sl = f" ({m['so_luong']})" if m.get("so_luong") else ""
             st.markdown(f"- {m['ten_don_gian']}{sl}")
@@ -375,7 +383,7 @@ if ss.ket_qua:
     hien_ket_qua(ss.ket_qua)
 
 st.markdown("<br>", unsafe_allow_html=True)
-with st.expander("⌨️ Bàn phím phụ: Gõ chữ hoặc chọn từ danh mục (Dành cho người dùng cần trợ giúp nhập văn bản)"):
+with st.expander("⌨️ Bàn phím phụ: Gõ chữ hoặc chọn từ danh mục"):
     t_go, t_chon = st.tabs(["Gõ câu hỏi trực tiếp", "Chọn từ danh mục"])
     with t_go:
         txt = st.text_input("Nhập nội dung cần tìm kiếm:", label_visibility="collapsed", placeholder="Ví dụ: Đăng ký kết hôn cần giấy tờ gì...")
