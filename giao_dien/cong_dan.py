@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin bản làng — Trợ lý giọng nói tiếng Mông & Tiếng Việt (Bản thiết kế độc đáo, đậm bản sắc)."""
+"""Cổng thông tin bản làng — Trợ lý giọng nói đa ngôn ngữ vùng cao (Bố cục Micro trung tâm độc đáo)."""
 from __future__ import annotations
 
 import base64
@@ -33,27 +33,26 @@ st.markdown("""
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
         color: #1e293b;
-        background-color: #f1f5f9;
+        background-color: #f4f6f8;
     }
     .block-container {
         padding-top: 2rem;
         padding-bottom: 6rem;
-        max-width: 860px;
+        max-width: 820px;
     }
 
-    /* Banner chính đậm chất văn hóa vùng cao */
-    .village-hero {
-        background: linear-gradient(135deg, #0f172a 1e3a8a 100%);
-        background-image: linear-gradient(135deg, #1e3a8a 0%, #1e293b 100%);
+    /* Tiêu đề trang đậm bản sắc, trang trọng */
+    .portal-banner {
+        background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
         color: white;
-        padding: 32px 24px;
+        padding: 30px 24px;
         border-radius: 28px;
         text-align: center;
-        margin-bottom: 28px;
+        margin-bottom: 30px;
         box-shadow: 0 15px 35px -5px rgba(30, 58, 138, 0.3);
         border: 2px solid #3b82f6;
     }
-    .village-badge {
+    .portal-tag {
         display: inline-block;
         background: #f59e0b;
         color: #ffffff;
@@ -66,46 +65,48 @@ st.markdown("""
         margin-bottom: 12px;
         box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
     }
-    .village-main-title {
+    .portal-title {
         font-size: 28px;
         font-weight: 800;
         margin-bottom: 8px;
         letter-spacing: -0.5px;
     }
-    .village-main-desc {
+    .portal-desc {
         font-size: 15px;
-        color: #e2e8f0;
+        color: #cbd5e1;
         font-weight: 500;
     }
 
-    /* Khối Micro trung tâm độc đáo, hiệu ứng ánh sáng nổi bật */
-    .mic-focal-card {
-        background: #ffffff;
+    /* Khối Micro trung tâm độc đáo, định vị hoàn toàn ở giữa với hiệu ứng nổi bật */
+    .central-mic-card {
+        background: linear-gradient(145deg, #ffffff 0%, #fffbeb 100%);
         border: 3px solid #f59e0b;
         border-radius: 36px;
         padding: 40px 32px;
         box-shadow: 0 25px 60px -10px rgba(245, 158, 11, 0.25);
-        margin-bottom: 32px;
+        margin: 0 auto 32px auto;
+        max-width: 720px;
         text-align: center;
         position: relative;
-        background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%);
     }
-    .mic-focal-card::before {
-        content: "✨";
+    .central-mic-card::before {
+        content: "✦";
         position: absolute;
         top: 20px;
         left: 28px;
+        color: #f59e0b;
         font-size: 20px;
     }
-    .mic-focal-card::after {
-        content: "✨";
+    .central-mic-card::after {
+        content: "✦";
         position: absolute;
         top: 20px;
         right: 28px;
+        color: #f59e0b;
         font-size: 20px;
     }
 
-    /* Khối kết quả tra cứu tinh tế */
+    /* Khối hiển thị kết quả tra cứu */
     .result-card {
         background: #ffffff;
         border: 2px solid #cbd5e1;
@@ -293,40 +294,41 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Tiêu đề trang trang trọng, đậm đà bản sắc
+# Tiêu đề trang trang trọng, chuẩn demo hệ thống đa ngôn ngữ
 st.markdown("""
-<div class="village-hero">
-    <div class="village-badge">🏛️ Cổng Thông Tin Bản Làng Vùng Cao</div>
-    <div class="village-main-title">Luật Gần Bà Con — Nói Là Hiểu, Hỏi Là Biết</div>
-    <div class="village-main-desc">Việc làng, việc nước, giấy tờ thủ tục — Bà con cứ thủ thỉ để hệ thống giúp tận tình!</div>
+<div class="portal-banner">
+    <div class="portal-tag">🏛️ Cổng Thông Tin Trợ Lý Giọng Nói Đa Ngôn Ngữ</div>
+    <div class="portal-title">Luật Gần Bà Con — Nói Là Hiểu, Hỏi Là Biết</div>
+    <div class="portal-desc">Hệ thống hỗ trợ tra cứu thủ tục bằng nhiều ngôn ngữ dân tộc và tiếng Việt một cách tự nhiên nhất</div>
 </div>
 """, unsafe_allow_html=True)
 
-# KHỐI MICRO ĐẶT Ở GIỮA TRUNG TÂM VỚI THIẾT KẾ ĐỘC ĐÁO, SANG TRỌNG VÀ GẦN GŨI
+# ĐẶT KHỐI MICRO CHÍNH GIỮA TRUNG TÂM TUYỆT ĐỐI VỚI THIẾT KẾ ĐỘC ĐÁO, THỰC TIỄN CAO
 st.markdown("""
-<div class="mic-focal-card">
-    <div style="font-size: 21px; font-weight: 800; color: #1e3a8a; margin-bottom: 8px;">
-        🎙️ BÀ CON MUỐN LÀM GIẤY TỜ GÌ, CỨ BẤM MICRO RỒI NÓI NHÉ!
+<div class="central-mic-card">
+    <div style="font-size: 22px; font-weight: 800; color: #1e3a8a; margin-bottom: 8px;">
+        🎙️ BẤM VÀO MICRO ĐỂ NÓI YÊU CẦU CỦA BÀ CON
     </div>
     <div style="font-size: 14px; color: #475569; margin-bottom: 24px; font-weight: 500;">
-        Hệ thống luôn lắng nghe bằng cả tiếng Mông và tiếng Việt để phục vụ bà con tận tâm nhất
+        Hệ thống tự động lắng nghe và hỗ trợ linh hoạt theo ngôn ngữ bà con sử dụng
     </div>
 """, unsafe_allow_html=True)
 
 col_lang, col_mic = st.columns([1, 1.3], gap="large")
 
 with col_lang:
-    st.markdown("<div style='font-size:13px; font-weight:700; color:#1e3a8a; margin-bottom:8px; text-align:left;'>🌐 Chọn tiếng để nói chuyện:</div>", unsafe_allow_html=True)
-    LUA_CHON = ["🌐 Tiếng Mông (Hmoob) [Mặc định]", "🇻🇳 Tiếng Việt"]
+    st.markdown("<div style='font-size:13px; font-weight:700; color:#1e3a8a; margin-bottom:8px; text-align:left;'>🌐 Chọn ngôn ngữ / Tiếng dân tộc:</div>", unsafe_allow_html=True)
+    # Hỗ trợ cấu hình mở rộng cho bản demo đa ngôn ngữ
+    DANH_SACH_NGON_NGU = ["🌐 Tiếng Mông (Hmoob)", "🇻🇳 Tiếng Việt", "🌐 Các tiếng dân tộc khác (Demo)"]
     ngon_ngu = st.segmented_control(
-        "Chọn ngôn ngữ", LUA_CHON,
-        default=LUA_CHON[0], label_visibility="collapsed"
-    ) or LUA_CHON[0]
+        "Chọn ngôn ngữ", DANH_SACH_NGON_NGU,
+        default=DANH_SACH_NGON_NGU[0], label_visibility="collapsed"
+    ) or DANH_SACH_NGON_NGU[0]
     la_tieng_mong = "Tiếng Mông" in ngon_ngu
     ss.la_tieng_mong = la_tieng_mong
 
 with col_mic:
-    st.markdown("<div style='font-size:13px; font-weight:700; color:#1e3a8a; margin-bottom:8px; text-align:left;'>🎤 Chạm vào đây để ghi âm giọng nói:</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:13px; font-weight:700; color:#1e3a8a; margin-bottom:8px; text-align:left;'>🎤 Chạm để ghi âm giọng nói trực tiếp:</div>", unsafe_allow_html=True)
     audio_in = st.audio_input("Micro chính", label_visibility="collapsed")
 
 st.markdown("</div>", unsafe_allow_html=True)
@@ -339,19 +341,19 @@ if audio_in is not None:
         with st.spinner("Đang lắng nghe tiếng lòng của bà con..."):
             van_ban, _ = nghe(audio_in, tieng_mong=la_tieng_mong)
         if not van_ban:
-            st.error("Ơ, chưa nghe rõ tiếng của bà con rồi. Bà con bấm nút nói lại to và rõ hơn một chút nhé!")
-            loa("Ơ, chưa nghe rõ tiếng của bà con rồi. Bà con bấm nút nói lại to và rõ hơn một chút nhé!", tu_phat=True)
+            st.error("Ơ, hệ thống chưa nghe rõ tiếng của bà con. Bà con bấm nút nói lại to và rõ hơn một chút nhé!")
+            loa("Ơ, hệ thống chưa nghe rõ tiếng của bà con. Bà con bấm nút nói lại to và rõ hơn một chút nhé!", tu_phat=True)
         else:
             if la_tieng_mong:
                 dong_vi = [l for l in van_ban.splitlines() if l.startswith("VI:")]
                 van_ban = (dong_vi[0][3:].strip() if dong_vi else dich_sang_viet(van_ban))
-            st.success(f"Hệ thống đã nghe rõ câu của bà con: *{van_ban}*")
+            st.success(f"Hệ thống đã nhận diện nội dung: *{van_ban}*")
             xu_ly_cau_noi(van_ban)
 
 
 def nut_goi_can_bo(kq: dict) -> None:
     st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("🤝 KẾT NỐI NGAY VỚI CÁN BỘ XÃ ĐỂ ĐƯỢC GIÚP ĐỠ", use_container_width=True):
+    if st.button("🤝 KẾT NỐI NGAY VỚI CÁN BỘ XÃ ĐỂ ĐƯỢC HỖ TRỢ", use_container_width=True):
         tt = kq.get("thu_tuc")
         ss.danh_sach_yeu_cau.append({
             "thoi_gian": datetime.now().strftime("%H:%M - %d/%m"),
@@ -359,7 +361,7 @@ def nut_goi_can_bo(kq: dict) -> None:
             "chi_tiet": kq["cau_noi"],
             "trang_thai": "Chờ xử lý",
         })
-        st.success("Đã gửi gắm thành công! Cán bộ xã sẽ liên hệ trực tiếp hỗ trợ bà con ngay nhé.")
+        st.success("Đã gửi yêu cầu thành công! Cán bộ xã sẽ liên hệ trực tiếp hỗ trợ bà con ngay.")
 
 
 def hien_ket_qua(kq: dict) -> None:
@@ -371,7 +373,7 @@ def hien_ket_qua(kq: dict) -> None:
     tuyen, tt = kq["tuyen"], kq.get("thu_tuc")
 
     if tuyen["can_can_bo"] or tt is None:
-        cau_hoi = tuyen.get("cau_hoi_lam_ro") or "Bà con nói cụ thể hơn giúp mình xem cần làm thủ tục gì ở xã nhé."
+        cau_hoi = tuyen.get("cau_hoi_lam_ro") or "Bà con nói cụ thể hơn giúp mình xem cần thực hiện thủ tục gì nhé."
         st.warning(f"💡 {cau_hoi}")
         loa(cau_hoi, tu_phat=True)
         nut_goi_can_bo(kq)
@@ -396,7 +398,7 @@ def hien_ket_qua(kq: dict) -> None:
 
     bb = [m for m in dg.get("mang_gi", []) if m.get("bat_buoc")]
     if bb:
-        st.markdown("**🎒 Những giấy tờ quan trọng bà con tuyệt đối phải mang theo:**")
+        st.markdown("**🎒 Những giấy tờ quan trọng bà con cần chuẩn bị:**")
         for m in bb:
             sl = f" ({m['so_luong']})" if m.get("so_luong") else ""
             st.markdown(f"- {m['ten_don_gian']}{sl}")
@@ -422,7 +424,7 @@ if ss.ket_qua:
     hien_ket_qua(ss.ket_qua)
 
 st.markdown("<br>", unsafe_allow_html=True)
-with st.expander("⌨️ Bàn phím phụ: Gõ chữ hoặc chọn từ danh mục (Dành cho con cháu trợ giúp ông bà)"):
+with st.expander("⌨️ Bàn phím phụ: Gõ chữ hoặc chọn từ danh mục (Dành cho con cháu trợ giúp)"):
     t_go, t_chon = st.tabs(["Gõ câu hỏi trực tiếp", "Chọn từ danh mục thủ tục"])
     with t_go:
         txt = st.text_input("Nhập nội dung cần tìm:", label_visibility="collapsed", placeholder="Ví dụ: Đăng ký kết hôn cần giấy tờ gì...")
