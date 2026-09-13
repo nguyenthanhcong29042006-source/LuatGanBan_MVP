@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói tối ưu Voice First (Giao diện sinh động)."""
+"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói tối ưu Voice First."""
 from __future__ import annotations
 
 import hashlib
@@ -9,13 +9,23 @@ from datetime import datetime
 import streamlit as st
 
 from core import kb
-from core.config import DANH_MUC_THU_TUC, CAU_HOI_MAC_DINH
+from core.config import NGUONG_TU_TIN
 from core.llm import LoiQuota
 from core.router import dinh_tuyen
-from core.simplify import don_gian_hoa, thanh_van_ban_doc
+from core.simplify import CAU_HOI_MAC_DINH, don_gian_hoa, thanh_van_ban_doc
 from core.stt import nghe
 from core.translate import dich_sang_mong, dich_sang_viet
 from core.tts import phat_tieng_mong, tts_tieng_viet
+
+# Danh mục thủ tục dự phòng đảm bảo không lỗi Import
+DANH_MUC_THU_TUC = {
+    "khai_sinh": "Đăng ký khai sinh",
+    "ket_hon": "Đăng ký kết hôn",
+    "khai_tu": "Đăng ký khai tử",
+    "ho_khau": "Đăng ký cư trú / Hộ khẩu",
+    "dat_dai": "Thủ tục đất đai",
+    "tro_cap": "Chính sách trợ cấp xã hội"
+}
 
 ss = st.session_state
 ss.setdefault("danh_sach_yeu_cau", [])
@@ -27,10 +37,8 @@ if not kb.load_kb():
     st.error("**Kho dữ liệu trống.** Hãy chạy: `python tools/extract_tthc.py`")
     st.stop()
 
-# Bổ sung CSS làm đẹp giao diện sinh động hơn
 st.markdown("""
 <style>
-  /* Tùy chỉnh khối ngôn ngữ dạng thẻ hiện đại */
   .stRadio > div {
       display: flex;
       justify-content: center;
@@ -50,8 +58,6 @@ st.markdown("""
       border-color: #003366;
       background-color: #f0f7ff;
   }
-
-  /* Khung bọc khu vực micro nổi bật, sinh động */
   .voice-box-wrapper {
       background: linear-gradient(135deg, #f0f7ff 0%, #e0f2fe 100%);
       border: 2px solid #bae6fd;
@@ -61,8 +67,6 @@ st.markdown("""
       box-shadow: 0 4px 12px rgba(0, 51, 102, 0.08);
       margin-bottom: 20px;
   }
-  
-  /* Thẻ kết quả trả lời */
   .the-ket-qua-dep {
       background: #ffffff;
       border-left: 6px solid #003366;
@@ -159,13 +163,9 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = chay_pipeline(van_ban)
 
 
-# ==========================================================================
-# KHU VỰC TRUNG TÂM: GIAO DIỆN THOẠI TRỰC QUAN
-# ==========================================================================
 st.markdown("<h2 style='text-align: center; color: #003366; margin-bottom: 5px;'>🎙️ HỎI ĐÁP THỦ TỤC BẰNG GIỌNG NÓI</h2>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #475569; font-size: 15px; margin-bottom: 20px;'>Bấm vào biểu tượng micro bên dưới và nói yêu cầu của bà con</p>", unsafe_allow_html=True)
 
-# Lựa chọn ngôn ngữ mặc định Tiếng Mông dạng thẻ bấm
 ngon_ngu = st.radio(
     "Chọn ngôn ngữ", 
     ["🔊 Tiếng Mông (Hmong)", "🔊 Tiếng Việt"],
@@ -198,9 +198,6 @@ if audio_in is not None:
         st.warning("Bản ghi quá ngắn. Bà con bấm micro và nói rõ hơn một chút nhé.")
 
 
-# ==========================================================================
-# KHU VỰC KẾT QUẢ HIỂN THỊ
-# ==========================================================================
 def nut_goi_can_bo(kq: dict) -> None:
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🙋 CẦN CÁN BỘ / TÌNH NGUYỆN VIÊN HỖ TRỢ TRỰC TIẾP",
@@ -249,7 +246,6 @@ def hien_ket_qua(kq: dict) -> None:
     c2.markdown(f"💰 **Lệ phí:** {dg.get('bao_nhieu_tien','—')}")
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # Nút Loa tiếng Việt sinh động
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🔊 Nghe hướng dẫn bằng Tiếng Việt", use_container_width=True):
         p = tts_tieng_viet(kq["kich_ban"])
@@ -258,7 +254,6 @@ def hien_ket_qua(kq: dict) -> None:
         else:
             st.warning("Đang chuẩn bị âm thanh, vui lòng thử lại.")
 
-    # Hiển thị tiếng Mông
     if kq.get("mong"):
         with st.container(border=True):
             st.markdown("### 📖 Hướng dẫn bằng Tiếng Mông")
@@ -275,10 +270,6 @@ if ss.ket_qua:
     st.write("---")
     hien_ket_qua(ss.ket_qua)
 
-
-# ==========================================================================
-# THU GỌN BÀN PHÍM / CHỌN DANH SÁCH Ở DƯỚI CÙNG
-# ==========================================================================
 st.markdown("<br><hr>", unsafe_allow_html=True)
 with st.expander("⌨️ Cách khác: Nhập chữ hoặc chọn thủ tục từ danh sách"):
     t_go, t_chon = st.tabs(["Gõ câu hỏi", "Chọn từ danh sách"])
