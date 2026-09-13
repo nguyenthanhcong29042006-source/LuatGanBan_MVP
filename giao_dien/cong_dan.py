@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin bản làng — Trợ lý giọng nói đa ngôn ngữ vùng cao (Bố cục Micro trung tâm độc đáo)."""
+"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ vùng cao (Bố cục Micro trọng tâm màn hình)."""
 from __future__ import annotations
 
 import base64
@@ -33,113 +33,105 @@ st.markdown("""
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
         color: #1e293b;
-        background-color: #f4f6f8;
+        background-color: #f8fafc;
     }
     .block-container {
         padding-top: 2rem;
         padding-bottom: 6rem;
-        max-width: 820px;
+        max-width: 860px;
     }
 
-    /* Tiêu đề trang đậm bản sắc, trang trọng */
-    .portal-banner {
+    /* Banner tổng quan hệ thống */
+    .app-header {
         background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
         color: white;
-        padding: 30px 24px;
-        border-radius: 28px;
+        padding: 28px 24px;
+        border-radius: 24px;
         text-align: center;
-        margin-bottom: 30px;
-        box-shadow: 0 15px 35px -5px rgba(30, 58, 138, 0.3);
+        margin-bottom: 24px;
+        box-shadow: 0 10px 30px -5px rgba(30, 58, 138, 0.25);
         border: 2px solid #3b82f6;
     }
-    .portal-tag {
+    .app-badge {
         display: inline-block;
         background: #f59e0b;
         color: #ffffff;
         font-weight: 800;
         font-size: 11px;
-        padding: 6px 16px;
+        padding: 5px 14px;
         border-radius: 20px;
         text-transform: uppercase;
-        letter-spacing: 1.2px;
-        margin-bottom: 12px;
-        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        letter-spacing: 1px;
+        margin-bottom: 10px;
     }
-    .portal-title {
-        font-size: 28px;
+    .app-title {
+        font-size: 26px;
         font-weight: 800;
-        margin-bottom: 8px;
-        letter-spacing: -0.5px;
+        margin-bottom: 6px;
+        letter-spacing: -0.3px;
     }
-    .portal-desc {
-        font-size: 15px;
+    .app-desc {
+        font-size: 14px;
         color: #cbd5e1;
         font-weight: 500;
     }
 
-    /* Khối Micro trung tâm độc đáo, định vị hoàn toàn ở giữa với hiệu ứng nổi bật */
-    .central-mic-card {
+    /* KHỐI MICRO TRUNG TÂM NỔI BẬT ĐẶT Ở CHÍNH GIỮA MÀN HÌNH */
+    .hero-mic-container {
         background: linear-gradient(145deg, #ffffff 0%, #fffbeb 100%);
-        border: 3px solid #f59e0b;
+        border: 4px solid #f59e0b;
         border-radius: 36px;
-        padding: 40px 32px;
-        box-shadow: 0 25px 60px -10px rgba(245, 158, 11, 0.25);
-        margin: 0 auto 32px auto;
-        max-width: 720px;
+        padding: 36px 32px;
+        box-shadow: 0 25px 50px -10px rgba(245, 158, 11, 0.25);
+        margin: 0 auto 30px auto;
+        max-width: 780px;
         text-align: center;
         position: relative;
     }
-    .central-mic-card::before {
+    .hero-mic-container::before, .hero-mic-container::after {
         content: "✦";
         position: absolute;
-        top: 20px;
-        left: 28px;
+        top: 18px;
         color: #f59e0b;
-        font-size: 20px;
+        font-size: 18px;
     }
-    .central-mic-card::after {
-        content: "✦";
-        position: absolute;
-        top: 20px;
-        right: 28px;
-        color: #f59e0b;
-        font-size: 20px;
-    }
+    .hero-mic-container::before { left: 24px; }
+    .hero-mic-container::after { right: 24px; }
 
-    /* Khối hiển thị kết quả tra cứu */
+    /* Khối kết quả tra cứu */
     .result-card {
         background: #ffffff;
         border: 2px solid #cbd5e1;
-        border-radius: 26px;
-        padding: 36px;
-        box-shadow: 0 12px 35px -8px rgba(0,0,0,0.08);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 10px 30px -8px rgba(0,0,0,0.06);
         margin-top: 24px;
     }
     .info-tag {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        background: #f8fafc;
-        padding: 8px 16px;
-        border-radius: 14px;
+        gap: 6px;
+        background: #f1f5f9;
+        padding: 8px 14px;
+        border-radius: 12px;
         font-size: 13px;
         font-weight: 700;
         color: #1e3a8a;
         margin-right: 8px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         border: 1px solid #94a3b8;
     }
 
     .stButton > button {
         border-radius: 14px;
         font-weight: 700;
-        padding: 0.8rem 1.6rem;
+        padding: 0.75rem 1.5rem;
         transition: all 0.2s ease;
         border: none;
     }
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -203,7 +195,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
     tu_phat_js = ("a.play().then(function(){}).catch(function(){"
                   "tt.textContent='Chạm để nghe lại âm thanh';});") if tu_phat else ""
     _html(f"""
-<div style="display:flex;align-items:center;gap:14px;background:#ffffff;border:2px solid #2563eb;border-radius:18px;padding:14px 20px;margin:14px 0;box-shadow:0 4px 15px rgba(37,99,235,0.12);">
+<div style="display:flex;align-items:center;gap:14px;background:#ffffff;border:2px solid #2563eb;border-radius:18px;padding:14px 20px;margin:12px 0;box-shadow:0 4px 15px rgba(37,99,235,0.12);">
   <button id="b" aria-label="Nghe" style="
       width:48px;height:48px;min-width:48px;border-radius:50%;border:none;
       background:linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);cursor:pointer;display:flex;align-items:center;
@@ -225,7 +217,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
   b.onclick=function(){{ if(a.paused){{a.play();}} else {{a.pause();}} }};
   b.onmousedown=function(){{ b.style.transform='scale(0.94)'; }};
   b.onmouseup=function(){{ b.style.transform='scale(1)'; }};
-  a.onplay =function(){{ ve(true);  tt.textContent='Đang phát âm thanh cho bà con...'; }};
+  a.onplay =function(){{ ve(true);  tt.textContent='Đang phát âm thanh...'; }};
   a.onpause=function(){{ ve(false); tt.textContent='Đã tạm dừng'; }};
   a.onended=function(){{ ve(false); tt.textContent='Nghe lại từ đầu'; }};
   {tu_phat_js}
@@ -247,11 +239,11 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
     t0 = time.perf_counter()
     kq: dict = {"cau_noi": cau_noi, "thoi_gian": {}}
 
-    with st.status("Cán bộ số đang tìm kiếm theo lời dặn của bà con...", expanded=False) as box:
+    with st.status("Hệ thống đang xử lý yêu cầu...", expanded=False) as box:
         try:
             tuyen = _dinh_tuyen(cau_noi)
         except Exception:
-            kq["loi"] = "Hệ thống bận một chút, bà con bấm nói lại giúp mình nhé."
+            kq["loi"] = "Hệ thống đang bận, vui lòng thử lại sau giây lát."
             box.update(label="Lỗi kết nối", state="error", expanded=False)
             return kq
 
@@ -260,7 +252,7 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
         kq["thu_tuc"] = tt
 
         if tuyen["can_can_bo"] or tt is None:
-            box.update(label="Cần cán bộ xã hỗ trợ trực tiếp", state="complete", expanded=False)
+            box.update(label="Cần hỗ trợ trực tiếp từ cán bộ", state="complete", expanded=False)
             return kq
 
         try:
@@ -283,7 +275,7 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
                 kq["canh_bao"] = "Sử dụng âm thanh dự phòng."
 
         kq["thoi_gian"]["tong"] = time.perf_counter() - t0
-        box.update(label="Đã tìm thấy thông tin cho bà con", state="complete", expanded=False)
+        box.update(label="Đã tìm thấy thông tin phù hợp", state="complete", expanded=False)
     return kq
 
 
@@ -294,32 +286,34 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Tiêu đề trang trang trọng, chuẩn demo hệ thống đa ngôn ngữ
+# Tiêu đề trang chuẩn mực, bao quát cho bản demo đa ngôn ngữ
 st.markdown("""
-<div class="portal-banner">
-    <div class="portal-tag">🏛️ Cổng Thông Tin Trợ Lý Giọng Nói Đa Ngôn Ngữ</div>
-    <div class="portal-title">Luật Gần Bà Con — Nói Là Hiểu, Hỏi Là Biết</div>
-    <div class="portal-desc">Hệ thống hỗ trợ tra cứu thủ tục bằng nhiều ngôn ngữ dân tộc và tiếng Việt một cách tự nhiên nhất</div>
+<div class="app-header">
+    <div class="app-badge">🏛️ Trợ Lý Giọng Nói Đa Ngôn Ngữ — Bản Demo</div>
+    <div class="app-title">Tra Cứu Thủ Tục Hành Chính Bằng Giọng Nói</div>
+    <div class="app-desc">Hệ thống hỗ trợ tra cứu thông tin dịch vụ công linh hoạt theo nhiều ngôn ngữ và thổ ngữ khác nhau</div>
 </div>
 """, unsafe_allow_html=True)
 
-# ĐẶT KHỐI MICRO CHÍNH GIỮA TRUNG TÂM TUYỆT ĐỐI VỚI THIẾT KẾ ĐỘC ĐÁO, THỰC TIỄN CAO
+# -------------------------------------------------------------
+# KHỐI TRUNG TÂM HOÀN TOÀN: LÀM NỔI BẬT MICRO Ở CHÍNH GIỮA MÀN HÌNH
+# -------------------------------------------------------------
 st.markdown("""
-<div class="central-mic-card">
-    <div style="font-size: 22px; font-weight: 800; color: #1e3a8a; margin-bottom: 8px;">
-        🎙️ BẤM VÀO MICRO ĐỂ NÓI YÊU CẦU CỦA BÀ CON
+<div class="hero-mic-container">
+    <div style="font-size: 20px; font-weight: 800; color: #1e3a8a; margin-bottom: 6px;">
+        🎙️ BẤM VÀO MICRO ĐỂ NÓI YÊU CẦU TRA CỨU
     </div>
-    <div style="font-size: 14px; color: #475569; margin-bottom: 24px; font-weight: 500;">
-        Hệ thống tự động lắng nghe và hỗ trợ linh hoạt theo ngôn ngữ bà con sử dụng
+    <div style="font-size: 13px; color: #64748b; margin-bottom: 20px; font-weight: 500;">
+        Hệ thống tự động nhận diện ngôn ngữ để đưa ra câu trả lời chuẩn xác nhất
     </div>
 """, unsafe_allow_html=True)
 
-col_lang, col_mic = st.columns([1, 1.3], gap="large")
+# Bố cục bên trong khối trung tâm chia cân đối: Chọn ngôn ngữ bên trái, Micro làm điểm nhấn bên phải
+col_lang, col_mic = st.columns([1, 1.2], gap="medium")
 
 with col_lang:
-    st.markdown("<div style='font-size:13px; font-weight:700; color:#1e3a8a; margin-bottom:8px; text-align:left;'>🌐 Chọn ngôn ngữ / Tiếng dân tộc:</div>", unsafe_allow_html=True)
-    # Hỗ trợ cấu hình mở rộng cho bản demo đa ngôn ngữ
-    DANH_SACH_NGON_NGU = ["🌐 Tiếng Mông (Hmoob)", "🇻🇳 Tiếng Việt", "🌐 Các tiếng dân tộc khác (Demo)"]
+    st.markdown("<div style='font-size:13px; font-weight:700; color:#1e3a8a; margin-bottom:6px; text-align:left;'>🌐 Chọn ngôn ngữ giao tiếp:</div>", unsafe_allow_html=True)
+    DANH_SACH_NGON_NGU = ["🌐 Tiếng Mông (Hmoob)", "🇻🇳 Tiếng Việt", "🌐 Các ngôn ngữ khác (Demo)"]
     ngon_ngu = st.segmented_control(
         "Chọn ngôn ngữ", DANH_SACH_NGON_NGU,
         default=DANH_SACH_NGON_NGU[0], label_visibility="collapsed"
@@ -328,32 +322,33 @@ with col_lang:
     ss.la_tieng_mong = la_tieng_mong
 
 with col_mic:
-    st.markdown("<div style='font-size:13px; font-weight:700; color:#1e3a8a; margin-bottom:8px; text-align:left;'>🎤 Chạm để ghi âm giọng nói trực tiếp:</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:13px; font-weight:700; color:#1e3a8a; margin-bottom:6px; text-align:left;'>🎤 Ghi âm giọng nói trực tiếp:</div>", unsafe_allow_html=True)
     audio_in = st.audio_input("Micro chính", label_visibility="collapsed")
 
 st.markdown("</div>", unsafe_allow_html=True)
+# -------------------------------------------------------------
 
 if audio_in is not None:
     raw = audio_in.getvalue()
     van_tay = hashlib.sha256(raw).hexdigest()[:16]
     if van_tay != ss.audio_da_xu_ly and len(raw) > 2000:
         ss.audio_da_xu_ly = van_tay
-        with st.spinner("Đang lắng nghe tiếng lòng của bà con..."):
+        with st.spinner("Đang xử lý âm thanh..."):
             van_ban, _ = nghe(audio_in, tieng_mong=la_tieng_mong)
         if not van_ban:
-            st.error("Ơ, hệ thống chưa nghe rõ tiếng của bà con. Bà con bấm nút nói lại to và rõ hơn một chút nhé!")
-            loa("Ơ, hệ thống chưa nghe rõ tiếng của bà con. Bà con bấm nút nói lại to và rõ hơn một chút nhé!", tu_phat=True)
+            st.error("Hệ thống chưa nghe rõ nội dung. Vui lòng bấm ghi âm lại rõ ràng hơn.")
+            loa("Hệ thống chưa nghe rõ nội dung. Vui lòng bấm ghi âm lại rõ ràng hơn.", tu_phat=True)
         else:
             if la_tieng_mong:
                 dong_vi = [l for l in van_ban.splitlines() if l.startswith("VI:")]
                 van_ban = (dong_vi[0][3:].strip() if dong_vi else dich_sang_viet(van_ban))
-            st.success(f"Hệ thống đã nhận diện nội dung: *{van_ban}*")
+            st.success(f"Nội dung hệ thống nhận diện: *{van_ban}*")
             xu_ly_cau_noi(van_ban)
 
 
 def nut_goi_can_bo(kq: dict) -> None:
     st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("🤝 KẾT NỐI NGAY VỚI CÁN BỘ XÃ ĐỂ ĐƯỢC HỖ TRỢ", use_container_width=True):
+    if st.button("🤝 KẾT NỐI VỚI CÁN BỘ HỖ TRỢ TRỰC TIẾP", use_container_width=True):
         tt = kq.get("thu_tuc")
         ss.danh_sach_yeu_cau.append({
             "thoi_gian": datetime.now().strftime("%H:%M - %d/%m"),
@@ -361,7 +356,7 @@ def nut_goi_can_bo(kq: dict) -> None:
             "chi_tiet": kq["cau_noi"],
             "trang_thai": "Chờ xử lý",
         })
-        st.success("Đã gửi yêu cầu thành công! Cán bộ xã sẽ liên hệ trực tiếp hỗ trợ bà con ngay.")
+        st.success("Đã gửi yêu cầu thành công! Cán bộ phụ trách sẽ liên hệ hỗ trợ ngay.")
 
 
 def hien_ket_qua(kq: dict) -> None:
@@ -373,7 +368,7 @@ def hien_ket_qua(kq: dict) -> None:
     tuyen, tt = kq["tuyen"], kq.get("thu_tuc")
 
     if tuyen["can_can_bo"] or tt is None:
-        cau_hoi = tuyen.get("cau_hoi_lam_ro") or "Bà con nói cụ thể hơn giúp mình xem cần thực hiện thủ tục gì nhé."
+        cau_hoi = tuyen.get("cau_hoi_lam_ro") or "Vui lòng cung cấp thêm thông tin chi tiết về thủ tục bạn cần thực hiện."
         st.warning(f"💡 {cau_hoi}")
         loa(cau_hoi, tu_phat=True)
         nut_goi_can_bo(kq)
@@ -390,15 +385,15 @@ def hien_ket_qua(kq: dict) -> None:
             {dg.get('tom_tat_1_cau','')}
         </div>
         <div>
-            <span class="info-tag">📍 <b>Đến làm tại:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
-            <span class="info-tag">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
+            <span class="info-tag">📍 <b>Nơi thực hiện:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
+            <span class="info-tag">⏱️ <b>Thời gian giải quyết:</b> {dg.get('bao_lau','—')}</span>
             <span class="info-tag">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
         </div>
     """, unsafe_allow_html=True)
 
     bb = [m for m in dg.get("mang_gi", []) if m.get("bat_buoc")]
     if bb:
-        st.markdown("**🎒 Những giấy tờ quan trọng bà con cần chuẩn bị:**")
+        st.markdown("**🎒 Danh mục giấy tờ cần chuẩn bị:**")
         for m in bb:
             sl = f" ({m['so_luong']})" if m.get("so_luong") else ""
             st.markdown(f"- {m['ten_don_gian']}{sl}")
@@ -413,7 +408,7 @@ def hien_ket_qua(kq: dict) -> None:
         nut_loa(kq["audio_viet"], nhan="🔊 Nghe hướng dẫn chi tiết bằng tiếng Việt", tu_phat=not uu_tien_mong)
 
     if auth.nguoi_dang_nhap():
-        with st.expander("⚙️ Thông số hệ thống chuyên sâu (Cán bộ xã xem)"):
+        with st.expander("⚙️ Thông số hệ thống chuyên sâu"):
             st.metric("Độ tin cậy xử lý", f"{dg.get('do_tin_cay', 0):.0%}")
             st.caption(f"Mã thủ tục: {tt.ma_thu_tuc}")
 
@@ -424,19 +419,19 @@ if ss.ket_qua:
     hien_ket_qua(ss.ket_qua)
 
 st.markdown("<br>", unsafe_allow_html=True)
-with st.expander("⌨️ Bàn phím phụ: Gõ chữ hoặc chọn từ danh mục (Dành cho con cháu trợ giúp)"):
-    t_go, t_chon = st.tabs(["Gõ câu hỏi trực tiếp", "Chọn từ danh mục thủ tục"])
+with st.expander("⌨️ Bàn phím phụ: Gõ chữ hoặc chọn từ danh mục thủ tục"):
+    t_go, t_chon = st.tabs(["Gõ câu hỏi trực tiếp", "Chọn từ danh mục"])
     with t_go:
-        txt = st.text_input("Nhập nội dung cần tìm:", label_visibility="collapsed", placeholder="Ví dụ: Đăng ký kết hôn cần giấy tờ gì...")
-        if st.button("Tra cứu ngay bằng văn bản", type="primary") and txt.strip():
+        txt = st.text_input("Nhập nội dung cần tìm kiếm:", label_visibility="collapsed", placeholder="Ví dụ: Đăng ký kết hôn cần giấy tờ gì...")
+        if st.button("Tra cứu bằng văn bản", type="primary") and txt.strip():
             xu_ly_cau_noi(txt.strip())
             st.rerun()
     with t_chon:
-        nhom_chon = st.selectbox("Chọn lĩnh vực hành chính:", list(DANH_MUC_THU_TUC.keys()), format_func=lambda k: DANH_MUC_THU_TUC[k])
+        nhom_chon = st.selectbox("Chọn lĩnh vực:", list(DANH_MUC_THU_TUC.keys()), format_func=lambda k: DANH_MUC_THU_TUC[k])
         ds = kb.theo_nhom(nhom_chon)
         if ds:
             tt_chon = st.selectbox("Chọn thủ tục cụ thể:", ds, format_func=lambda t: t.ten)
-            if st.button("Xem hướng dẫn chi tiết từ danh mục", type="primary"):
+            if st.button("Xem hướng dẫn thủ tục này", type="primary"):
                 xu_ly_cau_noi(tt_chon.ten)
                 st.rerun()
 
