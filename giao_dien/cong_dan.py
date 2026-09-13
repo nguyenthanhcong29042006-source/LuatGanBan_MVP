@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giải pháp chuyển đổi số bao trùm (Modern Neo-Card Edition)."""
-from __python__ import annotations
+from __future__ import annotations
+
 import base64
 import hashlib
 import time
@@ -44,7 +45,6 @@ st.markdown("""
         max-width: 800px;
     }
 
-    /* Phong cách Thẻ Neo-Modern (Modern Neo-Card Style) */
     .app-header-box {
         background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
         color: white;
@@ -255,7 +255,6 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Tiêu đề dạng Banner độc đáo
 st.markdown("""
 <div class="app-header-box">
     <div>
@@ -268,7 +267,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Thẻ tương tác Micro thân thiện
 st.markdown("""
 <div class="voice-interactive-card">
     <div style="font-size: 19px; font-weight: 800; color: #1e293b; margin-bottom: 6px;">
@@ -376,7 +374,6 @@ def hien_ket_qua(kq: dict) -> None:
 if ss.ket_qua:
     hien_ket_qua(ss.ket_qua)
 
-# Bàn phím phụ gọn gàng ở cuối
 st.markdown("<br>", unsafe_allow_html=True)
 with st.expander("⌨️ Bàn phím phụ: Gõ chữ hoặc chọn từ danh mục (Dành cho người dùng cần trợ giúp nhập văn bản)"):
     t_go, t_chon = st.tabs(["Gõ câu hỏi trực tiếp", "Chọn từ danh mục"])
