@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin bản làng — Trợ lý giọng nói tiếng Mông & Tiếng Việt (Bố cục tối ưu, phân cấp trực quan)."""
+"""Cổng thông tin bản làng — Trợ lý giọng nói tiếng Mông & Tiếng Việt (Bố cục Micro chuẩn tâm điểm tuyệt đối)."""
 from __future__ import annotations
 
 import base64
@@ -26,7 +26,7 @@ ss.setdefault("cau_noi", "")
 ss.setdefault("audio_da_xu_ly", "")
 ss.setdefault("la_tieng_mong", True)
 
-# Bố cục phân cấp rõ ràng: Màu sắc ấm áp bản làng, tập trung tuyệt đối vào Micro ở trung tâm
+# Bố cục tối ưu: Đưa Micro ra chính giữa màn hình làm trung tâm tuyệt đối
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -34,23 +34,22 @@ st.markdown("""
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
         color: #1e293b;
-        background-color: #f8fafc;
+        background-color: #f4f6f0;
     }
     .block-container {
         padding-top: 2rem;
         padding-bottom: 6rem;
-        max-width: 820px;
+        max-width: 900px;
     }
 
-    /* Tiêu đề trang */
     .hero-banner {
         background: linear-gradient(135deg, #1e3a8a 0%, #312e81 100%);
         color: white;
-        padding: 28px 24px;
-        border-radius: 24px;
+        padding: 24px 20px;
+        border-radius: 20px;
         text-align: center;
         margin-bottom: 24px;
-        box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.25);
+        box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.2);
     }
     .hero-tag {
         display: inline-block;
@@ -58,41 +57,22 @@ st.markdown("""
         color: #ffffff;
         font-weight: 700;
         font-size: 11px;
-        padding: 5px 14px;
-        border-radius: 20px;
+        padding: 4px 12px;
+        border-radius: 16px;
         text-transform: uppercase;
         letter-spacing: 0.8px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
     .hero-title {
-        font-size: 26px;
+        font-size: 24px;
         font-weight: 800;
-        margin-bottom: 6px;
-        letter-spacing: -0.4px;
+        margin-bottom: 4px;
     }
     .hero-desc {
-        font-size: 14px;
+        font-size: 13px;
         color: #cbd5e1;
     }
 
-    /* KHỐI TÂM ĐIỂM: MICRO & NGÔN NGỮ */
-    .primary-action-section {
-        background: #ffffff;
-        border: 3px solid #f59e0b;
-        border-radius: 30px;
-        padding: 32px;
-        box-shadow: 0 20px 40px -10px rgba(245, 158, 11, 0.2);
-        margin-bottom: 28px;
-        text-align: center;
-    }
-    .section-label {
-        font-size: 15px;
-        font-weight: 800;
-        color: #1e3a8a;
-        margin-bottom: 12px;
-    }
-
-    /* Thẻ kết quả */
     .result-box {
         background: #ffffff;
         border: 2px solid #e2e8f0;
@@ -217,7 +197,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
   {tu_phat_js}
 }})();
 </script>
-""", height: 86)
+""", height=86)
     return True
 
 
@@ -280,7 +260,7 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Tiêu đề giao diện
+# Tiêu đề trang
 st.markdown("""
 <div class="hero-banner">
     <div class="hero-tag">🏛️ Cổng Thông Tin Bản Làng</div>
@@ -289,23 +269,18 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# BỐ CỤC CHÍNH: KHỐI MICRO VÀ CHỌN NGÔN NGỮ ĐƯỢC ĐẶT TRỌNG TÂM RÕ RÀNG
-st.markdown("""
-<div class="primary-action-section">
-    <div style="font-size: 18px; font-weight: 800; color: #1e3a8a; margin-bottom: 6px;">
-        🎙️ Bấm vào Micro bên dưới để nói yêu cầu của bà con
-    </div>
-    <div style="font-size: 13px; color: #64748b; margin-bottom: 20px;">
-        Hệ thống sẽ tự động lắng nghe và tra cứu thủ tục chính xác nhất cho bạn
-    </div>
-""", unsafe_allow_html=True)
+# ĐẶT KHỐI MICRO CHÍNH GIỮA TRUNG TÂM TUYỆT ĐỐI BẰNG HỆ THỐNG CỘT CÂN ĐỐI
+col_left, col_center, col_right = st.columns([1, 2.6, 1])
 
-col_ngon_ngu, col_micro = st.columns([1, 1.3], gap="large")
+with col_center:
+    st.markdown("""
+    <div style="background: #ffffff; border: 4px solid #f59e0b; border-radius: 32px; padding: 32px 24px; text-align: center; box-shadow: 0 20px 45px rgba(245, 158, 11, 0.25); margin-bottom: 24px;">
+        <div style="font-size: 18px; font-weight: 800; color: #1e3a8a; margin-bottom: 6px;">🎙️ BẤM VÀO MICRO ĐỂ NÓI</div>
+        <div style="font-size: 13px; color: #64748b; margin-bottom: 20px;">Hệ thống lắng nghe trực tiếp yêu cầu của bà con</div>
+    """, unsafe_allow_html=True)
 
-with col_ngon_ngu:
-    st.markdown("<div class='section-label' style='text-align: left;'>1. Chọn ngôn ngữ trò chuyện:</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:13px; font-weight:700; color:#1e3a8a; margin-bottom:8px; text-align:center;'>🌐 Chọn ngôn ngữ trò chuyện:</div>", unsafe_allow_html=True)
     LUA_CHON = ["🌐 Tiếng Mông (Hmoob) [Mặc định]", "🇻🇳 Tiếng Việt"]
-    # Mặc định ưu tiên Tiếng Mông
     ngon_ngu = st.segmented_control(
         "Chọn ngôn ngữ", LUA_CHON,
         default=LUA_CHON[0], label_visibility="collapsed"
@@ -313,11 +288,9 @@ with col_ngon_ngu:
     la_tieng_mong = "Tiếng Mông" in ngon_ngu
     ss.la_tieng_mong = la_tieng_mong
 
-with col_micro:
-    st.markdown("<div class='section-label' style='text-align: left;'>2. Bấm nút micro để ghi âm:</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:13px; font-weight:700; color:#1e3a8a; margin-top:16px; margin-bottom:8px; text-align:center;'>🎤 Nút ghi âm giọng nói:</div>", unsafe_allow_html=True)
     audio_in = st.audio_input("Micro chính", label_visibility="collapsed")
-
-st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 if audio_in is not None:
     raw = audio_in.getvalue()
@@ -409,7 +382,6 @@ def hien_ket_qua(kq: dict) -> None:
 if ss.ket_qua:
     hien_ket_qua(ss.ket_qua)
 
-# BÀN PHÍM PHỤ ĐƯỢC THU GỌN VỀ GÓC DƯỚI CÙNG (KHÔNG LÀM PHÂN TÂM NGƯỜI DÙNG GIỌNG NÓI)
 st.markdown("<br>", unsafe_allow_html=True)
 with st.expander("⌨️ Bàn phím phụ: Gõ chữ trực tiếp hoặc chọn từ danh mục (Dành cho trường hợp cần thiết)"):
     t_go, t_chon = st.tabs(["Gõ câu hỏi trực tiếp", "Chọn từ danh mục thủ tục"])
