@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói (Bản thiết kế điện ảnh, tinh tế & gần gũi)."""
+"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói (Chuẩn quốc tế & Thiết kế cao cấp)."""
 from __future__ import annotations
 
 import base64
@@ -27,128 +27,116 @@ ss.setdefault("ket_qua", None)
 ss.setdefault("cau_noi", "")
 ss.setdefault("audio_da_xu_ly", "")
 
-# Thiết kế giao diện điện ảnh (Cinematic), sang trọng nhưng ấm áp, gần gũi với đồng bào
+# Thiết kế chuẩn quốc tế: Tối giản, không rối mắt, kết hợp hình ảnh nền phong cảnh vùng cao nghệ thuật
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
     html, body, [class*="css"] {
-        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-family: 'Inter', sans-serif;
+        color: #0f172a;
     }
     .block-container {
-        padding-top: 2.5rem;
-        padding-bottom: 5rem;
-        max-width: 920px;
+        padding-top: 3rem;
+        padding-bottom: 6rem;
+        max-width: 880px;
     }
-    
-    /* Hiệu ứng nền điện ảnh chiều sâu */
-    .hero-cinematic {
-        background: radial-gradient(circle at top right, #312e81 0%, #0f172a 60%, #020617 100%);
+
+    /* Hero Banner chuẩn quốc tế kết hợp hình ảnh phong cảnh miền núi ẩn hiện tinh tế */
+    .hero-international {
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 27, 75, 0.92) 100%), 
+                    url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1600&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
         color: #ffffff;
-        padding: 42px 32px;
-        border-radius: 28px;
+        padding: 56px 40px;
+        border-radius: 32px;
         text-align: center;
-        box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.6);
-        margin-bottom: 30px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 30px 60px -12px rgba(15, 23, 42, 0.3);
+        margin-bottom: 36px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
         position: relative;
         overflow: hidden;
     }
-    .hero-cinematic::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-        pointer-events: none;
-    }
-    .hero-badge {
+    
+    .hero-badge-int {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(12px);
-        padding: 6px 18px;
-        border-radius: 50px;
-        font-size: 13px;
-        font-weight: 700;
-        letter-spacing: 0.8px;
-        margin-bottom: 16px;
-        color: #818cf8;
-        border: 1px solid rgba(129, 140, 248, 0.3);
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(16px);
+        padding: 8px 20px;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 18px;
+        color: #93c5fd;
+        border: 1px solid rgba(147, 197, 253, 0.25);
         text-transform: uppercase;
     }
-    .hero-title {
-        font-size: 32px;
-        font-weight: 800;
-        letter-spacing: -0.6px;
-        margin-bottom: 10px;
-        background: linear-gradient(to right, #ffffff, #c7d2fe);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+
+    .hero-title-int {
+        font-size: 36px;
+        font-weight: 700;
+        letter-spacing: -0.8px;
+        margin-bottom: 12px;
+        color: #ffffff;
+        line-height: 1.2;
     }
-    .hero-subtitle {
+
+    .hero-subtitle-int {
         font-size: 16px;
-        color: #94a3b8;
+        color: #cbd5e1;
         font-weight: 400;
-        max-width: 600px;
+        max-width: 580px;
         margin: 0 auto;
-        line-height: 1.5;
+        line-height: 1.6;
     }
 
-    /* Thẻ kết quả Glassmorphism cao cấp */
-    .result-card-cine {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(16px);
-        border: 1px solid rgba(226, 232, 240, 0.8);
+    /* Thẻ kết quả tinh gọn, khoảng trắng thoáng đãng */
+    .result-card-clean {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
         border-radius: 24px;
-        padding: 32px;
-        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.06);
-        margin: 24px 0;
-        animation: fadeIn 0.4s ease-out;
-    }
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+        padding: 36px;
+        box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.04);
+        margin: 28px 0;
     }
 
-    .pill-tag {
+    .meta-chip {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         background: #f8fafc;
-        padding: 8px 16px;
-        border-radius: 14px;
+        padding: 10px 18px;
+        border-radius: 12px;
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 500;
         color: #334155;
-        margin-right: 10px;
+        margin-right: 12px;
         margin-bottom: 12px;
         border: 1px solid #e2e8f0;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.02);
     }
 
-    /* Nút bấm hiện đại */
+    /* Tùy chỉnh nút bấm hiện đại */
     .stButton > button {
-        border-radius: 14px;
-        font-weight: 700;
-        padding: 0.7rem 1.5rem;
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 12px;
+        font-weight: 600;
+        padding: 0.75rem 1.6rem;
+        transition: all 0.2s ease;
         border: none;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.04);
     }
     .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(30, 41, 59, 0.12);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     }
 </style>
 
-<div class="hero-cinematic">
-    <div class="hero-badge">🌟 Cổng Hành Chính Thế Hệ Mới</div>
-    <div class="hero-title">Nói tiếng của mình — Thấu hiểu việc nước nhà</div>
-    <div class="hero-subtitle">Đồng hành cùng bà con giải quyết thủ tục nhanh chóng, chính xác bằng giọng nói thân thuộc</div>
+<div class="hero-international">
+    <div class="hero-badge-int">🌐 Global Impact AI Project</div>
+    <div class="hero-title-int">Voice-First Administrative Assistant</div>
+    <div class="hero-subtitle-int">Thu hẹp khoảng cách số, hỗ trợ đồng bào tiếp cận dịch vụ công dễ dàng bằng ngôn ngữ bản địa</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -196,11 +184,11 @@ def _audio_b64(duong_dan: str) -> tuple[str, str]:
     return base64.b64encode(p.read_bytes()).decode(), mime
 
 
-_SVG_LOA = ('<svg width="24" height="24" viewBox="0 0 24 24" fill="white">'
+_SVG_LOA = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="white">'
             '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05'
             'c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 '
             '5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>')
-_SVG_DUNG = ('<svg width="22" height="22" viewBox="0 0 24 24" fill="white">'
+_SVG_DUNG = ('<svg width="18" height="18" viewBox="0 0 24 24" fill="white">'
              '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>')
 
 
@@ -214,15 +202,15 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
     tu_phat_js = ("a.play().then(function(){}).catch(function(){"
                   "tt.textContent='Bấm để nghe âm thanh';});") if tu_phat else ""
     _html(f"""
-<div style="display:flex;align-items:center;gap:18px;background:linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);border:1px solid #cbd5e1;border-radius:18px;padding:16px 20px;margin:12px 0;box-shadow:0 4px 15px rgba(0,0,0,0.03);">
+<div style="display:flex;align-items:center;gap:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:14px 20px;margin:12px 0;">
   <button id="b" aria-label="Nghe" style="
-      width:52px;height:52px;min-width:52px;border-radius:50%;border:none;
-      background:linear-gradient(135deg, #4f46e5 0%, #312e81 100%);cursor:pointer;display:flex;align-items:center;
-      justify-content:center;box-shadow:0 6px 18px rgba(79,70,229,0.35);
+      width:46px;height:46px;min-width:46px;border-radius:50%;border:none;
+      background:#2563eb;cursor:pointer;display:flex;align-items:center;
+      justify-content:center;box-shadow:0 4px 12px rgba(37,99,235,0.25);
       transition:all 0.2s;"></button>
   <div style="flex-grow:1;">
-    <div style="font-size:16px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">{nhan}</div>
-    <div id="tt" style="font-size:13px;color:#64748b;margin-top:2px;">Sẵn sàng phát âm thanh</div>
+    <div style="font-size:15px;font-weight:600;color:#0f172a;">{nhan}</div>
+    <div id="tt" style="font-size:13px;color:#64748b;margin-top:2px;">Sẵn sàng phát</div>
   </div>
   <audio id="a" src="data:{mime};base64,{b64}" preload="auto"></audio>
 </div>
@@ -234,7 +222,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
   function ve(dangPhat){{ b.innerHTML = dangPhat ? DUNG : LOA; }}
   ve(false);
   b.onclick=function(){{ if(a.paused){{a.play();}} else {{a.pause();}} }};
-  b.onmousedown=function(){{ b.style.transform='scale(0.92)'; }};
+  b.onmousedown=function(){{ b.style.transform='scale(0.95)'; }};
   b.onmouseup=function(){{ b.style.transform='scale(1)'; }};
   a.onplay =function(){{ ve(true);  tt.textContent='Đang phát âm thanh...'; }};
   a.onpause=function(){{ ve(false); tt.textContent='Đã tạm dừng'; }};
@@ -242,7 +230,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
   {tu_phat_js}
 }})();
 </script>
-""", height=92)
+""", height=82)
     return True
 
 
@@ -258,11 +246,11 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
     t0 = time.perf_counter()
     kq: dict = {"cau_noi": cau_noi, "thoi_gian": {}}
 
-    with st.status("Đang phân tích yêu cầu bằng AI...", expanded=False) as box:
+    with st.status("Đang phân tích hệ thống AI...", expanded=False) as box:
         try:
             tuyen = _dinh_tuyen(cau_noi)
         except Exception as e:
-            kq["loi"] = "Hệ thống đang bận, vui lòng thử lại sau giây lát."
+            kq["loi"] = "Hệ thống đang bận, vui lòng thử lại sau."
             box.update(label="Lỗi kết nối", state="error", expanded=False)
             return kq
 
@@ -271,7 +259,7 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
         kq["thu_tuc"] = tt
 
         if tuyen["can_can_bo"] or tt is None:
-            box.update(label="Cần hỗ trợ từ cán bộ", state="complete", expanded=False)
+            box.update(label="Cần hỗ trợ từ chuyên viên", state="complete", expanded=False)
             return kq
 
         try:
@@ -291,10 +279,10 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
                 kq["audio_mong"] = str(audio) if audio else ""
                 kq["tang_tts"] = tang
             except Exception:
-                kq["canh_bao"] = "Sử dụng âm thanh tiếng Việt dự phòng."
+                kq["canh_bao"] = "Sử dụng âm thanh dự phòng."
 
         kq["thoi_gian"]["tong"] = time.perf_counter() - t0
-        box.update(label="Tra cứu thành công", state="complete", expanded=False)
+        box.update(label="Hoàn tất xử lý", state="complete", expanded=False)
     return kq
 
 
@@ -305,8 +293,8 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Lựa chọn ngôn ngữ sang trọng, nổi bật
-LUA_CHON = ["🔊 Tiếng Mông (Hmoob)", "🔊 Tiếng Việt"]
+# Lựa chọn ngôn ngữ chuẩn mực, thiết kế phẳng hiện đại
+LUA_CHON = ["🌐 Tiếng Mông (Hmoob)", "🇻🇳 Tiếng Việt"]
 ngon_ngu = st.segmented_control(
     "Chọn ngôn ngữ", LUA_CHON,
     default=LUA_CHON[0], label_visibility="collapsed"
@@ -316,8 +304,8 @@ la_tieng_mong = ngon_ngu.endswith("Hmoob)")
 ss.la_tieng_mong = la_tieng_mong
 
 st.markdown(
-    '<div style="text-align:center;font-size:18px;font-weight:700;'
-    'color:#1e293b;margin:28px 0 14px 0;">🎙️ Bấm vào biểu tượng micro bên dưới và nói yêu cầu của bạn</div>',
+    '<div style="text-align:center;font-size:16px;font-weight:500;'
+    'color:#475569;margin:24px 0 14px 0;">🎙️ Bấm vào micro để bắt đầu nói yêu cầu của bạn</div>',
     unsafe_allow_html=True,
 )
 
@@ -328,11 +316,11 @@ if audio_in is not None:
     van_tay = hashlib.sha256(raw).hexdigest()[:16]
     if van_tay != ss.audio_da_xu_ly and len(raw) > 2000:
         ss.audio_da_xu_ly = van_tay
-        with st.spinner("Đang lắng nghe và nhận diện giọng nói..."):
+        with st.spinner("Đang nhận diện giọng nói..."):
             van_ban, _ = nghe(audio_in, tieng_mong=la_tieng_mong)
         if not van_ban:
-            st.error("Chưa nghe rõ giọng nói, vui lòng bấm và nói lại rõ hơn.")
-            loa("Chưa nghe rõ giọng nói, vui lòng bấm và nói lại rõ hơn.", tu_phat=True)
+            st.error("Không nghe rõ giọng nói, vui lòng thử lại.")
+            loa("Không nghe rõ giọng nói, vui lòng thử lại.", tu_phat=True)
         else:
             if la_tieng_mong:
                 dong_vi = [l for l in van_ban.splitlines() if l.startswith("VI:")]
@@ -343,7 +331,7 @@ if audio_in is not None:
 
 def nut_goi_can_bo(kq: dict) -> None:
     st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("🙋 KẾT NỐI TRỰC TIẾP VỚI CÁN BỘ XÃ HỖ TRỢ", use_container_width=True):
+    if st.button("🤝 YÊU CẦU CHUYÊN VIÊN HỖ TRỢ TRỰC TIẾP", use_container_width=True):
         tt = kq.get("thu_tuc")
         ss.danh_sach_yeu_cau.append({
             "thoi_gian": datetime.now().strftime("%H:%M - %d/%m"),
@@ -351,7 +339,7 @@ def nut_goi_can_bo(kq: dict) -> None:
             "chi_tiet": kq["cau_noi"],
             "trang_thai": "Chờ xử lý",
         })
-        st.success("Đã gửi yêu cầu thành công. Cán bộ sẽ liên hệ hỗ trợ bà con ngay.")
+        st.success("Đã gửi yêu cầu thành công tới bộ phận chuyên môn.")
 
 
 def hien_ket_qua(kq: dict) -> None:
@@ -363,8 +351,8 @@ def hien_ket_qua(kq: dict) -> None:
     tuyen, tt = kq["tuyen"], kq.get("thu_tuc")
 
     if tuyen["can_can_bo"] or tt is None:
-        cau_hoi = tuyen.get("cau_hoi_lam_ro") or "Vui lòng mô tả chi tiết hơn thủ tục bà con muốn thực hiện."
-        st.warning(f"❓ {cau_hoi}")
+        cau_hoi = tuyen.get("cau_hoi_lam_ro") or "Vui lòng cung cấp thêm thông tin chi tiết."
+        st.warning(f"💡 {cau_hoi}")
         loa(cau_hoi, tu_phat=True)
         nut_goi_can_bo(kq)
         return
@@ -372,23 +360,23 @@ def hien_ket_qua(kq: dict) -> None:
     dg = kq["don_gian"]
     
     st.markdown(f"""
-    <div class="result-card-cine">
-        <div style="font-size:22px;font-weight:800;color:#1e1b4b;margin-bottom:14px;letter-spacing:-0.4px;">
-            🏷️ {tt.ten}
+    <div class="result-card-clean">
+        <div style="font-size:20px;font-weight:700;color:#0f172a;margin-bottom:12px;">
+            📋 {tt.ten}
         </div>
-        <div style="font-size:17px;color:#334155;line-height:1.7;margin-bottom:22px;font-weight:500;">
+        <div style="font-size:16px;color:#334155;line-height:1.6;margin-bottom:20px;">
             {dg.get('tom_tat_1_cau','')}
         </div>
-        <div style="margin-bottom:18px;">
-            <span class="pill-tag">📍 <b>Nơi làm:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
-            <span class="pill-tag">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
-            <span class="pill-tag">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
+        <div>
+            <span class="meta-chip">📍 <b>Địa điểm:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
+            <span class="meta-chip">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
+            <span class="meta-chip">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
         </div>
     """, unsafe_allow_html=True)
 
     bb = [m for m in dg.get("mang_gi", []) if m.get("bat_buoc")]
     if bb:
-        st.markdown("**🎒 Giấy tờ bắt buộc mang theo:**")
+        st.markdown("**📂 Giấy tờ cần chuẩn bị:**")
         for m in bb:
             sl = f" ({m['so_luong']})" if m.get("so_luong") else ""
             st.markdown(f"- {m['ten_don_gian']}{sl}")
@@ -403,9 +391,9 @@ def hien_ket_qua(kq: dict) -> None:
         nut_loa(kq["audio_viet"], nhan="Nghe hướng dẫn bằng tiếng Việt", tu_phat=not uu_tien_mong)
 
     if auth.nguoi_dang_nhap():
-        with st.expander("⚙️ Thông số hệ thống chuyên sâu (Cán bộ xem)"):
-            st.metric("Độ tin cậy xử lý", f"{dg.get('do_tin_cay', 0):.0%}")
-            st.caption(f"Mã thủ tục: {tt.ma_thu_tuc}")
+        with st.expander("⚙️ Thông số hệ thống"):
+            st.metric("Confidence Score", f"{dg.get('do_tin_cay', 0):.0%}")
+            st.caption(f"Procedure Code: {tt.ma_thu_tuc}")
 
     nut_goi_can_bo(kq)
 
@@ -414,30 +402,30 @@ if ss.ket_qua:
     st.write("---")
     hien_ket_qua(ss.ket_qua)
 
-# Phần thay thế trực quan ở cuối trang
-with st.expander("⌨️ Phương án thay thế: Gõ chữ hoặc chọn danh mục nhanh"):
-    t_go, t_chon = st.tabs(["Gõ câu hỏi trực tiếp", "Chọn từ danh sách thủ tục"])
+# Khu vực tương tác thay thế được sắp xếp gọn gàng
+with st.expander("⌨️ Tùy chọn khác: Nhập văn bản hoặc chọn danh mục"):
+    t_go, t_chon = st.tabs(["Nhập câu hỏi", "Chọn từ danh mục"])
     with t_go:
-        txt = st.text_input("Nhập nội dung cần tìm:", label_visibility="collapsed", placeholder="Ví dụ: Đăng ký kết hôn cần giấy tờ gì...")
-        if st.button("Tra cứu ngay", type="primary") and txt.strip():
+        txt = st.text_input("Nhập yêu cầu:", label_visibility="collapsed", placeholder="Ví dụ: Đăng ký kết hôn cần giấy tờ gì...")
+        if st.button("Tra cứu dữ liệu", type="primary") and txt.strip():
             xu_ly_cau_noi(txt.strip())
             st.rerun()
     with t_chon:
-        nhom_chon = st.selectbox("Chọn lĩnh vực hành chính:", list(DANH_MUC_THU_TUC.keys()), format_func=lambda k: DANH_MUC_THU_TUC[k])
+        nhom_chon = st.selectbox("Lĩnh vực:", list(DANH_MUC_THU_TUC.keys()), format_func=lambda k: DANH_MUC_THU_TUC[k])
         ds = kb.theo_nhom(nhom_chon)
         if ds:
-            tt_chon = st.selectbox("Chọn thủ tục cụ thể:", ds, format_func=lambda t: t.ten)
-            if st.button("Xem hướng dẫn chi tiết", type="primary"):
+            tt_chon = st.selectbox("Thủ tục:", ds, format_func=lambda t: t.ten)
+            if st.button("Xem chi tiết", type="primary"):
                 xu_ly_cau_noi(tt_chon.ten)
                 st.rerun()
 
 if auth.nguoi_dang_nhap():
     with st.sidebar:
         st.divider()
-        st.markdown("### Quản trị viên")
+        st.markdown("### Admin Panel")
         tk = kb.thong_ke()
-        st.metric("Tổng số thủ tục", tk["so_thu_tuc"])
+        st.metric("Total Procedures", tk["so_thu_tuc"])
         if ss.danh_sach_yeu_cau:
-            st.markdown("### Yêu cầu hỗ trợ mới")
+            st.markdown("### Recent Requests")
             for p in ss.danh_sach_yeu_cau[-3:]:
                 st.caption(f"{p['thoi_gian']} — {p['van_de']}")
