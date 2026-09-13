@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin bản làng — Trợ lý giọng nói tiếng Mông & Tiếng Việt (Bản chuẩn bản sắc vùng cao)."""
+"""Cổng thông tin bản làng — Trợ lý giọng nói tiếng Mông & Tiếng Việt (Bản thiết kế độc đáo, đậm bản sắc)."""
 from __future__ import annotations
 
 import base64
@@ -33,7 +33,7 @@ st.markdown("""
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
         color: #1e293b;
-        background-color: #f8fafc;
+        background-color: #f1f5f9;
     }
     .block-container {
         padding-top: 2rem;
@@ -41,15 +41,16 @@ st.markdown("""
         max-width: 860px;
     }
 
-    /* Banner mang đậm bản sắc vùng cao, ấm áp tình làng nghĩa xóm */
-    .village-header {
-        background: linear-gradient(135deg, #1e3a8a 0%, #312e81 100%);
+    /* Banner chính đậm chất văn hóa vùng cao */
+    .village-hero {
+        background: linear-gradient(135deg, #0f172a 1e3a8a 100%);
+        background-image: linear-gradient(135deg, #1e3a8a 0%, #1e293b 100%);
         color: white;
-        padding: 28px 20px;
-        border-radius: 24px;
+        padding: 32px 24px;
+        border-radius: 28px;
         text-align: center;
-        margin-bottom: 24px;
-        box-shadow: 0 12px 30px -5px rgba(30, 58, 138, 0.25);
+        margin-bottom: 28px;
+        box-shadow: 0 15px 35px -5px rgba(30, 58, 138, 0.3);
         border: 2px solid #3b82f6;
     }
     .village-badge {
@@ -58,70 +59,86 @@ st.markdown("""
         color: #ffffff;
         font-weight: 800;
         font-size: 11px;
-        padding: 5px 16px;
+        padding: 6px 16px;
         border-radius: 20px;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 10px;
-        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        letter-spacing: 1.2px;
+        margin-bottom: 12px;
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
     }
-    .village-title {
-        font-size: 26px;
+    .village-main-title {
+        font-size: 28px;
         font-weight: 800;
-        margin-bottom: 6px;
-        letter-spacing: -0.3px;
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
     }
-    .village-desc {
-        font-size: 14px;
-        color: #cbd5e1;
+    .village-main-desc {
+        font-size: 15px;
+        color: #e2e8f0;
         font-weight: 500;
     }
 
-    /* Khối trung tâm micro đặt giữa màn hình, trực quan và ấn tượng */
-    .central-voice-box {
+    /* Khối Micro trung tâm độc đáo, hiệu ứng ánh sáng nổi bật */
+    .mic-focal-card {
         background: #ffffff;
         border: 3px solid #f59e0b;
-        border-radius: 32px;
-        padding: 36px 28px;
-        box-shadow: 0 20px 50px rgba(245, 158, 11, 0.2);
-        margin-bottom: 28px;
+        border-radius: 36px;
+        padding: 40px 32px;
+        box-shadow: 0 25px 60px -10px rgba(245, 158, 11, 0.25);
+        margin-bottom: 32px;
         text-align: center;
         position: relative;
+        background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%);
+    }
+    .mic-focal-card::before {
+        content: "✨";
+        position: absolute;
+        top: 20px;
+        left: 28px;
+        font-size: 20px;
+    }
+    .mic-focal-card::after {
+        content: "✨";
+        position: absolute;
+        top: 20px;
+        right: 28px;
+        font-size: 20px;
     }
 
-    .result-box {
+    /* Khối kết quả tra cứu tinh tế */
+    .result-card {
         background: #ffffff;
         border: 2px solid #cbd5e1;
-        border-radius: 24px;
-        padding: 32px;
-        box-shadow: 0 10px 30px -8px rgba(0,0,0,0.06);
-        margin-top: 20px;
+        border-radius: 26px;
+        padding: 36px;
+        box-shadow: 0 12px 35px -8px rgba(0,0,0,0.08);
+        margin-top: 24px;
     }
-    .meta-tag {
+    .info-tag {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        background: #f1f5f9;
+        gap: 8px;
+        background: #f8fafc;
         padding: 8px 16px;
         border-radius: 14px;
         font-size: 13px;
         font-weight: 700;
         color: #1e3a8a;
         margin-right: 8px;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
         border: 1px solid #94a3b8;
     }
 
     .stButton > button {
         border-radius: 14px;
         font-weight: 700;
-        padding: 0.75rem 1.5rem;
+        padding: 0.8rem 1.6rem;
         transition: all 0.2s ease;
         border: none;
     }
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -185,7 +202,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
     tu_phat_js = ("a.play().then(function(){}).catch(function(){"
                   "tt.textContent='Chạm để nghe lại âm thanh';});") if tu_phat else ""
     _html(f"""
-<div style="display:flex;align-items:center;gap:14px;background:#ffffff;border:2px solid #2563eb;border-radius:18px;padding:14px 20px;margin:12px 0;box-shadow:0 4px 15px rgba(37,99,235,0.12);">
+<div style="display:flex;align-items:center;gap:14px;background:#ffffff;border:2px solid #2563eb;border-radius:18px;padding:14px 20px;margin:14px 0;box-shadow:0 4px 15px rgba(37,99,235,0.12);">
   <button id="b" aria-label="Nghe" style="
       width:48px;height:48px;min-width:48px;border-radius:50%;border:none;
       background:linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);cursor:pointer;display:flex;align-items:center;
@@ -278,25 +295,24 @@ def xu_ly_cau_noi(van_ban: str) -> None:
 
 # Tiêu đề trang trang trọng, đậm đà bản sắc
 st.markdown("""
-<div class="village-header">
+<div class="village-hero">
     <div class="village-badge">🏛️ Cổng Thông Tin Bản Làng Vùng Cao</div>
-    <div class="village-title">Luật Gần Bà Con — Nói Là Hiểu, Hỏi Là Biết</div>
-    <div class="village-desc">Việc làng, việc nước, giấy tờ thủ tục — Bà con cứ thủ thỉ để hệ thống giúp tận tình!</div>
+    <div class="village-main-title">Luật Gần Bà Con — Nói Là Hiểu, Hỏi Là Biết</div>
+    <div class="village-main-desc">Việc làng, việc nước, giấy tờ thủ tục — Bà con cứ thủ thỉ để hệ thống giúp tận tình!</div>
 </div>
 """, unsafe_allow_html=True)
 
-# KHỐI TRUNG TÂM TUYỆT ĐỐI: MICRO ĐẶT Ở GIỮA, RÕ RÀNG VÀ GẦN GŨI
+# KHỐI MICRO ĐẶT Ở GIỮA TRUNG TÂM VỚI THIẾT KẾ ĐỘC ĐÁO, SANG TRỌNG VÀ GẦN GŨI
 st.markdown("""
-<div class="central-voice-box">
-    <div style="font-size: 20px; font-weight: 800; color: #1e3a8a; margin-bottom: 6px;">
+<div class="mic-focal-card">
+    <div style="font-size: 21px; font-weight: 800; color: #1e3a8a; margin-bottom: 8px;">
         🎙️ BÀ CON MUỐN LÀM GIẤY TỜ GÌ, CỨ BẤM MICRO RỒI NÓI NHÉ!
     </div>
-    <div style="font-size: 13px; color: #64748b; margin-bottom: 22px; font-weight: 500;">
-        Hệ thống luôn lắng nghe bằng cả tiếng Mông và tiếng Việt để phục vụ bà con
+    <div style="font-size: 14px; color: #475569; margin-bottom: 24px; font-weight: 500;">
+        Hệ thống luôn lắng nghe bằng cả tiếng Mông và tiếng Việt để phục vụ bà con tận tâm nhất
     </div>
 """, unsafe_allow_html=True)
 
-# Sắp xếp bố cục cân đối bên trong khối trung tâm
 col_lang, col_mic = st.columns([1, 1.3], gap="large")
 
 with col_lang:
@@ -343,7 +359,7 @@ def nut_goi_can_bo(kq: dict) -> None:
             "chi_tiet": kq["cau_noi"],
             "trang_thai": "Chờ xử lý",
         })
-        st.success("Đã gửi gắm thành công! Cán bộ xã sẽ liên hệ trực tiếp hỗ trợ bà con ngay nhà nhé.")
+        st.success("Đã gửi gắm thành công! Cán bộ xã sẽ liên hệ trực tiếp hỗ trợ bà con ngay nhé.")
 
 
 def hien_ket_qua(kq: dict) -> None:
@@ -364,7 +380,7 @@ def hien_ket_qua(kq: dict) -> None:
     dg = kq["don_gian"]
     
     st.markdown(f"""
-    <div class="result-box">
+    <div class="result-card">
         <div style="font-size: 22px; font-weight: 800; color: #1e3a8a; margin-bottom: 12px; letter-spacing: -0.3px;">
             📋 {tt.ten}
         </div>
@@ -372,9 +388,9 @@ def hien_ket_qua(kq: dict) -> None:
             {dg.get('tom_tat_1_cau','')}
         </div>
         <div>
-            <span class="meta-tag">📍 <b>Đến làm tại:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
-            <span class="meta-tag">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
-            <span class="meta-tag">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
+            <span class="info-tag">📍 <b>Đến làm tại:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
+            <span class="info-tag">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
+            <span class="info-tag">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
         </div>
     """, unsafe_allow_html=True)
 
