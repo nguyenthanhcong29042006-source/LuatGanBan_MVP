@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giao diện ấm cúng, sang trọng và đậm chất bản làng."""
+"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giao diện chuẩn mực, trang trọng, lịch sự và thân thiện."""
 from __future__ import annotations
 
 import base64
@@ -45,7 +45,7 @@ st.markdown("""
         max-width: 860px;
     }
 
-    /* Tiêu đề cao cấp, ấm áp mang hơi thở núi rừng */
+    /* Tiêu đề trang trọng, lịch sự */
     .village-header {
         background: linear-gradient(135deg, #1b4d3e 0%, #113227 60%, #0d251d 100%);
         color: white;
@@ -72,7 +72,7 @@ st.markdown("""
         pointer-events: none;
     }
 
-    /* Trạm tương tác giọng nói tinh tế, mộc mạc, gần gũi */
+    /* Trạm tương tác giọng nói trang trọng */
     .village-voice-box {
         background: #ffffff;
         border: 1px solid #e2dbcc;
@@ -92,7 +92,7 @@ st.markdown("""
         background: linear-gradient(90deg, #d97706, #16a34a, #0284c7, #9333ea);
     }
 
-    /* Thẻ kết quả sắc nét, sang trọng như lời căn dặn chân tình */
+    /* Thẻ kết quả sắc nét, chuẩn mực */
     .village-result-card {
         background: #ffffff;
         border: 1px solid #e2dbcc;
@@ -137,7 +137,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 if not kb.load_kb():
-    st.error("**Kho dữ liệu trống.** Hãy khởi tạo cơ sở tri thức dịch vụ công.")
+    st.error("**Kho dữ liệu trống.** Vui lòng khởi tạo cơ sở tri thức dịch vụ công.")
     st.stop()
 
 
@@ -193,7 +193,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
         return False
 
     tu_phat_js = ("a.play().then(function(){}).catch(function(){"
-                  "tt.textContent='Chạm để nghe lại ạ';});") if tu_phat else ""
+                  "tt.textContent='Chạm để phát lại âm thanh';});") if tu_phat else ""
     _html(f"""
 <div style="display:flex;align-items:center;gap:16px;background:#fef3c7;border:1px solid #fde68a;border-radius:16px;padding:14px 20px;margin:14px 0;box-shadow: 0 4px 12px rgba(180, 83, 9, 0.05);">
   <button id="b" aria-label="Nghe" style="
@@ -203,7 +203,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
       transition:all 0.2s;"></button>
   <div style="flex-grow:1;">
     <div style="font-size:14px;font-weight:700;color:#92400e;">{nhan}</div>
-    <div id="tt" style="font-size:12px;color:#b45309;margin-top:2px;font-weight:600;">Chạm vào đây để nghe trợ lý đọc nhé</div>
+    <div id="tt" style="font-size:12px;color:#b45309;margin-top:2px;font-weight:600;">Chọn để nghe hệ thống đọc hướng dẫn</div>
   </div>
   <audio id="a" src="data:{mime};base64,{b64}" preload="auto"></audio>
 </div>
@@ -217,9 +217,9 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
   b.onclick=function(){{ if(a.paused){{a.play();}} else {{a.pause();}} }};
   b.onmousedown=function(){{ b.style.transform='scale(0.94)'; }};
   b.onmouseup=function(){{ b.style.transform='scale(1)'; }};
-  a.onplay =function(){{ ve(true);  tt.textContent='Đang đọc cho bà con nghe...'; }};
-  a.onpause=function(){{ ve(false); tt.textContent='Đã tạm dừng đọc'; }};
-  a.onended=function(){{ ve(false); tt.textContent='Nghe lại từ đầu'; }};
+  a.onplay =function(){{ ve(true);  tt.textContent='Đang phát âm thanh hướng dẫn...'; }};
+  a.onpause=function(){{ ve(false); tt.textContent='Đã tạm dừng'; }};
+  a.onended=function(){{ ve(false); tt.textContent='Phát lại từ đầu'; }};
   {tu_phat_js}
 }})();
 </script>
@@ -239,11 +239,11 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
     t0 = time.perf_counter()
     kq: dict = {"cau_noi": cau_noi, "thoi_gian": {}}
 
-    with st.status("Trợ lý đang ngâm cứu xem việc này thế nào nhé...", expanded=False) as box:
+    with st.status("Hệ thống đang xử lý yêu cầu tra cứu...", expanded=False) as box:
         try:
             tuyen = _dinh_tuyen(cau_noi)
         except Exception:
-            kq["loi"] = "Mạng bên mình chập chờn quá, bà con đợi xíu rồi thử lại giúp trợ lý nha!"
+            kq["loi"] = "Đường truyền kết nối gặp sự cố. Vui lòng thử lại sau."
             box.update(label="Lỗi kết nối", state="error", expanded=False)
             return kq
 
@@ -252,13 +252,13 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
         kq["thu_tuc"] = tt
 
         if tuyen["can_can_bo"] or tt is None:
-            box.update(label="Cần cán bộ bản hỗ trợ trực tiếp", state="complete", expanded=False)
+            box.update(label="Cần sự hỗ trợ trực tiếp từ cán bộ chuyên môn", state="complete", expanded=False)
             return kq
 
         try:
             kq["don_gian"] = _don_gian_hoa(tt.key, CAU_HOI_MAC_DINH)
         except Exception:
-            kq["loi"] = "Trợ lý chưa gom đủ thông tin thủ tục này rồi ạ."
+            kq["loi"] = "Không thể tải thông tin chi tiết thủ tục."
             box.update(label="Lỗi dữ liệu", state="error", expanded=False)
             return kq
 
@@ -275,7 +275,7 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
                 kq["canh_bao"] = "Sử dụng âm thanh dự phòng."
 
         kq["thoi_gian"]["tong"] = time.perf_counter() - t0
-        box.update(label="Xong rồi đây ạ, xem ngay bên dưới nha bà con!", state="complete", expanded=False)
+        box.update(label="Đã hoàn tất tra cứu thông tin thủ tục", state="complete", expanded=False)
     return kq
 
 
@@ -286,24 +286,24 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Tiêu đề giao diện với văn phong gần gũi, thân thiện đậm chất nhà mình
+# Tiêu đề giao diện chuẩn mực, trang trọng và lịch sự
 st.markdown("""
 <div class="village-header">
     <div>
-        <div style="font-size: 22px; font-weight: 800; letter-spacing: -0.3px; color: #ffffff;">TRỢ LÝ BẢN LÀNG — DỊCH VỤ CÔNG</div>
-        <div style="font-size: 13px; font-weight: 500; color: #d1fae5; margin-top: 4px;">Chuyện bản mình cứ để trợ lý lo nha bà con, việc gì khó cứ thưa!</div>
+        <div style="font-size: 22px; font-weight: 800; letter-spacing: -0.3px; color: #ffffff;">CỔNG THÔNG TIN DỊCH VỤ CÔNG TRỰC TUYẾN</div>
+        <div style="font-size: 13px; font-weight: 500; color: #d1fae5; margin-top: 4px;">Hệ thống hỗ trợ tra cứu thủ tục hành chính nhanh chóng, chính xác và thuận tiện</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Trạm tương tác giọng nói với lời văn tự nhiên, mộc mạc như người nhà
+# Trạm tương tác giọng nói với ngôn ngữ lịch sự, chuẩn mực
 st.markdown("""
 <div class="village-voice-box">
     <div style="font-size: 20px; font-weight: 800; color: #b45309; margin-bottom: 6px; letter-spacing: -0.2px;">
-        ☕ Trợ lý đang ở đây nè, bà con cứ thong thả nói nha!
+        Hệ thống Tra cứu Thủ tục Hành chính Bằng Giọng nói
     </div>
     <div style="font-size: 13px; color: #57534e; font-weight: 500; margin-bottom: 20px;">
-        Chọn tiếng nói quen thuộc của mình bên dưới, rồi bấm vào micro để thủ thỉ với trợ lý nhé!
+        Vui lòng chọn ngôn ngữ tra cứu và sử dụng micro để trình bày nội dung cần hỗ trợ.
     </div>
 """, unsafe_allow_html=True)
 
@@ -324,22 +324,22 @@ if audio_in is not None:
     van_tay = hashlib.sha256(raw).hexdigest()[:16]
     if van_tay != ss.audio_da_xu_ly and len(raw) > 2000:
         ss.audio_da_xu_ly = van_tay
-        with st.spinner("Trợ lý đang lắng nghe bà con nói..."):
+        with st.spinner("Hệ thống đang xử lý âm thanh..."):
             van_ban, _ = nghe(audio_in, tieng_mong=la_tieng_mong)
         if not van_ban:
-            st.error("Trợ lý nghe chưa rõ lắm đâu ạ. Bà con bấm lại rồi nói to, rõ hơn một chút giúp trợ lý nha!")
-            loa("Trợ lý nghe chưa rõ lắm đâu ạ. Bà con bấm lại rồi nói to, rõ hơn một chút giúp trợ lý nha!", tu_phat=True)
+            st.error("Hệ thống chưa nhận diện rõ âm thanh. Vui lòng ghi âm lại và nói rõ hơn.")
+            loa("Hệ thống chưa nhận diện rõ âm thanh. Vui lòng ghi âm lại và nói rõ hơn.", tu_phat=True)
         else:
             if la_tieng_mong:
                 dong_vi = [l for l in van_ban.splitlines() if l.startswith("VI:")]
                 van_ban = (dong_vi[0][3:].strip() if dong_vi else dich_sang_viet(van_ban))
-            st.success(f"Trợ lý nghe được thế này nè: *{van_ban}*")
+            st.success(f"Hệ thống đã ghi nhận nội dung: *{van_ban}*")
             xu_ly_cau_noi(van_ban)
 
 
 def nut_goi_can_bo(kq: dict) -> None:
     st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("🤝 NHỜ CÁN BỘ XÃ XUỐNG HƯỚNG DẪN TRỰC TIẾP", use_container_width=True):
+    if st.button("🤝 GỬI YÊU CẦU HỖ TRỢ ĐẾN CÁN BỘ CHUYÊN MÔN", use_container_width=True):
         tt = kq.get("thu_tuc")
         ss.danh_sach_yeu_cau.append({
             "thoi_gian": datetime.now().strftime("%H:%M - %d/%m"),
@@ -347,7 +347,7 @@ def nut_goi_can_bo(kq: dict) -> None:
             "chi_tiet": kq["cau_noi"],
             "trang_thai": "Chờ xử lý",
         })
-        st.success("Đã nhắn cán bộ xã rồi bà con nhé! Sẽ có người đến tận nơi hỗ trợ nhiệt tình ạ.")
+        st.success("Yêu cầu hỗ trợ đã được gửi thành công. Cán bộ chuyên môn sẽ liên hệ trong thời gian sớm nhất.")
 
 
 def hien_ket_qua(kq: dict) -> None:
@@ -359,7 +359,7 @@ def hien_ket_qua(kq: dict) -> None:
     tuyen, tt = kq["tuyen"], kq.get("thu_tuc")
 
     if tuyen["can_can_bo"] or tt is None:
-        cau_hoi = tuyen.get("cau_hoi_lam_ro") or "Bà con cho trợ lý hỏi kỹ hơn xíu nữa để tìm đúng việc cần làm nha."
+        cau_hoi = tuyen.get("cau_hoi_lam_ro") or "Vui lòng cung cấp thêm thông tin chi tiết để hệ thống xác định chính xác thủ tục cần tra cứu."
         st.warning(f"💡 {cau_hoi}")
         loa(cau_hoi, tu_phat=True)
         nut_goi_can_bo(kq)
@@ -376,15 +376,15 @@ def hien_ket_qua(kq: dict) -> None:
             {dg.get('tom_tat_1_cau','')}
         </div>
         <div>
-            <span class="village-pill">📍 <b>Nơi làm:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
-            <span class="village-pill">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
+            <span class="village-pill">📍 <b>Nơi thực hiện:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
+            <span class="village-pill">⏱️ <b>Thời gian giải quyết:</b> {dg.get('bao_lau','—')}</span>
             <span class="village-pill">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
         </div>
     """, unsafe_allow_html=True)
 
     bb = [m for m in dg.get("mang_gi", []) if m.get("bat_buoc")]
     if bb:
-        st.markdown("<div style='margin-top: 18px; font-size: 15px; font-weight: 800; color: #92400e;'>🎒 Những giấy tờ bà con nhớ mang theo:</div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 18px; font-size: 15px; font-weight: 800; color: #92400e;'>🎒 Hồ sơ, giấy tờ cần chuẩn bị:</div>", unsafe_allow_html=True)
         for m in bb:
             sl = f" ({m['so_luong']})" if m.get("so_luong") else ""
             st.markdown(f"- {m['ten_don_gian']}{sl}")
@@ -393,10 +393,10 @@ def hien_ket_qua(kq: dict) -> None:
 
     uu_tien_mong = bool(kq.get("la_tieng_mong", True)) and bool(kq.get("audio_mong"))
     if kq.get("audio_mong"):
-        nut_loa(kq["audio_mong"], nhan="🔊 Nghe trợ lý đọc bằng Tiếng Mông (Hmoob)", tu_phat=uu_tien_mong)
+        nut_loa(kq["audio_mong"], nhan="🔊 Nghe hướng dẫn bằng Tiếng Mông (Hmoob)", tu_phat=uu_tien_mong)
 
     if kq.get("audio_viet"):
-        nut_loa(kq["audio_viet"], nhan="🔊 Nghe trợ lý đọc bằng Tiếng Việt", tu_phat=not uu_tien_mong)
+        nut_loa(kq["audio_viet"], nhan="🔊 Nghe hướng dẫn bằng Tiếng Việt", tu_phat=not uu_tien_mong)
 
     nut_goi_can_bo(kq)
 
@@ -405,11 +405,11 @@ if ss.ket_qua:
     hien_ket_qua(ss.ket_qua)
 
 st.markdown("<br>", unsafe_allow_html=True)
-with st.expander("⌨️ Bàn phím phụ: Tự gõ chữ hoặc chọn nhanh thủ tục"):
-    t_go, t_chon = st.tabs(["Gõ chữ trực tiếp", "Chọn từ danh mục"])
+with st.expander("⌨️ Tra cứu thủ công: Nhập văn bản hoặc chọn từ danh mục"):
+    t_go, t_chon = st.tabs(["Nhập văn bản trực tiếp", "Chọn từ danh mục thủ tục"])
     with t_go:
-        txt = st.text_input("Nhập việc cần tìm:", label_visibility="collapsed", placeholder="Ví dụ: Đăng ký kết hôn cần giấy tờ gì...")
-        if st.button("Tìm ngay", type="primary") and txt.strip():
+        txt = st.text_input("Nhập nội dung cần tìm:", label_visibility="collapsed", placeholder="Ví dụ: Đăng ký kết hôn cần giấy tờ gì...")
+        if st.button("Tra cứu ngay", type="primary") and txt.strip():
             xu_ly_cau_noi(txt.strip())
             st.rerun()
     with t_chon:
@@ -417,7 +417,7 @@ with st.expander("⌨️ Bàn phím phụ: Tự gõ chữ hoặc chọn nhanh th
         ds = kb.theo_nhom(nhom_chon)
         if ds:
             tt_chon = st.selectbox("Chọn thủ tục:", ds, format_func=lambda t: t.ten)
-            if st.button("Xem thủ tục này", type="primary"):
+            if st.button("Xem chi tiết thủ tục", type="primary"):
                 xu_ly_cau_noi(tt_chon.ten)
                 st.rerun()
 
@@ -428,6 +428,6 @@ if auth.nguoi_dang_nhap():
         tk = kb.thong_ke()
         st.metric("Tổng thủ tục", tk["so_thu_tuc"])
         if ss.danh_sach_yeu_cau:
-            st.markdown("### Yêu cầu mới của bà con")
+            st.markdown("### Danh sách yêu cầu hỗ trợ")
             for p in ss.danh_sach_yeu_cau[-3:]:
                 st.caption(f"{p['thoi_gian']} — {p['van_de']}")
