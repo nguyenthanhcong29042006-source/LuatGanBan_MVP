@@ -45,20 +45,18 @@ st.markdown("""
         max-width: 840px;
     }
 
-    /* Header hiện đại phong cách SaaS */
     .saas-header {
         background: #ffffff;
         border: 1px solid #e2e8f0;
         border-radius: 24px;
-        padding: 20px 28px;
+        padding: 24px 32px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        margin-bottom: 24px;
-        box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.05);
+        gap: 16px;
+        margin-bottom: 28px;
+        box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.04);
     }
 
-    /* Trạm Micro tương tác trung tâm */
     .saas-voice-box {
         background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
         border: 1px solid #cbd5e1;
@@ -69,7 +67,6 @@ st.markdown("""
         text-align: center;
     }
 
-    /* Thẻ hiển thị kết quả */
     .saas-result-card {
         background: #ffffff;
         border: 1px solid #e2e8f0;
@@ -258,18 +255,13 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Header tinh tế
+# Header tinh tế, cân đối, đã xóa bỏ nhãn không cần thiết
 st.markdown("""
 <div class="saas-header">
-    <div style="display: flex; align-items: center; gap: 12px;">
-        <span style="font-size: 26px;">🏔️</span>
-        <div>
-            <div style="font-size: 18px; font-weight: 800; color: #0f172a; letter-spacing: -0.3px;">Cổng Thông Tin Bản Làng</div>
-            <div style="font-size: 12px; font-weight: 600; color: #64748b;">Trợ lý Giọng nói Đa ngôn ngữ Thông minh</div>
-        </div>
-    </div>
-    <div style="font-size: 12px; font-weight: 700; color: #2563eb; background: #eff6ff; padding: 6px 14px; border-radius: 12px; border: 1px solid #bfdbfe;">
-        ✨ UNDP Standard
+    <span style="font-size: 32px;">🏔️</span>
+    <div>
+        <div style="font-size: 20px; font-weight: 800; color: #0f172a; letter-spacing: -0.4px;">Cổng Thông Tin Bản Làng</div>
+        <div style="font-size: 13px; font-weight: 600; color: #64748b; margin-top: 2px;">Trợ lý Giọng nói Đa ngôn ngữ Thông minh</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
