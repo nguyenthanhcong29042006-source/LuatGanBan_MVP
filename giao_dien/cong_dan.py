@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói (Chuẩn quốc tế & Thiết kế cao cấp)."""
+"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói (Chuẩn quốc tế, tối giản & hoàn toàn bằng tiếng Việt)."""
 from __future__ import annotations
 
 import base64
@@ -27,7 +27,7 @@ ss.setdefault("ket_qua", None)
 ss.setdefault("cau_noi", "")
 ss.setdefault("audio_da_xu_ly", "")
 
-# Thiết kế chuẩn quốc tế: Tối giản, không rối mắt, kết hợp hình ảnh nền phong cảnh vùng cao nghệ thuật
+# Thiết kế chuẩn quốc tế: Tối giản, thoáng đãng, kết hợp hình ảnh nền phong cảnh vùng cao tinh tế
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -42,9 +42,9 @@ st.markdown("""
         max-width: 880px;
     }
 
-    /* Hero Banner chuẩn quốc tế kết hợp hình ảnh phong cảnh miền núi ẩn hiện tinh tế */
+    /* Tiêu đề chính phong cách quốc tế kết hợp hình ảnh nền thiên nhiên vùng cao */
     .hero-international {
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 27, 75, 0.92) 100%), 
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.88) 0%, rgba(30, 27, 75, 0.94) 100%), 
                     url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1600&auto=format&fit=crop');
         background-size: cover;
         background-position: center;
@@ -119,7 +119,6 @@ st.markdown("""
         border: 1px solid #e2e8f0;
     }
 
-    /* Tùy chỉnh nút bấm hiện đại */
     .stButton > button {
         border-radius: 12px;
         font-weight: 600;
@@ -134,9 +133,9 @@ st.markdown("""
 </style>
 
 <div class="hero-international">
-    <div class="hero-badge-int">🌐 Global Impact AI Project</div>
-    <div class="hero-title-int">Voice-First Administrative Assistant</div>
-    <div class="hero-subtitle-int">Thu hẹp khoảng cách số, hỗ trợ đồng bào tiếp cận dịch vụ công dễ dàng bằng ngôn ngữ bản địa</div>
+    <div class="hero-badge-int">✨ Dự Án Công Nghệ Vì Cộng Đồng</div>
+    <div class="hero-title-int">Trợ Lý Hành Chính Giọng Nói</div>
+    <div class="hero-subtitle-int">Thu hẹp khoảng cách số, hỗ trợ bà con tiếp cận dịch vụ công dễ dàng bằng ngôn ngữ bản địa</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -246,7 +245,7 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
     t0 = time.perf_counter()
     kq: dict = {"cau_noi": cau_noi, "thoi_gian": {}}
 
-    with st.status("Đang phân tích hệ thống AI...", expanded=False) as box:
+    with st.status("Đang phân tích hệ thống trí tuệ nhân tạo...", expanded=False) as box:
         try:
             tuyen = _dinh_tuyen(cau_noi)
         except Exception as e:
@@ -293,7 +292,7 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Lựa chọn ngôn ngữ chuẩn mực, thiết kế phẳng hiện đại
+# Lựa chọn ngôn ngữ
 LUA_CHON = ["🌐 Tiếng Mông (Hmoob)", "🇻🇳 Tiếng Việt"]
 ngon_ngu = st.segmented_control(
     "Chọn ngôn ngữ", LUA_CHON,
@@ -392,8 +391,8 @@ def hien_ket_qua(kq: dict) -> None:
 
     if auth.nguoi_dang_nhap():
         with st.expander("⚙️ Thông số hệ thống"):
-            st.metric("Confidence Score", f"{dg.get('do_tin_cay', 0):.0%}")
-            st.caption(f"Procedure Code: {tt.ma_thu_tuc}")
+            st.metric("Độ tin cậy", f"{dg.get('do_tin_cay', 0):.0%}")
+            st.caption(f"Mã thủ tục: {tt.ma_thu_tuc}")
 
     nut_goi_can_bo(kq)
 
@@ -402,7 +401,7 @@ if ss.ket_qua:
     st.write("---")
     hien_ket_qua(ss.ket_qua)
 
-# Khu vực tương tác thay thế được sắp xếp gọn gàng
+# Khu vực tương tác thay thế
 with st.expander("⌨️ Tùy chọn khác: Nhập văn bản hoặc chọn danh mục"):
     t_go, t_chon = st.tabs(["Nhập câu hỏi", "Chọn từ danh mục"])
     with t_go:
@@ -422,10 +421,10 @@ with st.expander("⌨️ Tùy chọn khác: Nhập văn bản hoặc chọn danh
 if auth.nguoi_dang_nhap():
     with st.sidebar:
         st.divider()
-        st.markdown("### Admin Panel")
+        st.markdown("### Quản Trị Hệ Thống")
         tk = kb.thong_ke()
-        st.metric("Total Procedures", tk["so_thu_tuc"])
+        st.metric("Tổng Số Thủ Tục", tk["so_thu_tuc"])
         if ss.danh_sach_yeu_cau:
-            st.markdown("### Recent Requests")
+            st.markdown("### Yêu Cầu Gần Đây")
             for p in ss.danh_sach_yeu_cau[-3:]:
                 st.caption(f"{p['thoi_gian']} — {p['van_de']}")
