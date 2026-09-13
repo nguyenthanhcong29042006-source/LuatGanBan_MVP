@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giao diện ấm cúng, thân thuộc như người nhà bản làng."""
+"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giao diện tinh tế, sang trọng và đậm chất bản làng."""
 from __future__ import annotations
 
 import base64
@@ -36,37 +36,50 @@ st.markdown("""
 
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
-        color: #2c221e;
-        background: #fcf9f2;
+        color: #1f2937;
+        background: #fbf9f5;
     }
     .block-container {
-        padding-top: 1.5rem;
-        padding-bottom: 4rem;
-        max-width: 840px;
+        padding-top: 2rem;
+        padding-bottom: 5rem;
+        max-width: 860px;
     }
 
-    /* Tiêu đề ấm áp, gần gũi với sắc xanh núi rừng và màu đất bản làng */
+    /* Tiêu đề cao cấp, ấm áp với hiệu ứng chiều sâu và ánh sáng tinh tế */
     .village-header {
-        background: linear-gradient(135deg, #2e5a44 0%, #1b382a 100%);
+        background: linear-gradient(135deg, #1b4d3e 0%, #113227 60%, #0d251d 100%);
         color: white;
-        border-radius: 22px;
-        padding: 24px 28px;
+        border-radius: 26px;
+        padding: 28px 34px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 22px;
-        box-shadow: 0 10px 25px -6px rgba(46, 90, 68, 0.3);
-        border: 2px solid rgba(255, 255, 255, 0.15);
+        margin-bottom: 24px;
+        box-shadow: 0 16px 36px -10px rgba(27, 77, 62, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        position: relative;
+        overflow: hidden;
+    }
+    .village-header::after {
+        content: '';
+        position: absolute;
+        right: -30px;
+        bottom: -30px;
+        width: 160px;
+        height: 160px;
+        background: radial-gradient(circle, rgba(217, 119, 6, 0.25) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
     }
 
-    /* Trạm tương tác giọng nói thân thương, mộc mạc */
+    /* Trạm tương tác giọng nói hiện đại, mộc mạc và cực kỳ sang trọng */
     .village-voice-box {
         background: #ffffff;
-        border: 2px solid #e6dcc3;
-        border-radius: 26px;
-        padding: 26px 28px;
-        box-shadow: 0 8px 20px -6px rgba(44, 34, 30, 0.06);
-        margin-bottom: 22px;
+        border: 1px solid #e7e2d8;
+        border-radius: 30px;
+        padding: 32px;
+        box-shadow: 0 12px 30px -8px rgba(44, 34, 30, 0.05);
+        margin-bottom: 24px;
         text-align: center;
         position: relative;
         overflow: hidden;
@@ -75,18 +88,19 @@ st.markdown("""
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0;
-        height: 6px;
-        background: linear-gradient(90deg, #d97706, #16a34a, #ca8a04);
+        height: 5px;
+        background: linear-gradient(90deg, #d97706, #16a34a, #0284c7, #9333ea);
     }
 
-    /* Thẻ kết quả rõ ràng, thân thiện như lời căn dặn của người nhà */
+    /* Thẻ kết quả tinh tế, sắc nét như lời căn dặn ân cần của người nhà */
     .village-result-card {
         background: #ffffff;
-        border: 2px solid #e6dcc3;
-        border-radius: 26px;
-        padding: 28px;
-        box-shadow: 0 8px 20px -6px rgba(44, 34, 30, 0.06);
-        margin-top: 22px;
+        border: 1px solid #e7e2d8;
+        border-radius: 30px;
+        padding: 34px;
+        box-shadow: 0 14px 35px -10px rgba(44, 34, 30, 0.06);
+        margin-top: 24px;
+        position: relative;
     }
 
     .village-pill {
@@ -94,8 +108,8 @@ st.markdown("""
         align-items: center;
         gap: 6px;
         background: #fef3c7;
-        padding: 8px 14px;
-        border-radius: 12px;
+        padding: 8px 16px;
+        border-radius: 14px;
         font-size: 13px;
         font-weight: 700;
         color: #92400e;
@@ -105,18 +119,18 @@ st.markdown("""
     }
 
     .stButton > button {
-        border-radius: 14px;
+        border-radius: 16px;
         font-weight: 700;
-        padding: 0.6rem 1.4rem;
-        transition: all 0.2s ease;
+        padding: 0.7rem 1.6rem;
+        transition: all 0.25s ease;
         border: none;
         background: #b45309;
         color: white;
-        box-shadow: 0 4px 12px rgba(180, 83, 9, 0.25);
+        box-shadow: 0 6px 16px rgba(180, 83, 9, 0.25);
     }
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(180, 83, 9, 0.35);
+        box-shadow: 0 10px 22px rgba(180, 83, 9, 0.35);
         background: #92400e;
     }
 </style>
@@ -181,15 +195,15 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
     tu_phat_js = ("a.play().then(function(){}).catch(function(){"
                   "tt.textContent='Chạm để nghe lại ạ';});") if tu_phat else ""
     _html(f"""
-<div style="display:flex;align-items:center;gap:14px;background:#fef3c7;border:1px solid #fde68a;border-radius:14px;padding:12px 18px;margin:12px 0;">
+<div style="display:flex;align-items:center;gap:16px;background:#fef3c7;border:1px solid #fde68a;border-radius:16px;padding:14px 20px;margin:14px 0;box-shadow: 0 4px 12px rgba(180, 83, 9, 0.05);">
   <button id="b" aria-label="Nghe" style="
-      width:42px;height:42px;min-width:42px;border-radius:50%;border:none;
+      width:44px;height:44px;min-width:44px;border-radius:50%;border:none;
       background:#b45309;cursor:pointer;display:flex;align-items:center;
       justify-content:center;box-shadow:0 4px 12px rgba(180,83,9,0.3);
       transition:all 0.2s;"></button>
   <div style="flex-grow:1;">
     <div style="font-size:14px;font-weight:700;color:#92400e;">{nhan}</div>
-    <div id="tt" style="font-size:11px;color:#b45309;margin-top:2px;font-weight:600;">Chạm vào đây để nghe trợ lý đọc nhé</div>
+    <div id="tt" style="font-size:12px;color:#b45309;margin-top:2px;font-weight:600;">Chạm vào đây để nghe trợ lý đọc nhé</div>
   </div>
   <audio id="a" src="data:{mime};base64,{b64}" preload="auto"></audio>
 </div>
@@ -209,7 +223,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
   {tu_phat_js}
 }})();
 </script>
-""", height=78)
+""", height=86)
     return True
 
 
@@ -272,12 +286,12 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Tiêu đề ấm cúng, thân thuộc (không còn khung chữ nhỏ bên phải nữa)
+# Tiêu đề cao cấp, ấm cúng và thân thuộc
 st.markdown("""
 <div class="village-header">
     <div>
-        <div style="font-size: 20px; font-weight: 800; letter-spacing: -0.3px; color: #ffffff;">TRỢ LÝ BẢN LÀNG — DỊCH VỤ CÔNG</div>
-        <div style="font-size: 13px; font-weight: 500; color: #e2e8f0; margin-top: 3px;">Luôn sẵn sàng bên bà con, giải quyết thủ tục nhanh gọn và dễ hiểu nhất</div>
+        <div style="font-size: 21px; font-weight: 800; letter-spacing: -0.3px; color: #ffffff;">TRỢ LÝ BẢN LÀNG — DỊCH VỤ CÔNG</div>
+        <div style="font-size: 13px; font-weight: 500; color: #d1fae5; margin-top: 4px;">Luôn sẵn sàng bên bà con, giải quyết thủ tục nhanh gọn và dễ hiểu nhất</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -285,10 +299,10 @@ st.markdown("""
 # Trạm tương tác giọng nói thân thương
 st.markdown("""
 <div class="village-voice-box">
-    <div style="font-size: 18px; font-weight: 800; color: #b45309; margin-bottom: 4px; letter-spacing: -0.2px;">
+    <div style="font-size: 19px; font-weight: 800; color: #b45309; margin-bottom: 6px; letter-spacing: -0.2px;">
         🎙️ Trợ Lý Đang Nghe Bà Con Đây Ạ
     </div>
-    <div style="font-size: 13px; color: #57534e; font-weight: 500; margin-bottom: 16px;">
+    <div style="font-size: 13px; color: #57534e; font-weight: 500; margin-bottom: 20px;">
         Bà con chọn tiếng nói quen thuộc bên dưới, rồi bấm vào nút Micro để nói việc cần làm nhé!
     </div>
 """, unsafe_allow_html=True)
@@ -355,10 +369,10 @@ def hien_ket_qua(kq: dict) -> None:
     
     st.markdown(f"""
     <div class="village-result-card">
-        <div style="font-size: 20px; font-weight: 800; color: #92400e; margin-bottom: 10px; letter-spacing: -0.2px;">
+        <div style="font-size: 20px; font-weight: 800; color: #92400e; margin-bottom: 12px; letter-spacing: -0.2px;">
             📋 {tt.ten}
         </div>
-        <div style="font-size: 14px; color: #44403c; line-height: 1.6; margin-bottom: 18px; font-weight: 600;">
+        <div style="font-size: 14px; color: #44403c; line-height: 1.6; margin-bottom: 20px; font-weight: 600;">
             {dg.get('tom_tat_1_cau','')}
         </div>
         <div>
@@ -370,7 +384,7 @@ def hien_ket_qua(kq: dict) -> None:
 
     bb = [m for m in dg.get("mang_gi", []) if m.get("bat_buoc")]
     if bb:
-        st.markdown("<div style='margin-top: 16px; font-size: 15px; font-weight: 800; color: #92400e;'>🎒 Những giấy tờ bà con cần chuẩn bị mang theo:</div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 18px; font-size: 15px; font-weight: 800; color: #92400e;'>🎒 Những giấy tờ bà con cần chuẩn bị mang theo:</div>", unsafe_allow_html=True)
         for m in bb:
             sl = f" ({m['so_luong']})" if m.get("so_luong") else ""
             st.markdown(f"- {m['ten_don_gian']}{sl}")
