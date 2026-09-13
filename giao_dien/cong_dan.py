@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giải pháp chuyển đổi số bao trùm (UNDP Submission Standard)."""
+"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giải pháp chuyển đổi số bao trùm (Master UNDP Edition)."""
 from __future__ import annotations
 
 import base64
@@ -37,7 +37,8 @@ st.markdown("""
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
         color: #0f172a;
-        background: radial-gradient(circle at top center, #f8fafc 0%, #edf2f7 100%);
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+        background-attachment: fixed;
     }
     .block-container {
         padding-top: 2rem;
@@ -45,65 +46,75 @@ st.markdown("""
         max-width: 820px;
     }
 
-    /* Tiêu chuẩn Header tối giản hiện đại (UNDP Inclusive Tech) */
-    .undp-header {
+    /* Header kính mờ cao cấp chuẩn quốc tế */
+    .elite-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background: #ffffff;
-        padding: 16px 24px;
-        border-radius: 20px;
-        border: 1px solid #e2e8f0;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        padding: 16px 26px;
+        border-radius: 24px;
+        border: 1px solid rgba(226, 232, 240, 0.8);
         margin-bottom: 28px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 12px 35px -10px rgba(15, 23, 42, 0.06);
     }
 
-    /* Khối Micro trọng tâm: Điểm chạm chính của người dân vùng cao */
-    .undp-mic-station {
+    /* Trạm Micro trọng tâm với hiệu ứng ánh sáng động tinh tế */
+    .elite-mic-station {
         background: linear-gradient(145deg, #ffffff 0%, #fffbeb 100%);
-        border: 4px solid #f59e0b;
-        border-radius: 40px;
-        padding: 45px 30px;
-        box-shadow: 0 20px 50px rgba(245, 158, 11, 0.2);
+        border: 3px solid #f59e0b;
+        border-radius: 36px;
+        padding: 42px 30px;
+        box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.25), 0 0 0 8px rgba(245, 158, 11, 0.05);
         margin: 0 auto 30px auto;
         text-align: center;
+        position: relative;
     }
 
-    /* Thẻ hiển thị kết quả trực quan chuẩn UX */
-    .undp-result-card {
-        background: #ffffff;
-        border: 2px solid #e2e8f0;
-        border-radius: 28px;
-        padding: 38px;
-        box-shadow: 0 15px 35px rgba(30, 58, 138, 0.08);
+    /* Thẻ kết quả thiết kế dạng Glassmorphism Card sang trọng */
+    .elite-result-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(226, 232, 240, 0.9);
+        border-radius: 30px;
+        padding: 40px;
+        box-shadow: 0 20px 45px -15px rgba(30, 58, 138, 0.1);
         margin-top: 25px;
+        animation: cardAppear 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes cardAppear {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    .info-badge {
+    .elite-badge {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: #eff6ff;
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
         padding: 10px 18px;
-        border-radius: 14px;
+        border-radius: 16px;
         font-size: 14px;
         font-weight: 700;
         color: #1d4ed8;
         margin-right: 10px;
         margin-bottom: 12px;
         border: 1px solid #bfdbfe;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.05);
     }
 
     .stButton > button {
-        border-radius: 16px;
+        border-radius: 18px;
         font-weight: 700;
-        padding: 0.85rem 1.8rem;
-        transition: all 0.2s ease;
+        padding: 0.9rem 2rem;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         border: none;
     }
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -167,15 +178,15 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
     tu_phat_js = ("a.play().then(function(){}).catch(function(){"
                   "tt.textContent='Chạm để nghe lại';});") if tu_phat else ""
     _html(f"""
-<div style="display:flex;align-items:center;gap:18px;background:linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);border:2px solid #3b82f6;border-radius:24px;padding:16px 22px;margin:16px 0;box-shadow:0 8px 25px rgba(37,99,235,0.18);">
+<div style="display:flex;align-items:center;gap:18px;background:linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);border:2px solid #3b82f6;border-radius:26px;padding:18px 24px;margin:18px 0;box-shadow:0 10px 30px rgba(37,99,235,0.18);">
   <button id="b" aria-label="Nghe" style="
       width:60px;height:60px;min-width:60px;border-radius:50%;border:none;
       background:linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);cursor:pointer;display:flex;align-items:center;
-      justify-content:center;box-shadow:0 6px 20px rgba(37,99,235,0.45);
-      transition:all 0.2s;"></button>
+      justify-content:center;box-shadow:0 8px 22px rgba(37,99,235,0.45);
+      transition:all 0.2s cubic-bezier(0.4, 0, 0.2, 1);"></button>
   <div style="flex-grow:1;">
     <div style="font-size:17px;font-weight:800;color:#1e3a8a;letter-spacing:-0.2px;">{nhan}</div>
-    <div id="tt" style="font-size:13px;color:#475569;margin-top:3px;font-weight:600;">Chạm vào nút xanh để nghe phản hồi</div>
+    <div id="tt" style="font-size:13px;color:#475569;margin-top:4px;font-weight:600;">Chạm vào nút xanh để nghe phản hồi</div>
   </div>
   <audio id="a" src="data:{mime};base64,{b64}" preload="auto"></audio>
 </div>
@@ -195,7 +206,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
   {tu_phat_js}
 }})();
 </script>
-""", height=100)
+""", height=104)
     return True
 
 
@@ -258,24 +269,30 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# 1. Header siêu gọn: Logo và tên dự án cùng hàng, không có thanh công cụ rườm rà
+# 1. Header siêu gọn chuẩn UNDP: Logo, tên dự án và nhãn giải pháp tinh tế
 st.markdown("""
-<div class="undp-header">
-    <div style="display: flex; align-items: center; gap: 12px;">
-        <span style="font-size: 26px;">🏔️</span>
-        <span style="font-size: 20px; font-weight: 800; color: #1e3a8a; letter-spacing: -0.3px;">Cổng Thông Tin Bản Làng</span>
+<div class="elite-header">
+    <div style="display: flex; align-items: center; gap: 14px;">
+        <span style="font-size: 30px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">⛰️</span>
+        <div>
+            <div style="font-size: 19px; font-weight: 800; color: #1e3a8a; letter-spacing: -0.3px;">Cổng Thông Tin Bản Làng</div>
+            <div style="font-size: 12px; font-weight: 600; color: #64748b;">Hệ sinh thái Trợ lý Giọng nói Thông minh</div>
+        </div>
     </div>
-    <div style="font-size: 13px; font-weight: 700; color: #2563eb; background: #eff6ff; padding: 6px 14px; border-radius: 12px; border: 1px solid #bfdbfe;">
-        Giải pháp chuyển đổi số bao trùm
+    <div style="font-size: 12px; font-weight: 700; color: #0284c7; background: #e0f2fe; padding: 6px 14px; border-radius: 12px; border: 1px solid #bae6fd;">
+        🌟 UNDP Accelerator Lab Standard
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# 2 & 3. Nút Micro nổi bật chính giữa màn hình (100px feel) & Mặc định Tiếng Mông dạng thẻ to
+# 2 & 3. Khối Micro trọng tâm siêu nổi bật (100px visual feel) & Mặc định Tiếng Mông
 st.markdown("""
-<div class="undp-mic-station">
-    <div style="font-size: 22px; font-weight: 800; color: #1e3a8a; margin-bottom: 16px; letter-spacing: -0.3px;">
+<div class="elite-mic-station">
+    <div style="font-size: 24px; font-weight: 800; color: #1e3a8a; margin-bottom: 16px; letter-spacing: -0.4px;">
         🎙️ Chạm vào Micro để nói yêu cầu của bạn
+    </div>
+    <div style="font-size: 14px; color: #475569; font-weight: 600; margin-bottom: 20px;">
+        Hệ thống hỗ trợ nhận diện giọng nói tự nhiên hoàn toàn miễn phí
     </div>
 """, unsafe_allow_html=True)
 
@@ -296,7 +313,7 @@ if audio_in is not None:
     van_tay = hashlib.sha256(raw).hexdigest()[:16]
     if van_tay != ss.audio_da_xu_ly and len(raw) > 2000:
         ss.audio_da_xu_ly = van_tay
-        with st.spinner("Hệ thống đang xử lý giọng nói..."):
+        with st.spinner("Đang xử lý âm thanh thông minh..."):
             van_ban, _ = nghe(audio_in, tieng_mong=la_tieng_mong)
         if not van_ban:
             st.error("Hệ thống chưa nghe rõ nội dung. Vui lòng bấm ghi âm lại rõ ràng hơn.")
@@ -305,7 +322,7 @@ if audio_in is not None:
             if la_tieng_mong:
                 dong_vi = [l for l in van_ban.splitlines() if l.startswith("VI:")]
                 van_ban = (dong_vi[0][3:].strip() if dong_vi else dich_sang_viet(van_ban))
-            st.success(f"Nội dung nhận diện: *{van_ban}*")
+            st.success(f"✨ Nội dung hệ thống nhận diện: *{van_ban}*")
             xu_ly_cau_noi(van_ban)
 
 
@@ -340,30 +357,30 @@ def hien_ket_qua(kq: dict) -> None:
     dg = kq["don_gian"]
     
     st.markdown(f"""
-    <div class="undp-result-card">
-        <div style="font-size: 24px; font-weight: 800; color: #1e3a8a; margin-bottom: 12px; letter-spacing: -0.4px;">
+    <div class="elite-result-card">
+        <div style="font-size: 26px; font-weight: 800; color: #1e3a8a; margin-bottom: 14px; letter-spacing: -0.4px;">
             📋 {tt.ten}
         </div>
-        <div style="font-size: 17px; color: #334155; line-height: 1.7; margin-bottom: 22px; font-weight: 600;">
+        <div style="font-size: 18px; color: #334155; line-height: 1.7; margin-bottom: 24px; font-weight: 600;">
             {dg.get('tom_tat_1_cau','')}
         </div>
         <div>
-            <span class="info-badge">📍 <b>Nơi thực hiện:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
-            <span class="info-badge">⏱️ <b>Thời gian giải quyết:</b> {dg.get('bao_lau','—')}</span>
-            <span class="info-badge">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
+            <span class="elite-badge">📍 <b>Nơi thực hiện:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
+            <span class="elite-badge">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
+            <span class="elite-badge">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
         </div>
     """, unsafe_allow_html=True)
 
     bb = [m for m in dg.get("mang_gi", []) if m.get("bat_buoc")]
     if bb:
-        st.markdown("<div style='margin-top: 18px; font-weight: 800; color: #1e3a8a;'>🎒 Danh mục giấy tờ cần chuẩn bị:</div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 20px; font-weight: 800; color: #1e3a8a; font-size: 16px;'>🎒 Danh mục giấy tờ cần chuẩn bị:</div>", unsafe_allow_html=True)
         for m in bb:
             sl = f" ({m['so_luong']})" if m.get("so_luong") else ""
             st.markdown(f"- {m['ten_don_gian']}{sl}")
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # 5. Nút Loa phát âm thanh dạng hình tròn tô màu xanh dương nổi bật
+    # 5. Nút Loa phát âm thanh nổi bật dạng hình tròn màu xanh dương
     uu_tien_mong = bool(kq.get("la_tieng_mong", True)) and bool(kq.get("audio_mong"))
     if kq.get("audio_mong"):
         nut_loa(kq["audio_mong"], nhan="🔊 Nghe hướng dẫn chi tiết bằng tiếng Mông (Hmoob)", tu_phat=uu_tien_mong)
@@ -371,7 +388,7 @@ def hien_ket_qua(kq: dict) -> None:
     if kq.get("audio_viet"):
         nut_loa(kq["audio_viet"], nhan="🔊 Nghe hướng dẫn chi tiết bằng tiếng Việt", tu_phat=not uu_tien_mong)
 
-    # 4. Đã loại bỏ hoàn toàn các thông số kỹ thuật rắc rối (độ tin cậy, vấn đề khác...)
+    # 4. Loại bỏ hoàn toàn các thông số kỹ thuật rườm rà
 
     nut_goi_can_bo(kq)
 
@@ -379,7 +396,7 @@ def hien_ket_qua(kq: dict) -> None:
 if ss.ket_qua:
     hien_ket_qua(ss.ket_qua)
 
-# 6. Thu gọn nhập liệu bàn phím ở góc dưới dạng đường dẫn phụ, không làm phân tâm người dùng ưu tiên giọng nói
+# 6. Thu gọn nhập liệu bàn phím ở góc dưới dạng đường dẫn phụ
 st.markdown("<br>", unsafe_allow_html=True)
 with st.expander("⌨️ Bàn phím phụ: Gõ chữ hoặc chọn từ danh mục (Dành cho người dùng cần trợ giúp nhập văn bản)"):
     t_go, t_chon = st.tabs(["Gõ câu hỏi trực tiếp", "Chọn từ danh mục"])
