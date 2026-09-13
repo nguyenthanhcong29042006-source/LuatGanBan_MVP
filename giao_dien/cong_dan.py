@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói (Phiên bản Hoàn mỹ - Unified SaaS Design)."""
+"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói (Tối ưu hóa điểm nhấn Micro trung tâm)."""
 from __future__ import annotations
 
 import base64
@@ -25,7 +25,7 @@ ss.setdefault("ket_qua", None)
 ss.setdefault("cau_noi", "")
 ss.setdefault("audio_da_xu_ly", "")
 
-# Thiết kế đồng nhất: Tối giản, thanh lịch, sang trọng và không rối mắt
+# Thiết kế hệ thống: Làm nổi bật tối đa micro, bố cục thông thoáng, tinh tế chuẩn SaaS
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
@@ -37,26 +37,16 @@ st.markdown("""
     }
     .block-container {
         padding-top: 2rem;
-        padding-bottom: 5rem;
+        padding-bottom: 6rem;
         max-width: 900px;
     }
 
-    /* Khung trung tâm tối giản, tập trung tuyệt đối vào trải nghiệm */
-    .app-container {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 32px;
-        padding: 40px 48px;
-        box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.05);
-        margin-bottom: 24px;
-    }
-
-    .app-header {
+    /* Tiêu đề & Slogan sang trọng */
+    .hero-box {
         text-align: center;
-        margin-bottom: 32px;
+        margin-bottom: 28px;
     }
-
-    .app-badge {
+    .hero-badge {
         display: inline-flex;
         align-items: center;
         gap: 6px;
@@ -67,26 +57,53 @@ st.markdown("""
         font-size: 13px;
         font-weight: 700;
         letter-spacing: 0.3px;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
         border: 1px solid #c7d2fe;
     }
-
-    .app-title {
+    .hero-title {
         font-size: 32px;
         font-weight: 800;
         color: #0f172a;
         letter-spacing: -0.8px;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
         line-height: 1.25;
     }
-
-    .app-subtitle {
+    .hero-subtitle {
         font-size: 16px;
         color: #64748b;
         font-weight: 400;
         line-height: 1.6;
         max-width: 600px;
         margin: 0 auto;
+    }
+
+    /* KHỐI MICRO TRUNG TÂM - ĐIỂM NHẤN CỰC KỲ NỔI BẬT */
+    .mic-highlight-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border: 2px solid #6366f1;
+        border-radius: 28px;
+        padding: 36px 32px;
+        text-align: center;
+        box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.15);
+        margin-bottom: 32px;
+        position: relative;
+        overflow: hidden;
+    }
+    .mic-highlight-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; height: 6px;
+        background: linear-gradient(90deg, #4f46e5, #818cf8, #4f46e5);
+    }
+    .mic-instruction {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1e1b4b;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
     }
 
     /* Thẻ kết quả tinh tế */
@@ -98,7 +115,6 @@ st.markdown("""
         box-shadow: 0 12px 30px -10px rgba(0,0,0,0.04);
         margin-top: 24px;
     }
-
     .info-tag {
         display: inline-flex;
         align-items: center;
@@ -278,20 +294,26 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Khung giao diện chính đồng nhất không bị phân mảnh
+# Phần Header giới thiệu tinh tế
 st.markdown("""
-<div class="app-container">
-    <div class="app-header">
-        <div class="app-badge">✨ Trợ Lý Hành Chính Giọng Nói Thông Minh</div>
-        <div class="app-title">Âm Vang Tiếng Núi — Thấu Hiểu Việc Nhà</div>
-        <div class="app-subtitle">Xóa nhòa mọi khoảng cách ngôn ngữ, giúp bà con dễ dàng tra cứu thủ tục hành chính bằng giọng nói quen thuộc.</div>
-    </div>
+<div class="hero-box">
+    <div class="hero-badge">✨ Trợ Lý Hành Chính Giọng Nói Thông Minh</div>
+    <div class="hero-title">Âm Vang Tiếng Núi — Thấu Hiểu Việc Nhà</div>
+    <div class="hero-subtitle">Xóa nhòa mọi khoảng cách ngôn ngữ, giúp bà con dễ dàng tra cứu thủ tục hành chính chỉ bằng giọng nói quen thuộc.</div>
 </div>
 """, unsafe_allow_html=True)
 
-# Thanh chọn ngôn ngữ và Micro gom gọn trong 1 box trung tâm thanh lịch
-col_chon, col_mic = st.columns([1, 1], gap="medium")
-with col_chon:
+# KHỐI MICRO LÀM TÂM ĐIỂM (CHỤP TRỌNG TÂM TRANG)
+st.markdown("""
+<div class="mic-highlight-card">
+    <div class="mic-instruction">
+        🎙️ Bấm vào biểu tượng micro bên dưới và nói yêu cầu của bà con
+    </div>
+""", unsafe_allow_html=True)
+
+col_lang, col_mic = st.columns([1, 1.2], gap="medium")
+with col_lang:
+    st.markdown("<div style='font-size:13px; font-weight:600; color:#64748b; margin-bottom:6px; text-align:left;'>Chọn ngôn ngữ trò chuyện:</div>", unsafe_allow_html=True)
     LUA_CHON = ["🌐 Tiếng Mông (Hmoob)", "🇻🇳 Tiếng Việt"]
     ngon_ngu = st.segmented_control(
         "Chọn ngôn ngữ", LUA_CHON,
@@ -301,7 +323,10 @@ with col_chon:
     ss.la_tieng_mong = la_tieng_mong
 
 with col_mic:
+    st.markdown("<div style='font-size:13px; font-weight:600; color:#64748b; margin-bottom:6px; text-align:left;'>Bấm để ghi âm giọng nói:</div>", unsafe_allow_html=True)
     audio_in = st.audio_input("Micro", label_visibility="collapsed")
+
+st.markdown("</div>", unsafe_allow_html=True)
 
 if audio_in is not None:
     raw = audio_in.getvalue()
