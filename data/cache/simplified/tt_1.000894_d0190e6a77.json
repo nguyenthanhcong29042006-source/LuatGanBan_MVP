@@ -1,0 +1,58 @@
+{
+  "tom_tat_1_cau": "Bà con đi làm giấy này để nhà nước công nhận hai người là vợ chồng.",
+  "di_dau": {
+    "noi_don_gian": "nơi làm giấy tờ ở xã",
+    "ten_chinh_thuc": "Trung tâm Phục vụ hành chính công cấp xã hoặc Ủy ban nhân dân cấp xã"
+  },
+  "ai_duoc_lam": "Công dân Việt Nam",
+  "mang_gi": [
+    {
+      "ten_don_gian": "thẻ căn cước bản chính",
+      "ten_chinh_thuc": "Hộ chiếu hoặc Thẻ căn cước công dân hoặc Thẻ căn cước",
+      "so_luong": "1 bản chính",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "tờ giấy xin kết hôn xin ở xã",
+      "ten_chinh_thuc": "Tờ khai đăng ký kết hôn theo mẫu",
+      "so_luong": "1 bản chính",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "giấy tờ chứng minh nơi ở",
+      "ten_chinh_thuc": "Giấy tờ có giá trị chứng minh thông tin về cư trú",
+      "so_luong": "1 bản chính",
+      "bat_buoc": false
+    }
+  ],
+  "bao_lau": "1 ngày",
+  "bao_nhieu_tien": "0 đồng",
+  "cac_buoc": [
+    "Hai người nam nữ cùng đến nơi làm giấy tờ ở xã.",
+    "Bà con nộp thẻ căn cước và tờ giấy xin kết hôn.",
+    "Cán bộ xã sẽ kiểm tra giấy tờ của bà con.",
+    "Hai người cùng ký tên vào sổ và giấy kết hôn.",
+    "Mỗi người nhận 1 tờ giấy kết hôn mang về."
+  ],
+  "luu_y": [
+    "Hai người nam và nữ đều phải có mặt để ký tên.",
+    "Nếu bà con đã từng ly hôn thì phải hỏi cán bộ trước.",
+    "Bà con không cần nộp giấy chứng minh nơi ở nếu cán bộ tra được trên máy tính."
+  ],
+  "chua_ro": [],
+  "kich_ban_doc": "Chào bà con muốn đăng ký kết hôn thì hai người cùng ra xã. Bà con mang theo 1 thẻ căn cước bản chính. Bà con xin cán bộ 1 tờ giấy xin kết hôn để viết. Bà con làm giấy này không tốn tiền và chờ 1 ngày là xong. Lúc lấy giấy thì cả hai người phải có mặt để ký tên.",
+  "trich_dan": [
+    "Trực tiếp 1 ngày Miễn phí",
+    "Hộ chiếu/Thẻ căn cước công dân/Thẻ căn cước... 1 bản chính",
+    "Tờ khai đăng ký kết hôn theo mẫu... 1 bản chính",
+    "mỗi bên nam, nữ nhận 01 bản chính Giấy chứng nhận kết hôn"
+  ],
+  "do_tin_cay": 0.9,
+  "_key": "1.000894",
+  "_tu_cache": false,
+  "_da_duyet": true,
+  "_nguoi_duyet": "Phạm Minh Anh — chủ nhiệm dự án",
+  "_tai_khoan_duyet": "cli",
+  "_duyet_hang_loat": true,
+  "_duyet_luc": "2026-09-11T22:19:37"
+}

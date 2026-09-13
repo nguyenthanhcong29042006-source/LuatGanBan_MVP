@@ -1,0 +1,72 @@
+{
+  "tom_tat_1_cau": "Bà con làm giấy khai sinh cho con lai ở vùng biên giới.",
+  "di_dau": {
+    "noi_don_gian": "nơi làm giấy tờ ở xã",
+    "ten_chinh_thuc": "Ủy ban nhân dân cấp xã"
+  },
+  "ai_duoc_lam": "Người Việt Nam",
+  "mang_gi": [
+    {
+      "ten_don_gian": "tờ giấy xin khai sinh lấy ở xã",
+      "ten_chinh_thuc": "Tờ khai đăng ký khai sinh",
+      "so_luong": "1 tờ",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "giấy bệnh viện cấp khi sinh con",
+      "ten_chinh_thuc": "Giấy chứng sinh",
+      "so_luong": "1 tờ",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "giấy bố mẹ chọn nước cho con",
+      "ten_chinh_thuc": "Văn bản thỏa thuận của cha, mẹ về việc lựa chọn quốc tịch cho con",
+      "so_luong": "1 tờ",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "giấy tờ của người nước ngoài",
+      "ten_chinh_thuc": "Bản sao giấy tờ chứng minh nhân thân, giấy tờ chứng minh nơi thường trú ở khu vực biên giới của công dân nước láng giềng",
+      "so_luong": "1 bản",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "thẻ căn cước để cán bộ xem",
+      "ten_chinh_thuc": "Thẻ căn cước công dân",
+      "so_luong": "1 thẻ",
+      "bat_buoc": true
+    }
+  ],
+  "bao_lau": "1 ngày",
+  "bao_nhieu_tien": "Không mất tiền",
+  "cac_buoc": [
+    "Bà con mang giấy tờ đến nơi làm giấy tờ ở xã.",
+    "Bà con nộp đủ giấy tờ cho cán bộ.",
+    "Cán bộ kiểm tra giấy tờ của bà con.",
+    "Bà con chờ cán bộ ghi sổ và cấp giấy khai sinh."
+  ],
+  "luu_y": [
+    "Bà con không đặt tên con quá dài.",
+    "Bà con không đặt tên con khó gọi.",
+    "Giấy tờ nước ngoài phải có dấu xác nhận.",
+    "Bà con hỏi cán bộ nếu có giấy tờ khác."
+  ],
+  "chua_ro": [
+    "Tài liệu bị đứt đoạn ở phần cuối cùng."
+  ],
+  "kich_ban_doc": "Chào bà con. Hôm nay tôi hướng dẫn bà con làm giấy khai sinh cho con lai ở biên giới. Bà con mang giấy bệnh viện cấp khi sinh con và thẻ căn cước ra xã. Bà con nhớ mang thêm giấy bố mẹ chọn nước cho con. Thủ tục này làm xong trong 1 ngày và không phải đóng tiền. Bà con nhớ không đặt tên con quá dài nhé.",
+  "trich_dan": [
+    "Trực tiếp 1 ngày Miễn phí",
+    "Tờ khai đăng ký khai sinh theo mẫu 1 bản chính",
+    "Giấy chứng sinh 1 bản chính",
+    "Văn bản thỏa thuận của cha, mẹ về việc lựa chọn quốc tịch cho con 1 bản chính"
+  ],
+  "do_tin_cay": 0.9,
+  "_key": "1.000110",
+  "_tu_cache": false,
+  "_da_duyet": true,
+  "_nguoi_duyet": "Phạm Minh Anh — chủ nhiệm dự án",
+  "_tai_khoan_duyet": "cli",
+  "_duyet_hang_loat": true,
+  "_duyet_luc": "2026-09-11T22:19:37"
+}

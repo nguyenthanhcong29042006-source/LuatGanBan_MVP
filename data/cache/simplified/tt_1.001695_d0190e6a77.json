@@ -1,0 +1,82 @@
+{
+  "tom_tat_1_cau": "Thủ tục này để làm giấy khai sinh và nhận cha mẹ cho con khi nhà có người nước ngoài.",
+  "di_dau": {
+    "noi_don_gian": "nơi làm giấy tờ ở xã",
+    "ten_chinh_thuc": "Trung tâm phục vụ hành chính công hoặc Ủy ban nhân dân cấp xã"
+  },
+  "ai_duoc_lam": "Công dân Việt Nam và người nước ngoài hoặc người Việt Nam định cư ở nước ngoài.",
+  "mang_gi": [
+    {
+      "ten_don_gian": "tờ giấy xin nhận cha mẹ con",
+      "ten_chinh_thuc": "Tờ khai đăng ký nhận cha, mẹ, con",
+      "so_luong": "1 tờ",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "tờ giấy xin khai sinh",
+      "ten_chinh_thuc": "Tờ khai đăng ký khai sinh",
+      "so_luong": "1 tờ",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "giấy bệnh viện cấp khi sinh con",
+      "ten_chinh_thuc": "Giấy chứng sinh",
+      "so_luong": "1 bản",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "giấy đồng ý chọn quốc tịch cho con",
+      "ten_chinh_thuc": "Văn bản thỏa thuận của cha, mẹ về việc lựa chọn quốc tịch cho con",
+      "so_luong": "1 bản",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "bản sao hộ chiếu của người nước ngoài",
+      "ten_chinh_thuc": "Bản sao hộ chiếu hoặc giấy tờ có giá trị thay hộ chiếu",
+      "so_luong": "1 bản",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "giấy tờ chứng minh cha con",
+      "ten_chinh_thuc": "Văn bản xác nhận quan hệ cha con, quan hệ mẹ con",
+      "so_luong": "1 bản",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "thẻ căn cước hoặc hộ chiếu",
+      "ten_chinh_thuc": "Hộ chiếu hoặc Thẻ căn cước công dân hoặc Thẻ căn cước",
+      "so_luong": "1 bản",
+      "bat_buoc": true
+    }
+  ],
+  "bao_lau": "10 ngày",
+  "bao_nhieu_tien": "Miễn phí",
+  "cac_buoc": [
+    "Bà con mang giấy tờ đến nơi làm giấy tờ ở xã.",
+    "Bà con nộp giấy tờ cho cán bộ.",
+    "Cán bộ kiểm tra và dán thông báo ở xã 5 ngày.",
+    "Bà con chờ 10 ngày rồi đến lấy giấy khai sinh."
+  ],
+  "luu_y": [
+    "Nếu trẻ em sinh ra ở nước ngoài thì bà con phải hỏi cán bộ xã.",
+    "Nếu không có giấy bệnh viện cấp thì bà con phải hỏi cán bộ xã.",
+    "Giấy tờ của nước ngoài cấp phải được dịch và đóng dấu hợp pháp."
+  ],
+  "chua_ro": [],
+  "kich_ban_doc": "Bà con đến nơi làm giấy tờ ở xã để làm thủ tục. Bà con mang theo thẻ căn cước và hộ chiếu. Bà con mang thêm giấy bệnh viện cấp khi sinh con. Bà con nộp thêm giấy chứng minh cha con. Thủ tục này hoàn toàn không mất tiền. Bà con chờ 10 ngày rồi đến lấy giấy khai sinh.",
+  "trich_dan": [
+    "Trực tiếp 10 ngày Miễn phí",
+    "Tờ khai đăng ký nhận cha, mẹ, con theo mẫu 1 bản chính",
+    "Tờ khai đăng ký khai sinh theo mẫu 1 bản chính",
+    "Giấy chứng sinh 1 bản chính",
+    "niêm yết việc nhận cha, mẹ, con tại trụ sở Ủy ban nhân dân cấp xã trong thời gian 05 ngày làm việc"
+  ],
+  "do_tin_cay": 0.9,
+  "_key": "1.001695",
+  "_tu_cache": false,
+  "_da_duyet": true,
+  "_nguoi_duyet": "Phạm Minh Anh — chủ nhiệm dự án",
+  "_tai_khoan_duyet": "cli",
+  "_duyet_hang_loat": true,
+  "_duyet_luc": "2026-09-11T22:19:37"
+}

@@ -1,0 +1,66 @@
+{
+  "tom_tat_1_cau": "Cán bộ xã đến tận nhà làm giấy khai sinh cho con của bà con.",
+  "di_dau": {
+    "noi_don_gian": "nhà của bà con hoặc nhà văn hóa thôn",
+    "ten_chinh_thuc": "tại nhà riêng hoặc tại địa điểm tổ chức đăng ký lưu động"
+  },
+  "ai_duoc_lam": "Người Việt Nam",
+  "mang_gi": [
+    {
+      "ten_don_gian": "giấy bệnh viện cấp khi sinh con",
+      "ten_chinh_thuc": "Giấy chứng sinh",
+      "so_luong": "1 bản chính",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "tờ giấy khai sinh xin ở xã",
+      "ten_chinh_thuc": "Tờ khai đăng ký khai sinh",
+      "so_luong": "1 bản chính",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "thẻ căn cước của cha hoặc mẹ",
+      "ten_chinh_thuc": "Thẻ căn cước công dân",
+      "so_luong": "1 bản chính",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "giấy đăng ký kết hôn của cha mẹ",
+      "ten_chinh_thuc": "Giấy chứng nhận kết hôn",
+      "so_luong": "1 bản chính",
+      "bat_buoc": false
+    }
+  ],
+  "bao_lau": "5 ngày làm việc",
+  "bao_nhieu_tien": "Không mất tiền",
+  "cac_buoc": [
+    "Cán bộ xã mang giấy tờ đến tận nhà bà con.",
+    "Bà con điền thông tin vào tờ khai xin làm khai sinh.",
+    "Cán bộ xã mang hồ sơ về xã để làm giấy khai sinh.",
+    "Cán bộ xã mang giấy khai sinh đến tận nhà trả cho bà con.",
+    "Bà con kiểm tra chữ và ký tên vào sổ nhận giấy."
+  ],
+  "luu_y": [
+    "Nếu bà con không biết chữ thì cán bộ xã sẽ viết hộ.",
+    "Nếu đẻ con nhờ người khác mang thai thì bà con hỏi cán bộ xã.",
+    "Nếu không có giấy bệnh viện cấp thì bà con nhờ người làm chứng."
+  ],
+  "chua_ro": [],
+  "kich_ban_doc": "Chào bà con muốn làm giấy khai sinh cho con tại nhà. Bà con chuẩn bị giấy bệnh viện cấp khi sinh con và thẻ căn cước. Cán bộ xã sẽ mang giấy tờ đến tận nhà cho bà con điền. Bà con chờ 5 ngày làm việc và không phải đóng tiền. Cán bộ xã sẽ mang giấy khai sinh đến tận nhà trả cho bà con.",
+  "trich_dan": [
+    "5 ngày làm việc",
+    "Miễn phí",
+    "1 bản chính Giấy chứng sinh",
+    "1 bản chính Tờ khai đăng ký khai sinh",
+    "1 bản chính Giấy chứng nhận kết hôn",
+    "1 bản chính Thẻ căn cước công dân"
+  ],
+  "do_tin_cay": 1.0,
+  "_key": "1.003583",
+  "_tu_cache": false,
+  "_da_duyet": true,
+  "_nguoi_duyet": "Phạm Minh Anh — chủ nhiệm dự án",
+  "_tai_khoan_duyet": "cli",
+  "_duyet_hang_loat": true,
+  "_duyet_luc": "2026-09-11T22:19:37"
+}
