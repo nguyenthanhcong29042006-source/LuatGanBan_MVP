@@ -1,0 +1,59 @@
+{
+  "tom_tat_1_cau": "Bà con xin cấp lại bản sao giấy khai sinh.",
+  "di_dau": {
+    "noi_don_gian": "nơi làm giấy tờ ở xã",
+    "ten_chinh_thuc": "Trung tâm Phục vụ hành chính công có thẩm quyền"
+  },
+  "ai_duoc_lam": "Công dân Việt Nam",
+  "mang_gi": [
+    {
+      "ten_don_gian": "tờ giấy xin cấp bản sao",
+      "ten_chinh_thuc": "Tờ khai đề nghị bản sao Trích lục hộ tịch",
+      "so_luong": "1 bản chính",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "thẻ căn cước",
+      "ten_chinh_thuc": "Thẻ căn cước công dân hoặc Thẻ căn cước",
+      "so_luong": "1 bản chính",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "giấy tờ chứng minh nơi ở",
+      "ten_chinh_thuc": "Giấy tờ có giá trị chứng minh thông tin về cư trú",
+      "so_luong": "1 bản chính",
+      "bat_buoc": false
+    }
+  ],
+  "bao_lau": "Không xác định rõ số ngày",
+  "bao_nhieu_tien": "8.000 đồng",
+  "cac_buoc": [
+    "Bà con mang giấy tờ đến nơi làm giấy tờ ở xã.",
+    "Bà con nộp tờ khai và đưa thẻ căn cước cho cán bộ xem.",
+    "Bà con nộp tiền phí cho cán bộ.",
+    "Cán bộ kiểm tra giấy tờ của bà con.",
+    "Bà con chờ lấy bản sao giấy khai sinh."
+  ],
+  "luu_y": [
+    "Bà con nộp sau 3 giờ chiều thì lấy giấy vào ngày hôm sau.",
+    "Bà con nhờ người khác đi làm thay thì phải hỏi cán bộ trước."
+  ],
+  "chua_ro": [
+    "Tài liệu ghi thời gian giải quyết là không xác định."
+  ],
+  "kich_ban_doc": "Bà con đến xã để xin bản sao giấy khai sinh. Bà con mang 1 tờ khai và 1 thẻ căn cước bản chính. Bà con nộp 8.000 đồng tiền phí cho cán bộ. Tài liệu không ghi rõ số ngày chờ. Bà con nộp sau 3 giờ chiều thì lấy giấy vào ngày hôm sau.",
+  "trich_dan": [
+    "Trực tiếp Không xác định 8.000 VNĐ",
+    "Tờ khai đề nghị bản sao Trích lục hộ tịch theo mẫu... 1 bản chính",
+    "Hộ chiếu/Thẻ căn cước công dân/Thẻ căn cước... 1 bản chính",
+    "nếu tiếp nhận hồ sơ sau 15 giờ thì có Phiếu hẹn, trả kết quả cho người yêu cầu trong ngày làm việc tiếp theo"
+  ],
+  "do_tin_cay": 0.9,
+  "_key": "2.000635",
+  "_tu_cache": false,
+  "_da_duyet": true,
+  "_nguoi_duyet": "Phạm Minh Anh — chủ nhiệm dự án",
+  "_tai_khoan_duyet": "cli",
+  "_duyet_hang_loat": true,
+  "_duyet_luc": "2026-09-11T22:19:37"
+}

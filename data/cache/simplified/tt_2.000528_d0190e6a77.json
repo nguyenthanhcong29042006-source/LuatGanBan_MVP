@@ -1,0 +1,62 @@
+{
+  "tom_tat_1_cau": "Bà con đi làm giấy khai sinh cho con có yếu tố nước ngoài.",
+  "di_dau": {
+    "noi_don_gian": "nơi làm giấy tờ ở xã",
+    "ten_chinh_thuc": "Ủy ban nhân dân cấp xã"
+  },
+  "ai_duoc_lam": "Người Việt Nam định cư ở nước ngoài và công dân Việt Nam.",
+  "mang_gi": [
+    {
+      "ten_don_gian": "tờ giấy khai sinh xin ở xã",
+      "ten_chinh_thuc": "Tờ khai đăng ký khai sinh",
+      "so_luong": "1 bản chính",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "giấy bệnh viện cấp khi sinh con",
+      "ten_chinh_thuc": "Giấy Chứng sinh",
+      "so_luong": "1 bản chính",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "thẻ căn cước",
+      "ten_chinh_thuc": "Thẻ căn cước công dân",
+      "so_luong": "1 bản chính",
+      "bat_buoc": true
+    },
+    {
+      "ten_don_gian": "giấy đồng ý chọn quốc tịch",
+      "ten_chinh_thuc": "văn bản thỏa thuận lựa chọn quốc tịch",
+      "so_luong": "1 bản chính",
+      "bat_buoc": false
+    }
+  ],
+  "bao_lau": "1 ngày",
+  "bao_nhieu_tien": "Miễn phí",
+  "cac_buoc": [
+    "Bà con đến nơi làm giấy tờ ở xã.",
+    "Bà con nộp giấy tờ cho cán bộ.",
+    "Cán bộ kiểm tra giấy tờ của bà con.",
+    "Bà con chờ lấy giấy khai sinh cho con."
+  ],
+  "luu_y": [
+    "Bà con hỏi cán bộ nếu con sinh ra ở nước ngoài.",
+    "Bà con hỏi cán bộ nếu cha mẹ là người nước ngoài.",
+    "Giấy tờ nước ngoài cấp phải được dịch và đóng dấu."
+  ],
+  "chua_ro": [],
+  "kich_ban_doc": "Bà con đi làm giấy khai sinh cho con ở xã. Bà con mang 1 tờ giấy xin khai sinh và 1 thẻ căn cước. Bà con mang thêm 1 giấy bệnh viện cấp khi sinh con. Bà con nộp giấy tờ cho cán bộ và không phải trả tiền. Bà con chờ 1 ngày là lấy được giấy khai sinh.",
+  "trich_dan": [
+    "Trực tiếp 1 ngày Miễn phí",
+    "Giấy Chứng sinh 1 bản chính",
+    "Tờ khai đăng ký khai sinh theo mẫu 1 bản chính"
+  ],
+  "do_tin_cay": 0.9,
+  "_key": "2.000528",
+  "_tu_cache": false,
+  "_da_duyet": true,
+  "_nguoi_duyet": "Phạm Minh Anh — chủ nhiệm dự án",
+  "_tai_khoan_duyet": "cli",
+  "_duyet_hang_loat": true,
+  "_duyet_luc": "2026-09-11T22:19:37"
+}
