@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói (Phiên bản Hoàn mỹ - SaaS Design System)."""
+"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói (Phiên bản Hoàn mỹ - Unified SaaS Design)."""
 from __future__ import annotations
 
 import base64
@@ -12,14 +12,12 @@ import streamlit as st
 from streamlit.components.v1 import html as _html
 
 from core import auth, kb
-from core.config import (DANH_MUC_THU_TUC, HMONG_ORTHOGRAPHY, NGUONG_TU_TIN,
-                         TTS_HMONG_PROVIDER)
-from core.llm import LoiQuota
+from core.config import DANH_MUC_THU_TUC
 from core.router import dinh_tuyen
 from core.simplify import CAU_HOI_MAC_DINH, don_gian_hoa, thanh_van_ban_doc
 from core.stt import nghe
 from core.translate import dich_sang_mong, dich_sang_viet
-from core.tts import NHAN_TANG, phat_tieng_mong, tts_tieng_viet
+from core.tts import phat_tieng_mong, tts_tieng_viet
 
 ss = st.session_state
 ss.setdefault("danh_sach_yeu_cau", [])
@@ -27,7 +25,7 @@ ss.setdefault("ket_qua", None)
 ss.setdefault("cau_noi", "")
 ss.setdefault("audio_da_xu_ly", "")
 
-# Thiết kế hệ thống giao diện cao cấp: Tinh tế, sang trọng, không gian mở hoàn hảo
+# Thiết kế đồng nhất: Tối giản, thanh lịch, sang trọng và không rối mắt
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
@@ -38,116 +36,88 @@ st.markdown("""
         background-color: #f8fafc;
     }
     .block-container {
-        padding-top: 2.5rem;
-        padding-bottom: 6rem;
-        max-width: 1040px;
+        padding-top: 2rem;
+        padding-bottom: 5rem;
+        max-width: 900px;
     }
 
-    /* Thanh điều hướng tối giản chuẩn SaaS */
-    .saas-nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px 28px;
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 20px;
-        margin-bottom: 36px;
-        box-shadow: 0 4px 24px -6px rgba(0,0,0,0.03);
-    }
-    .saas-brand {
-        font-weight: 800;
-        font-size: 19px;
-        color: #0f172a;
-        letter-spacing: -0.6px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .saas-badge {
-        font-size: 12px;
-        font-weight: 700;
-        color: #4f46e5;
-        background: #eef2ff;
-        padding: 6px 14px;
-        border-radius: 30px;
-        border: 1px solid #c7d2fe;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    /* Khối Hero hai cột đối xứng hoàn hảo */
-    .saas-hero {
-        display: grid;
-        grid-template-columns: 1.2fr 1fr;
-        gap: 32px;
-        align-items: center;
+    /* Khung trung tâm tối giản, tập trung tuyệt đối vào trải nghiệm */
+    .app-container {
         background: #ffffff;
         border: 1px solid #e2e8f0;
         border-radius: 32px;
-        padding: 48px;
-        box-shadow: 0 20px 40px -15px rgba(0,0,0,0.04);
-        margin-bottom: 36px;
-    }
-    .saas-title {
-        font-size: 34px;
-        font-weight: 800;
-        color: #0f172a;
-        line-height: 1.2;
-        letter-spacing: -0.9px;
-        margin-bottom: 16px;
-    }
-    .saas-subtitle {
-        font-size: 16px;
-        color: #64748b;
-        line-height: 1.65;
-        font-weight: 400;
-        margin-bottom: 28px;
+        padding: 40px 48px;
+        box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.05);
+        margin-bottom: 24px;
     }
 
-    /* Thẻ tương tác giọng nói nổi bật với hiệu ứng cao cấp */
-    .voice-box-wrapper {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        border: 2px dashed #cbd5e1;
-        border-radius: 24px;
-        padding: 32px 24px;
+    .app-header {
         text-align: center;
-        transition: all 0.3s ease;
-    }
-    .voice-box-wrapper:hover {
-        border-color: #4f46e5;
-        background: #f8fafc;
-        box-shadow: 0 10px 30px rgba(79, 70, 229, 0.05);
+        margin-bottom: 32px;
     }
 
-    /* Thẻ kết quả thông minh, rõ ràng, đẳng cấp */
-    .saas-result-card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 28px;
-        padding: 40px;
-        box-shadow: 0 16px 40px -12px rgba(0,0,0,0.06);
-        margin: 32px 0;
-    }
-    .saas-chip {
+    .app-badge {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
+        background: #eef2ff;
+        color: #4f46e5;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        margin-bottom: 16px;
+        border: 1px solid #c7d2fe;
+    }
+
+    .app-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #0f172a;
+        letter-spacing: -0.8px;
+        margin-bottom: 12px;
+        line-height: 1.25;
+    }
+
+    .app-subtitle {
+        font-size: 16px;
+        color: #64748b;
+        font-weight: 400;
+        line-height: 1.6;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Thẻ kết quả tinh tế */
+    .result-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 24px;
+        padding: 36px;
+        box-shadow: 0 12px 30px -10px rgba(0,0,0,0.04);
+        margin-top: 24px;
+    }
+
+    .info-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
         background: #f1f5f9;
-        padding: 10px 18px;
-        border-radius: 14px;
+        padding: 8px 16px;
+        border-radius: 12px;
         font-size: 14px;
         font-weight: 600;
         color: #334155;
-        margin-right: 12px;
-        margin-bottom: 12px;
+        margin-right: 10px;
+        margin-bottom: 10px;
         border: 1px solid #e2e8f0;
     }
 
     .stButton > button {
         border-radius: 14px;
         font-weight: 600;
-        padding: 0.75rem 1.6rem;
+        padding: 0.75rem 1.5rem;
         transition: all 0.2s ease;
         border: none;
     }
@@ -156,11 +126,6 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     }
 </style>
-
-<div class="saas-nav">
-    <div class="saas-brand">🏛️ Luật Gần Bà Con</div>
-    <div class="saas-badge">AI Voice Assistant v2.6</div>
-</div>
 """, unsafe_allow_html=True)
 
 if not kb.load_kb():
@@ -204,11 +169,11 @@ def _audio_b64(duong_dan: str) -> tuple[str, str]:
     return base64.b64encode(p.read_bytes()).decode(), mime
 
 
-_SVG_LOA = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="white">'
+_SVG_LOA = ('<svg width="18" height="18" viewBox="0 0 24 24" fill="white">'
             '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05'
             'c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 '
             '5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>')
-_SVG_DUNG = ('<svg width="18" height="18" viewBox="0 0 24 24" fill="white">'
+_SVG_DUNG = ('<svg width="16" height="16" viewBox="0 0 24 24" fill="white">'
              '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>')
 
 
@@ -222,15 +187,15 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
     tu_phat_js = ("a.play().then(function(){}).catch(function(){"
                   "tt.textContent='Bấm để nghe âm thanh';});") if tu_phat else ""
     _html(f"""
-<div style="display:flex;align-items:center;gap:16px;background:#ffffff;border:1px solid #e2e8f0;border-radius:18px;padding:16px 22px;margin:14px 0;box-shadow:0 4px 16px rgba(0,0,0,0.02);">
+<div style="display:flex;align-items:center;gap:14px;background:#ffffff;border:1px solid #e2e8f0;border-radius:16px;padding:14px 20px;margin:12px 0;box-shadow:0 2px 8px rgba(0,0,0,0.02);">
   <button id="b" aria-label="Nghe" style="
-      width:48px;height:48px;min-width:48px;border-radius:50%;border:none;
-      background:linear-gradient(135deg, #4f46e5 0%, #312e81 100%);cursor:pointer;display:flex;align-items:center;
-      justify-content:center;box-shadow:0 4px 14px rgba(79,70,229,0.3);
+      width:44px;height:44px;min-width:44px;border-radius:50%;border:none;
+      background:#4f46e5;cursor:pointer;display:flex;align-items:center;
+      justify-content:center;box-shadow:0 4px 12px rgba(79,70,229,0.25);
       transition:all 0.2s;"></button>
   <div style="flex-grow:1;">
-    <div style="font-size:15px;font-weight:700;color:#0f172a;">{nhan}</div>
-    <div id="tt" style="font-size:13px;color:#64748b;margin-top:2px;">Sẵn sàng phát âm thanh</div>
+    <div style="font-size:14px;font-weight:700;color:#0f172a;">{nhan}</div>
+    <div id="tt" style="font-size:12px;color:#64748b;margin-top:2px;">Sẵn sàng phát âm thanh</div>
   </div>
   <audio id="a" src="data:{mime};base64,{b64}" preload="auto"></audio>
 </div>
@@ -250,7 +215,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
   {tu_phat_js}
 }})();
 </script>
-""", height=88)
+""", height=82)
     return True
 
 
@@ -269,7 +234,7 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
     with st.status("Hệ thống đang phân tích yêu cầu...", expanded=False) as box:
         try:
             tuyen = _dinh_tuyen(cau_noi)
-        except Exception as e:
+        except Exception:
             kq["loi"] = "Hệ thống đang bận, vui lòng thử lại sau."
             box.update(label="Lỗi kết nối", state="error", expanded=False)
             return kq
@@ -284,7 +249,7 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
 
         try:
             kq["don_gian"] = _don_gian_hoa(tt.key, CAU_HOI_MAC_DINH)
-        except Exception as e:
+        except Exception:
             kq["loi"] = "Không thể tải chi tiết thủ tục."
             box.update(label="Lỗi xử lý", state="error", expanded=False)
             return kq
@@ -313,24 +278,20 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Khối Hero thiết kế chuẩn lưới hiện đại, tập trung cao độ vào trải nghiệm
-col_h1, col_h2 = st.columns([1.25, 1], gap="large")
-
-with col_h1:
-    st.markdown("""
-    <div style="padding-top: 4px;">
-        <div style="font-size: 13px; font-weight: 700; color: #4f46e5; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;">
-            ✨ Nền tảng trợ lý hành chính thông minh
-        </div>
-        <div class="saas-title">
-            Âm Vang Tiếng Núi — Thấu Hiểu Việc Nhà
-        </div>
-        <div class="saas-subtitle">
-            Xóa nhòa mọi khoảng cách ngôn ngữ và địa lý, giúp bà con tiếp cận thủ tục hành chính chính xác chỉ bằng giọng nói quen thuộc.
-        </div>
+# Khung giao diện chính đồng nhất không bị phân mảnh
+st.markdown("""
+<div class="app-container">
+    <div class="app-header">
+        <div class="app-badge">✨ Trợ Lý Hành Chính Giọng Nói Thông Minh</div>
+        <div class="app-title">Âm Vang Tiếng Núi — Thấu Hiểu Việc Nhà</div>
+        <div class="app-subtitle">Xóa nhòa mọi khoảng cách ngôn ngữ, giúp bà con dễ dàng tra cứu thủ tục hành chính bằng giọng nói quen thuộc.</div>
     </div>
-    """, unsafe_allow_html=True)
-    
+</div>
+""", unsafe_allow_html=True)
+
+# Thanh chọn ngôn ngữ và Micro gom gọn trong 1 box trung tâm thanh lịch
+col_chon, col_mic = st.columns([1, 1], gap="medium")
+with col_chon:
     LUA_CHON = ["🌐 Tiếng Mông (Hmoob)", "🇻🇳 Tiếng Việt"]
     ngon_ngu = st.segmented_control(
         "Chọn ngôn ngữ", LUA_CHON,
@@ -339,20 +300,8 @@ with col_h1:
     la_tieng_mong = ngon_ngu.endswith("Hmoob)")
     ss.la_tieng_mong = la_tieng_mong
 
-with col_h2:
-    st.markdown("""
-    <div class="voice-box-wrapper">
-        <div style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 12px;">
-            🎙️ Bấm micro bên dưới để nói
-        </div>
-        <div style="font-size: 13px; color: #64748b; margin-bottom: 16px;">
-            Hệ thống sẽ tự động lắng nghe yêu cầu của bà con
-        </div>
-    """, unsafe_allow_html=True)
-    
+with col_mic:
     audio_in = st.audio_input("Micro", label_visibility="collapsed")
-    
-    st.markdown("</div>", unsafe_allow_html=True)
 
 if audio_in is not None:
     raw = audio_in.getvalue()
@@ -403,17 +352,17 @@ def hien_ket_qua(kq: dict) -> None:
     dg = kq["don_gian"]
     
     st.markdown(f"""
-    <div class="saas-result-card">
-        <div style="font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 14px; letter-spacing: -0.5px;">
+    <div class="result-card">
+        <div style="font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 14px; letter-spacing: -0.4px;">
             📋 {tt.ten}
         </div>
-        <div style="font-size: 17px; color: #334155; line-height: 1.7; margin-bottom: 24px; font-weight: 500;">
+        <div style="font-size: 16px; color: #334155; line-height: 1.7; margin-bottom: 22px; font-weight: 500;">
             {dg.get('tom_tat_1_cau','')}
         </div>
         <div>
-            <span class="saas-chip">📍 <b>Nơi làm:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
-            <span class="saas-chip">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
-            <span class="saas-chip">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
+            <span class="info-tag">📍 <b>Nơi làm:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
+            <span class="info-tag">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
+            <span class="info-tag">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
         </div>
     """, unsafe_allow_html=True)
 
@@ -442,10 +391,9 @@ def hien_ket_qua(kq: dict) -> None:
 
 
 if ss.ket_qua:
-    st.write("---")
     hien_ket_qua(ss.ket_qua)
 
-# Phần tùy chọn phụ trợ tối ưu hóa không gian gọn gàng
+# Phần tùy chọn phụ trợ đặt gọn trong expander dưới cùng
 with st.expander("⌨️ Tùy chọn thay thế: Nhập chữ hoặc chọn danh mục thủ tục"):
     t_go, t_chon = st.tabs(["Gõ câu hỏi trực tiếp", "Chọn từ danh mục thủ tục"])
     with t_go:
