@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói (Tối ưu hóa điểm nhấn Micro trung tâm)."""
+"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói (Phiên bản Micro tối thượng - Master Voice UI)."""
 from __future__ import annotations
 
 import base64
@@ -25,7 +25,7 @@ ss.setdefault("ket_qua", None)
 ss.setdefault("cau_noi", "")
 ss.setdefault("audio_da_xu_ly", "")
 
-# Thiết kế hệ thống: Làm nổi bật tối đa micro, bố cục thông thoáng, tinh tế chuẩn SaaS
+# Thiết kế tập trung hoàn toàn vào khối Micro siêu lớn ở trung tâm
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
@@ -38,75 +38,72 @@ st.markdown("""
     .block-container {
         padding-top: 2rem;
         padding-bottom: 6rem;
-        max-width: 900px;
+        max-width: 880px;
     }
 
-    /* Tiêu đề & Slogan sang trọng */
-    .hero-box {
+    /* Tiêu đề gọn gàng, thanh lịch */
+    .top-header {
         text-align: center;
-        margin-bottom: 28px;
+        margin-bottom: 24px;
     }
-    .hero-badge {
+    .top-badge {
         display: inline-flex;
         align-items: center;
         gap: 6px;
         background: #eef2ff;
         color: #4f46e5;
-        padding: 6px 16px;
+        padding: 5px 14px;
         border-radius: 20px;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 700;
-        letter-spacing: 0.3px;
-        margin-bottom: 14px;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
         border: 1px solid #c7d2fe;
+        text-transform: uppercase;
     }
-    .hero-title {
-        font-size: 32px;
+    .top-title {
+        font-size: 28px;
         font-weight: 800;
         color: #0f172a;
-        letter-spacing: -0.8px;
-        margin-bottom: 10px;
-        line-height: 1.25;
-    }
-    .hero-subtitle {
-        font-size: 16px;
-        color: #64748b;
-        font-weight: 400;
-        line-height: 1.6;
-        max-width: 600px;
-        margin: 0 auto;
+        letter-spacing: -0.6px;
+        margin-bottom: 8px;
     }
 
-    /* KHỐI MICRO TRUNG TÂM - ĐIỂM NHẤN CỰC KỲ NỔI BẬT */
-    .mic-highlight-card {
-        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-        border: 2px solid #6366f1;
-        border-radius: 28px;
-        padding: 36px 32px;
+    /* KHỐI MICRO SIÊU NỔI BẬT - TÂM ĐIỂM TRANG WEB */
+    .ultimate-mic-container {
+        background: linear-gradient(135deg, #4f46e5 0%, #312e81 100%);
+        border-radius: 32px;
+        padding: 40px 32px;
         text-align: center;
-        box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.15);
+        box-shadow: 0 25px 50px -12px rgba(79, 70, 229, 0.35);
         margin-bottom: 32px;
+        color: #ffffff;
         position: relative;
         overflow: hidden;
     }
-    .mic-highlight-card::before {
+    .ultimate-mic-container::after {
         content: '';
         position: absolute;
-        top: 0; left: 0; right: 0; height: 6px;
-        background: linear-gradient(90deg, #4f46e5, #818cf8, #4f46e5);
+        width: 300px; height: 300px;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        top: -100px; right: -100px;
+        pointer-events: none;
     }
-    .mic-instruction {
-        font-size: 18px;
-        font-weight: 700;
-        color: #1e1b4b;
-        margin-bottom: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
+    .mic-main-title {
+        font-size: 22px;
+        font-weight: 800;
+        margin-bottom: 8px;
+        letter-spacing: -0.3px;
+        color: #ffffff;
+    }
+    .mic-main-desc {
+        font-size: 14px;
+        color: #e0e7ff;
+        margin-bottom: 24px;
+        font-weight: 400;
     }
 
-    /* Thẻ kết quả tinh tế */
+    /* Tùy chỉnh trực quan cho thẻ kết quả */
     .result-card {
         background: #ffffff;
         border: 1px solid #e2e8f0;
@@ -294,26 +291,24 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Phần Header giới thiệu tinh tế
+# Tiêu đề trang gọn gàng
 st.markdown("""
-<div class="hero-box">
-    <div class="hero-badge">✨ Trợ Lý Hành Chính Giọng Nói Thông Minh</div>
-    <div class="hero-title">Âm Vang Tiếng Núi — Thấu Hiểu Việc Nhà</div>
-    <div class="hero-subtitle">Xóa nhòa mọi khoảng cách ngôn ngữ, giúp bà con dễ dàng tra cứu thủ tục hành chính chỉ bằng giọng nói quen thuộc.</div>
+<div class="top-header">
+    <div class="top-badge">🏛️ Luật Gần Bà Con</div>
+    <div class="top-title">Âm Vang Tiếng Núi — Thấu Hiểu Việc Nhà</div>
 </div>
 """, unsafe_allow_html=True)
 
-# KHỐI MICRO LÀM TÂM ĐIỂM (CHỤP TRỌNG TÂM TRANG)
+# KHỐI MICRO SIÊU NỔI BẬT LÀM TÂM ĐIỂM TRUNG TÂM
 st.markdown("""
-<div class="mic-highlight-card">
-    <div class="mic-instruction">
-        🎙️ Bấm vào biểu tượng micro bên dưới và nói yêu cầu của bà con
-    </div>
+<div class="ultimate-mic-container">
+    <div class="mic-main-title">🎙️ Bấm vào Micro để nói yêu cầu của bà con</div>
+    <div class="mic-main-desc">Hệ thống sẽ tự động lắng nghe và tra cứu thủ tục hành chính chính xác nhất</div>
 """, unsafe_allow_html=True)
 
-col_lang, col_mic = st.columns([1, 1.2], gap="medium")
-with col_lang:
-    st.markdown("<div style='font-size:13px; font-weight:600; color:#64748b; margin-bottom:6px; text-align:left;'>Chọn ngôn ngữ trò chuyện:</div>", unsafe_allow_html=True)
+col_chon_lang, col_mic_input = st.columns([1, 1.4], gap="medium")
+with col_chon_lang:
+    st.markdown("<div style='font-size:13px; font-weight:600; color:#e0e7ff; margin-bottom:6px; text-align:left;'>Chọn ngôn ngữ trò chuyện:</div>", unsafe_allow_html=True)
     LUA_CHON = ["🌐 Tiếng Mông (Hmoob)", "🇻🇳 Tiếng Việt"]
     ngon_ngu = st.segmented_control(
         "Chọn ngôn ngữ", LUA_CHON,
@@ -322,8 +317,8 @@ with col_lang:
     la_tieng_mong = ngon_ngu.endswith("Hmoob)")
     ss.la_tieng_mong = la_tieng_mong
 
-with col_mic:
-    st.markdown("<div style='font-size:13px; font-weight:600; color:#64748b; margin-bottom:6px; text-align:left;'>Bấm để ghi âm giọng nói:</div>", unsafe_allow_html=True)
+with col_mic_input:
+    st.markdown("<div style='font-size:13px; font-weight:600; color:#e0e7ff; margin-bottom:6px; text-align:left;'>Bấm nút ghi âm bên dưới:</div>", unsafe_allow_html=True)
     audio_in = st.audio_input("Micro", label_visibility="collapsed")
 
 st.markdown("</div>", unsafe_allow_html=True)
