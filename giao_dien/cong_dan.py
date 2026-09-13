@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giải pháp chuyển đổi số bao trùm (Elite Edition)."""
+"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giải pháp chuyển đổi số bao trùm (Elite Compact Edition)."""
 from __future__ import annotations
 
 import base64
@@ -40,33 +40,33 @@ st.markdown("""
         background: #f8fafc;
     }
     .block-container {
-        padding-top: 2rem;
-        padding-bottom: 5rem;
-        max-width: 860px;
+        padding-top: 1.5rem;
+        padding-bottom: 4rem;
+        max-width: 840px;
     }
 
-    /* Elite Header Style */
+    /* Elite Compact Header Style */
     .elite-header {
         background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         color: white;
-        border-radius: 28px;
-        padding: 32px 36px;
+        border-radius: 20px;
+        padding: 20px 28px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 28px;
-        box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.25);
+        margin-bottom: 20px;
+        box-shadow: 0 10px 25px -10px rgba(15, 23, 42, 0.2);
         border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    /* Elite Voice Interactive Hub */
+    /* Elite Compact Voice Interactive Hub */
     .elite-voice-box {
         background: #ffffff;
         border: 1px solid #e2e8f0;
-        border-radius: 32px;
-        padding: 40px;
-        box-shadow: 0 15px 35px -10px rgba(15, 23, 42, 0.06);
-        margin-bottom: 28px;
+        border-radius: 24px;
+        padding: 24px 28px;
+        box-shadow: 0 10px 25px -8px rgba(15, 23, 42, 0.05);
+        margin-bottom: 20px;
         text-align: center;
         position: relative;
         overflow: hidden;
@@ -75,7 +75,7 @@ st.markdown("""
         content: '';
         position: absolute;
         top: 0; left: 0; right: 0;
-        height: 5px;
+        height: 4px;
         background: linear-gradient(90deg, #3b82f6, #6366f1, #8b5cf6);
     }
 
@@ -83,39 +83,39 @@ st.markdown("""
     .elite-result-card {
         background: #ffffff;
         border: 1px solid #e2e8f0;
-        border-radius: 28px;
-        padding: 36px;
-        box-shadow: 0 15px 35px -10px rgba(15, 23, 42, 0.06);
-        margin-top: 24px;
+        border-radius: 24px;
+        padding: 28px;
+        box-shadow: 0 10px 25px -8px rgba(15, 23, 42, 0.05);
+        margin-top: 20px;
     }
 
     .elite-pill {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         background: #f8fafc;
-        padding: 10px 16px;
-        border-radius: 14px;
+        padding: 8px 14px;
+        border-radius: 12px;
         font-size: 13px;
         font-weight: 700;
         color: #334155;
         margin-right: 8px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         border: 1px solid #e2e8f0;
     }
 
     .stButton > button {
-        border-radius: 16px;
+        border-radius: 14px;
         font-weight: 700;
-        padding: 0.8rem 1.6rem;
-        transition: all 0.25s ease;
+        padding: 0.6rem 1.4rem;
+        transition: all 0.2s ease;
         border: none;
         background: #2563eb;
         color: white;
     }
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
         background: #1d4ed8;
     }
 </style>
@@ -162,11 +162,11 @@ def _audio_b64(duong_dan: str) -> tuple[str, str]:
     return base64.b64encode(p.read_bytes()).decode(), mime
 
 
-_SVG_LOA = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="white">'
+_SVG_LOA = ('<svg width="18" height="18" viewBox="0 0 24 24" fill="white">'
             '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05'
             'c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 '
             '5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>')
-_SVG_DUNG = ('<svg width="18" height="18" viewBox="0 0 24 24" fill="white">'
+_SVG_DUNG = ('<svg width="16" height="16" viewBox="0 0 24 24" fill="white">'
              '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>')
 
 
@@ -180,15 +180,15 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
     tu_phat_js = ("a.play().then(function(){}).catch(function(){"
                   "tt.textContent='Chạm để nghe lại';});") if tu_phat else ""
     _html(f"""
-<div style="display:flex;align-items:center;gap:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:16px 22px;margin:16px 0;">
+<div style="display:flex;align-items:center;gap:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:12px 18px;margin:12px 0;">
   <button id="b" aria-label="Nghe" style="
-      width:50px;height:50px;min-width:50px;border-radius:50%;border:none;
+      width:42px;height:42px;min-width:42px;border-radius:50%;border:none;
       background:#2563eb;cursor:pointer;display:flex;align-items:center;
-      justify-content:center;box-shadow:0 6px 16px rgba(37,99,235,0.35);
+      justify-content:center;box-shadow:0 4px 12px rgba(37,99,235,0.3);
       transition:all 0.2s;"></button>
   <div style="flex-grow:1;">
-    <div style="font-size:15px;font-weight:700;color:#0f172a;">{nhan}</div>
-    <div id="tt" style="font-size:12px;color:#64748b;margin-top:3px;font-weight:600;">Chạm để phát âm thanh hướng dẫn</div>
+    <div style="font-size:14px;font-weight:700;color:#0f172a;">{nhan}</div>
+    <div id="tt" style="font-size:11px;color:#64748b;margin-top:2px;font-weight:600;">Chạm để phát âm thanh hướng dẫn</div>
   </div>
   <audio id="a" src="data:{mime};base64,{b64}" preload="auto"></audio>
 </div>
@@ -208,7 +208,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
   {tu_phat_js}
 }})();
 </script>
-""", height=92)
+""", height=78)
     return True
 
 
@@ -271,26 +271,26 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Tiêu đề sang trọng, trang nghiêm với huy hiệu chính xác đúng chủ đề bản làng vùng cao
+# Tiêu đề gọn gàng, cân đối, sang trọng
 st.markdown("""
 <div class="elite-header">
     <div>
-        <div style="font-size: 22px; font-weight: 800; letter-spacing: -0.4px; color: #ffffff;">CỔNG DỊCH VỤ CÔNG TRỰC TUYẾN</div>
-        <div style="font-size: 14px; font-weight: 500; color: #94a3b8; margin-top: 4px;">Trợ lý ảo giọng nói đa ngôn ngữ — Hỗ trợ đồng bào dân tộc và nhân dân</div>
+        <div style="font-size: 19px; font-weight: 800; letter-spacing: -0.3px; color: #ffffff;">CỔNG DỊCH VỤ CÔNG TRỰC TUYẾN</div>
+        <div style="font-size: 13px; font-weight: 500; color: #94a3b8; margin-top: 2px;">Trợ lý ảo giọng nói đa ngôn ngữ — Hỗ trợ đồng bào dân tộc và nhân dân</div>
     </div>
-    <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 8px 16px; border-radius: 12px; font-size: 12px; font-weight: 700; border: 1px solid rgba(255,255,255,0.15); color: #e2e8f0;">
+    <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 700; border: 1px solid rgba(255,255,255,0.15); color: #e2e8f0; white-space: nowrap;">
         🏔️ Trợ lý Bản Làng
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Trạm tương tác giọng nói cao cấp
+# Trạm tương tác giọng nói gọn gàng, tinh tế
 st.markdown("""
 <div class="elite-voice-box">
-    <div style="font-size: 21px; font-weight: 800; color: #0f172a; margin-bottom: 8px; letter-spacing: -0.3px;">
+    <div style="font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 4px; letter-spacing: -0.2px;">
         🎙️ Trạm Tương Tác Giọng Nói Thông Minh
     </div>
-    <div style="font-size: 14px; color: #64748b; font-weight: 500; margin-bottom: 24px;">
+    <div style="font-size: 13px; color: #64748b; font-weight: 500; margin-bottom: 16px;">
         Vui lòng chọn ngôn ngữ giao tiếp và bấm vào biểu tượng Micro để nói yêu cầu thủ tục của bạn
     </div>
 """, unsafe_allow_html=True)
@@ -357,10 +357,10 @@ def hien_ket_qua(kq: dict) -> None:
     
     st.markdown(f"""
     <div class="elite-result-card">
-        <div style="font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 12px; letter-spacing: -0.3px;">
+        <div style="font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 10px; letter-spacing: -0.2px;">
             📋 {tt.ten}
         </div>
-        <div style="font-size: 15px; color: #334155; line-height: 1.6; margin-bottom: 24px; font-weight: 600;">
+        <div style="font-size: 14px; color: #334155; line-height: 1.6; margin-bottom: 18px; font-weight: 600;">
             {dg.get('tom_tat_1_cau','')}
         </div>
         <div>
@@ -372,7 +372,7 @@ def hien_ket_qua(kq: dict) -> None:
 
     bb = [m for m in dg.get("mang_gi", []) if m.get("bat_buoc")]
     if bb:
-        st.markdown("<div style='margin-top: 20px; font-size: 16px; font-weight: 800; color: #0f172a;'>🎒 Danh mục giấy tờ bắt buộc cần chuẩn bị:</div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 16px; font-size: 15px; font-weight: 800; color: #0f172a;'>🎒 Danh mục giấy tờ bắt buộc cần chuẩn bị:</div>", unsafe_allow_html=True)
         for m in bb:
             sl = f" ({m['so_luong']})" if m.get("so_luong") else ""
             st.markdown(f"- {m['ten_don_gian']}{sl}")
