@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin bản làng — Trợ lý giọng nói trực quan, sinh động."""
+"""Cổng thông tin bản làng — Trợ lý giọng nói cao cấp (Master UI/UX Edition)."""
 from __future__ import annotations
 
 import base64
@@ -26,7 +26,7 @@ ss.setdefault("cau_noi", "")
 ss.setdefault("audio_da_xu_ly", "")
 ss.setdefault("la_tieng_mong", True)
 
-# Giao diện CSS sống động, hiệu ứng mượt mà, hiện đại
+# Giao diện đỉnh cao: Glassmorphism, hiệu ứng chuyển màu mượt mà, tối ưu trải nghiệm chạm
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -38,52 +38,58 @@ st.markdown("""
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
         color: #0f172a;
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        background: radial-gradient(circle at top center, #f8fafc 0%, #f1f5f9 100%);
     }
     .block-container {
-        padding-top: 1.5rem;
-        padding-bottom: 5rem;
+        padding-top: 2rem;
+        padding-bottom: 6rem;
         max-width: 820px;
     }
 
-    /* Khối Micro trọng tâm siêu nổi bật với hiệu ứng phát sáng nhẹ */
-    .hero-mic-box {
-        background: linear-gradient(145deg, #ffffff 0%, #fffbeb 100%);
-        border: 3px solid #f59e0b;
-        border-radius: 36px;
-        padding: 40px 30px;
-        box-shadow: 0 20px 45px -10px rgba(245, 158, 11, 0.25);
-        margin: 10px auto 30px auto;
-        text-align: center;
-        position: relative;
-    }
-    .hero-mic-box::before {
-        content: "✨";
-        position: absolute;
-        top: 20px;
-        left: 25px;
-        font-size: 20px;
-    }
-    .hero-mic-box::after {
-        content: "✨";
-        position: absolute;
-        top: 20px;
-        right: 25px;
-        font-size: 20px;
+    /* Header siêu gọn dạng thanh nổi Glassmorphism */
+    .master-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        padding: 16px 24px;
+        border-radius: 24px;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
     }
 
-    /* Thẻ kết quả sống động */
+    /* Khối Micro trọng tâm siêu nổi bật (100px visual feel) */
+    .hero-mic-station {
+        background: linear-gradient(145deg, #ffffff 0%, #fffbeb 100%);
+        border: 4px solid #f59e0b;
+        border-radius: 40px;
+        padding: 45px 30px;
+        box-shadow: 0 25px 60px -15px rgba(245, 158, 11, 0.3);
+        margin: 0 auto 35px auto;
+        text-align: center;
+        position: relative;
+        animation: pulseGlow 3s infinite ease-in-out;
+    }
+    @keyframes pulseGlow {
+        0% { box-shadow: 0 25px 60px -15px rgba(245, 158, 11, 0.3); }
+        50% { box-shadow: 0 30px 70px -10px rgba(245, 158, 11, 0.45); }
+        100% { box-shadow: 0 25px 60px -15px rgba(245, 158, 11, 0.3); }
+    }
+
+    /* Thẻ kết quả thiết kế dạng card cao cấp */
     .result-card {
         background: #ffffff;
         border: 2px solid #e2e8f0;
-        border-radius: 28px;
-        padding: 35px;
-        box-shadow: 0 15px 35px -10px rgba(37, 99, 235, 0.08);
-        margin-top: 24px;
-        animation: fadeIn 0.4s ease-in-out;
+        border-radius: 30px;
+        padding: 40px;
+        box-shadow: 0 20px 40px -12px rgba(30, 58, 138, 0.1);
+        margin-top: 30px;
+        animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
@@ -92,26 +98,26 @@ st.markdown("""
         align-items: center;
         gap: 8px;
         background: #eff6ff;
-        padding: 10px 16px;
-        border-radius: 14px;
+        padding: 10px 18px;
+        border-radius: 16px;
         font-size: 14px;
         font-weight: 700;
         color: #1d4ed8;
         margin-right: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         border: 1px solid #bfdbfe;
     }
 
     .stButton > button {
-        border-radius: 16px;
+        border-radius: 18px;
         font-weight: 700;
-        padding: 0.85rem 1.8rem;
-        transition: all 0.25s ease;
+        padding: 0.9rem 2rem;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         border: none;
     }
     .stButton > button:hover {
         transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -157,11 +163,11 @@ def _audio_b64(duong_dan: str) -> tuple[str, str]:
     return base64.b64encode(p.read_bytes()).decode(), mime
 
 
-_SVG_LOA = ('<svg width="22" height="22" viewBox="0 0 24 24" fill="white">'
+_SVG_LOA = ('<svg width="24" height="24" viewBox="0 0 24 24" fill="white">'
             '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05'
             'c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 '
             '5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>')
-_SVG_DUNG = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="white">'
+_SVG_DUNG = ('<svg width="22" height="22" viewBox="0 0 24 24" fill="white">'
              '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>')
 
 
@@ -175,15 +181,15 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
     tu_phat_js = ("a.play().then(function(){}).catch(function(){"
                   "tt.textContent='Chạm để nghe lại';});") if tu_phat else ""
     _html(f"""
-<div style="display:flex;align-items:center;gap:16px;background:linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);border:2px solid #3b82f6;border-radius:24px;padding:16px 22px;margin:16px 0;box-shadow:0 8px 25px rgba(37,99,235,0.18);">
+<div style="display:flex;align-items:center;gap:18px;background:linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);border:2px solid #3b82f6;border-radius:26px;padding:18px 24px;margin:18px 0;box-shadow:0 10px 30px rgba(37,99,235,0.2);">
   <button id="b" aria-label="Nghe" style="
-      width:56px;height:56px;min-width:56px;border-radius:50%;border:none;
+      width:60px;height:60px;min-width:60px;border-radius:50%;border:none;
       background:linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);cursor:pointer;display:flex;align-items:center;
-      justify-content:center;box-shadow:0 6px 18px rgba(37,99,235,0.45);
+      justify-content:center;box-shadow:0 8px 22px rgba(37,99,235,0.5);
       transition:all 0.2s cubic-bezier(0.4, 0, 0.2, 1);"></button>
   <div style="flex-grow:1;">
-    <div style="font-size:16px;font-weight:800;color:#1e3a8a;letter-spacing:-0.2px;">{nhan}</div>
-    <div id="tt" style="font-size:13px;color:#475569;margin-top:3px;font-weight:600;">Chạm vào nút xanh để nghe phản hồi</div>
+    <div style="font-size:17px;font-weight:800;color:#1e3a8a;letter-spacing:-0.2px;">{nhan}</div>
+    <div id="tt" style="font-size:13px;color:#475569;margin-top:4px;font-weight:600;">Chạm vào nút xanh để nghe phản hồi</div>
   </div>
   <audio id="a" src="data:{mime};base64,{b64}" preload="auto"></audio>
 </div>
@@ -203,7 +209,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
   {tu_phat_js}
 }})();
 </script>
-""", height=98)
+""", height=104)
     return True
 
 
@@ -266,23 +272,23 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# 1. Header siêu gọn: Logo và tên dự án cùng hàng, không có slogan rườm rà hay thanh công cụ Streamlit
+# 1. Header siêu gọn: Logo và tên dự án cùng hàng trên cùng, không có thanh công cụ thừa
 st.markdown("""
-<div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; padding: 14px 24px; border-radius: 20px; border: 1px solid #e2e8f0; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+<div class="master-header">
     <div style="display: flex; align-items: center; gap: 12px;">
-        <span style="font-size: 26px;">🏔️</span>
+        <span style="font-size: 28px;">🏔️</span>
         <span style="font-size: 20px; font-weight: 800; color: #1e3a8a; letter-spacing: -0.3px;">Cổng Thông Tin Bản Làng</span>
     </div>
-    <div style="font-size: 13px; font-weight: 700; color: #2563eb; background: #eff6ff; padding: 6px 14px; border-radius: 12px; border: 1px solid #bfdbfe;">
+    <div style="font-size: 13px; font-weight: 700; color: #2563eb; background: #eff6ff; padding: 6px 16px; border-radius: 14px; border: 1px solid #bfdbfe;">
         Trợ lý Giọng nói thông minh
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# 2 & 3. Nút Micro nổi bật chính giữa màn hình (cảm giác 100px) & Mặc định Tiếng Mông
+# 2 & 3. Nút Micro nổi bật chính giữa màn hình (Cảm giác 100px) & Mặc định Tiếng Mông
 st.markdown("""
-<div class="hero-mic-box">
-    <div style="font-size: 22px; font-weight: 800; color: #1e3a8a; margin-bottom: 16px; letter-spacing: -0.3px;">
+<div class="hero-mic-station">
+    <div style="font-size: 23px; font-weight: 800; color: #1e3a8a; margin-bottom: 18px; letter-spacing: -0.3px;">
         🎙️ Chạm vào Micro để nói yêu cầu của bạn
     </div>
 """, unsafe_allow_html=True)
@@ -349,10 +355,10 @@ def hien_ket_qua(kq: dict) -> None:
     
     st.markdown(f"""
     <div class="result-card">
-        <div style="font-size: 24px; font-weight: 800; color: #1e3a8a; margin-bottom: 12px; letter-spacing: -0.4px;">
+        <div style="font-size: 26px; font-weight: 800; color: #1e3a8a; margin-bottom: 14px; letter-spacing: -0.4px;">
             📋 {tt.ten}
         </div>
-        <div style="font-size: 17px; color: #334155; line-height: 1.7; margin-bottom: 22px; font-weight: 600;">
+        <div style="font-size: 18px; color: #334155; line-height: 1.7; margin-bottom: 24px; font-weight: 600;">
             {dg.get('tom_tat_1_cau','')}
         </div>
         <div>
@@ -364,7 +370,7 @@ def hien_ket_qua(kq: dict) -> None:
 
     bb = [m for m in dg.get("mang_gi", []) if m.get("bat_buoc")]
     if bb:
-        st.markdown("<div style='margin-top: 18px; font-weight: 800; color: #1e3a8a;'>🎒 Danh mục giấy tờ cần chuẩn bị:</div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 20px; font-weight: 800; color: #1e3a8a; font-size: 16px;'>🎒 Danh mục giấy tờ cần chuẩn bị:</div>", unsafe_allow_html=True)
         for m in bb:
             sl = f" ({m['so_luong']})" if m.get("so_luong") else ""
             st.markdown(f"- {m['ten_don_gian']}{sl}")
@@ -379,7 +385,7 @@ def hien_ket_qua(kq: dict) -> None:
     if kq.get("audio_viet"):
         nut_loa(kq["audio_viet"], nhan="🔊 Nghe hướng dẫn chi tiết bằng tiếng Việt", tu_phat=not uu_tien_mong)
 
-    # 4. Loại bỏ hoàn toàn các thông số kỹ thuật (như VẤN ĐỀ KHÁC, độ tin cậy)
+    # 4. Đã loại bỏ hoàn toàn các thông số kỹ thuật rắc rối (độ tin cậy, vấn đề khác...)
 
     nut_goi_can_bo(kq)
 
@@ -387,7 +393,7 @@ def hien_ket_qua(kq: dict) -> None:
 if ss.ket_qua:
     hien_ket_qua(ss.ket_qua)
 
-# 6. Thu gọn nhập liệu bàn phím ở góc dưới cùng dưới dạng đường dẫn phụ
+# 6. Thu gọn nhập liệu bàn phím ở góc dưới dạng đường dẫn phụ, không làm phân tâm người dùng giọng nói
 st.markdown("<br>", unsafe_allow_html=True)
 with st.expander("⌨️ Bàn phím phụ: Gõ chữ hoặc chọn từ danh mục (Dành cho người dùng cần trợ giúp nhập văn bản)"):
     t_go, t_chon = st.tabs(["Gõ câu hỏi trực tiếp", "Chọn từ danh mục"])
