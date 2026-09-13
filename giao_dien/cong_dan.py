@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói (Bản thiết kế cao cấp & sống động)."""
+"""Cổng người dân — hỏi đáp thủ tục bằng giọng nói (Bản thiết kế điện ảnh, tinh tế & gần gũi)."""
 from __future__ import annotations
 
 import base64
@@ -27,90 +27,128 @@ ss.setdefault("ket_qua", None)
 ss.setdefault("cau_noi", "")
 ss.setdefault("audio_da_xu_ly", "")
 
-# Giao diện CSS đẳng cấp, hiện đại, loại bỏ hoàn toàn sự thô cứng và rối mắt
+# Thiết kế giao diện điện ảnh (Cinematic), sang trọng nhưng ấm áp, gần gũi với đồng bào
 st.markdown("""
 <style>
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 4rem;
-        max-width: 900px;
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+    html, body, [class*="css"] {
+        font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    .hero-container {
-        background: linear-gradient(135deg, #1e1b4b 100%, #312e81 0%, #1e40af 100%);
+    .block-container {
+        padding-top: 2.5rem;
+        padding-bottom: 5rem;
+        max-width: 920px;
+    }
+    
+    /* Hiệu ứng nền điện ảnh chiều sâu */
+    .hero-cinematic {
+        background: radial-gradient(circle at top right, #312e81 0%, #0f172a 60%, #020617 100%);
         color: #ffffff;
-        padding: 36px 28px;
-        border-radius: 24px;
+        padding: 42px 32px;
+        border-radius: 28px;
         text-align: center;
-        box-shadow: 0 20px 40px -15px rgba(30, 27, 75, 0.4);
-        margin-bottom: 28px;
+        box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.6);
+        margin-bottom: 30px;
         border: 1px solid rgba(255, 255, 255, 0.12);
         position: relative;
         overflow: hidden;
     }
+    .hero-cinematic::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+        pointer-events: none;
+    }
     .hero-badge {
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(8px);
-        padding: 6px 16px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        padding: 6px 18px;
         border-radius: 50px;
         font-size: 13px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        margin-bottom: 14px;
-        color: #e0e7ff;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        margin-bottom: 16px;
+        color: #818cf8;
+        border: 1px solid rgba(129, 140, 248, 0.3);
+        text-transform: uppercase;
     }
     .hero-title {
-        font-size: 30px;
+        font-size: 32px;
         font-weight: 800;
-        letter-spacing: -0.5px;
-        margin-bottom: 8px;
+        letter-spacing: -0.6px;
+        margin-bottom: 10px;
+        background: linear-gradient(to right, #ffffff, #c7d2fe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     .hero-subtitle {
         font-size: 16px;
-        color: #cbd5e1;
+        color: #94a3b8;
         font-weight: 400;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.5;
     }
-    .result-card {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-radius: 20px;
-        padding: 28px;
-        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04);
-        margin: 20px 0;
-        position: relative;
+
+    /* Thẻ kết quả Glassmorphism cao cấp */
+    .result-card-cine {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.06);
+        margin: 24px 0;
+        animation: fadeIn 0.4s ease-out;
     }
-    .info-pill {
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .pill-tag {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: #f1f5f9;
-        padding: 8px 14px;
-        border-radius: 12px;
+        background: #f8fafc;
+        padding: 8px 16px;
+        border-radius: 14px;
         font-size: 14px;
         font-weight: 600;
         color: #334155;
         margin-right: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         border: 1px solid #e2e8f0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.02);
     }
+
+    /* Nút bấm hiện đại */
     .stButton > button {
         border-radius: 14px;
-        font-weight: 600;
-        padding: 0.65rem 1.4rem;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        font-weight: 700;
+        padding: 0.7rem 1.5rem;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        border: none;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.04);
     }
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        box-shadow: 0 8px 20px rgba(30, 41, 59, 0.12);
     }
 </style>
 
-<div class="hero-container">
-    <div class="hero-badge">✨ TRỢ LÝ HÀNH CHÍNH THÔNG MINH</div>
+<div class="hero-cinematic">
+    <div class="hero-badge">🌟 Cổng Hành Chính Thế Hệ Mới</div>
     <div class="hero-title">Nói tiếng của mình — Thấu hiểu việc nước nhà</div>
-    <div class="hero-subtitle">Tra cứu thủ tục công dễ dàng, nhanh chóng bằng giọng nói</div>
+    <div class="hero-subtitle">Đồng hành cùng bà con giải quyết thủ tục nhanh chóng, chính xác bằng giọng nói thân thuộc</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -158,11 +196,11 @@ def _audio_b64(duong_dan: str) -> tuple[str, str]:
     return base64.b64encode(p.read_bytes()).decode(), mime
 
 
-_SVG_LOA = ('<svg width="22" height="22" viewBox="0 0 24 24" fill="white">'
+_SVG_LOA = ('<svg width="24" height="24" viewBox="0 0 24 24" fill="white">'
             '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05'
             'c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 '
             '5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>')
-_SVG_DUNG = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="white">'
+_SVG_DUNG = ('<svg width="22" height="22" viewBox="0 0 24 24" fill="white">'
              '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>')
 
 
@@ -176,15 +214,15 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
     tu_phat_js = ("a.play().then(function(){}).catch(function(){"
                   "tt.textContent='Bấm để nghe âm thanh';});") if tu_phat else ""
     _html(f"""
-<div style="display:flex;align-items:center;gap:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:14px 18px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,0.02);">
+<div style="display:flex;align-items:center;gap:18px;background:linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);border:1px solid #cbd5e1;border-radius:18px;padding:16px 20px;margin:12px 0;box-shadow:0 4px 15px rgba(0,0,0,0.03);">
   <button id="b" aria-label="Nghe" style="
-      width:48px;height:48px;min-width:48px;border-radius:50%;border:none;
-      background:linear-gradient(135deg, #312e81 0%, #1e40af 100%);cursor:pointer;display:flex;align-items:center;
-      justify-content:center;box-shadow:0 4px 12px rgba(30,64,175,0.3);
+      width:52px;height:52px;min-width:52px;border-radius:50%;border:none;
+      background:linear-gradient(135deg, #4f46e5 0%, #312e81 100%);cursor:pointer;display:flex;align-items:center;
+      justify-content:center;box-shadow:0 6px 18px rgba(79,70,229,0.35);
       transition:all 0.2s;"></button>
   <div style="flex-grow:1;">
-    <div style="font-size:15px;font-weight:700;color:#1e293b;letter-spacing:-0.2px;">{nhan}</div>
-    <div id="tt" style="font-size:13px;color:#64748b;margin-top:2px;">Sẵn sàng phát</div>
+    <div style="font-size:16px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">{nhan}</div>
+    <div id="tt" style="font-size:13px;color:#64748b;margin-top:2px;">Sẵn sàng phát âm thanh</div>
   </div>
   <audio id="a" src="data:{mime};base64,{b64}" preload="auto"></audio>
 </div>
@@ -204,7 +242,7 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
   {tu_phat_js}
 }})();
 </script>
-""", height=84)
+""", height=92)
     return True
 
 
@@ -220,7 +258,7 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
     t0 = time.perf_counter()
     kq: dict = {"cau_noi": cau_noi, "thoi_gian": {}}
 
-    with st.status("Đang phân tích và tra cứu dữ liệu...", expanded=False) as box:
+    with st.status("Đang phân tích yêu cầu bằng AI...", expanded=False) as box:
         try:
             tuyen = _dinh_tuyen(cau_noi)
         except Exception as e:
@@ -267,19 +305,19 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = kq
 
 
-# Lựa chọn ngôn ngữ với Segmented Control tinh gọn
-LUA_CHON = ["🔊 Tiếng Mông", "🔊 Tiếng Việt"]
+# Lựa chọn ngôn ngữ sang trọng, nổi bật
+LUA_CHON = ["🔊 Tiếng Mông (Hmoob)", "🔊 Tiếng Việt"]
 ngon_ngu = st.segmented_control(
     "Chọn ngôn ngữ", LUA_CHON,
     default=LUA_CHON[0], label_visibility="collapsed"
 ) or LUA_CHON[0]
 
-la_tieng_mong = ngon_ngu.endswith("Mông")
+la_tieng_mong = ngon_ngu.endswith("Hmoob)")
 ss.la_tieng_mong = la_tieng_mong
 
 st.markdown(
-    '<div style="text-align:center;font-size:17px;font-weight:600;'
-    'color:#475569;margin:24px 0 12px 0;">Bấm vào micro bên dưới và nói yêu cầu của bạn</div>',
+    '<div style="text-align:center;font-size:18px;font-weight:700;'
+    'color:#1e293b;margin:28px 0 14px 0;">🎙️ Bấm vào biểu tượng micro bên dưới và nói yêu cầu của bạn</div>',
     unsafe_allow_html=True,
 )
 
@@ -290,7 +328,7 @@ if audio_in is not None:
     van_tay = hashlib.sha256(raw).hexdigest()[:16]
     if van_tay != ss.audio_da_xu_ly and len(raw) > 2000:
         ss.audio_da_xu_ly = van_tay
-        with st.spinner("Đang nhận diện giọng nói thông minh..."):
+        with st.spinner("Đang lắng nghe và nhận diện giọng nói..."):
             van_ban, _ = nghe(audio_in, tieng_mong=la_tieng_mong)
         if not van_ban:
             st.error("Chưa nghe rõ giọng nói, vui lòng bấm và nói lại rõ hơn.")
@@ -305,7 +343,7 @@ if audio_in is not None:
 
 def nut_goi_can_bo(kq: dict) -> None:
     st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("🙋 KẾT NỐI TRỰC TIẾP VỚI CÁN BỘ XÃ", use_container_width=True):
+    if st.button("🙋 KẾT NỐI TRỰC TIẾP VỚI CÁN BỘ XÃ HỖ TRỢ", use_container_width=True):
         tt = kq.get("thu_tuc")
         ss.danh_sach_yeu_cau.append({
             "thoi_gian": datetime.now().strftime("%H:%M - %d/%m"),
@@ -313,7 +351,7 @@ def nut_goi_can_bo(kq: dict) -> None:
             "chi_tiet": kq["cau_noi"],
             "trang_thai": "Chờ xử lý",
         })
-        st.success("Đã gửi yêu cầu thành công. Cán bộ sẽ liên hệ lại với bạn.")
+        st.success("Đã gửi yêu cầu thành công. Cán bộ sẽ liên hệ hỗ trợ bà con ngay.")
 
 
 def hien_ket_qua(kq: dict) -> None:
@@ -325,7 +363,7 @@ def hien_ket_qua(kq: dict) -> None:
     tuyen, tt = kq["tuyen"], kq.get("thu_tuc")
 
     if tuyen["can_can_bo"] or tt is None:
-        cau_hoi = tuyen.get("cau_hoi_lam_ro") or "Vui lòng mô tả chi tiết hơn thủ tục bạn muốn thực hiện."
+        cau_hoi = tuyen.get("cau_hoi_lam_ro") or "Vui lòng mô tả chi tiết hơn thủ tục bà con muốn thực hiện."
         st.warning(f"❓ {cau_hoi}")
         loa(cau_hoi, tu_phat=True)
         nut_goi_can_bo(kq)
@@ -334,17 +372,17 @@ def hien_ket_qua(kq: dict) -> None:
     dg = kq["don_gian"]
     
     st.markdown(f"""
-    <div class="result-card">
-        <div style="font-size:20px;font-weight:800;color:#1e1b4b;margin-bottom:12px;letter-spacing:-0.3px;">
+    <div class="result-card-cine">
+        <div style="font-size:22px;font-weight:800;color:#1e1b4b;margin-bottom:14px;letter-spacing:-0.4px;">
             🏷️ {tt.ten}
         </div>
-        <div style="font-size:16px;color:#334155;line-height:1.7;margin-bottom:20px;font-weight:500;">
+        <div style="font-size:17px;color:#334155;line-height:1.7;margin-bottom:22px;font-weight:500;">
             {dg.get('tom_tat_1_cau','')}
         </div>
-        <div style="margin-bottom:16px;">
-            <span class="info-pill">📍 <b>Nơi làm:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
-            <span class="info-pill">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
-            <span class="info-pill">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
+        <div style="margin-bottom:18px;">
+            <span class="pill-tag">📍 <b>Nơi làm:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
+            <span class="pill-tag">⏱️ <b>Thời gian:</b> {dg.get('bao_lau','—')}</span>
+            <span class="pill-tag">💰 <b>Lệ phí:</b> {dg.get('bao_nhieu_tien','—')}</span>
         </div>
     """, unsafe_allow_html=True)
 
@@ -359,13 +397,13 @@ def hien_ket_qua(kq: dict) -> None:
 
     uu_tien_mong = bool(kq.get("la_tieng_mong", True)) and bool(kq.get("audio_mong"))
     if kq.get("audio_mong"):
-        nut_loa(kq["audio_mong"], nhan="Nghe hướng dẫn bằng tiếng Mông", tu_phat=uu_tien_mong)
+        nut_loa(kq["audio_mong"], nhan="Nghe hướng dẫn bằng tiếng Mông (Hmoob)", tu_phat=uu_tien_mong)
 
     if kq.get("audio_viet"):
         nut_loa(kq["audio_viet"], nhan="Nghe hướng dẫn bằng tiếng Việt", tu_phat=not uu_tien_mong)
 
     if auth.nguoi_dang_nhap():
-        with st.expander("⚙️ Thông số kỹ thuật chuyên sâu (Chỉ cán bộ thấy)"):
+        with st.expander("⚙️ Thông số hệ thống chuyên sâu (Cán bộ xem)"):
             st.metric("Độ tin cậy xử lý", f"{dg.get('do_tin_cay', 0):.0%}")
             st.caption(f"Mã thủ tục: {tt.ma_thu_tuc}")
 
@@ -376,30 +414,30 @@ if ss.ket_qua:
     st.write("---")
     hien_ket_qua(ss.ket_qua)
 
-# Phần phụ trợ gọn gàng ở cuối trang
-with st.expander("⌨️ Phương án thay thế: Gõ chữ hoặc chọn danh mục thủ tục"):
-    t_go, t_chon = st.tabs(["Gõ câu hỏi trực tiếp", "Chọn từ danh sách"])
+# Phần thay thế trực quan ở cuối trang
+with st.expander("⌨️ Phương án thay thế: Gõ chữ hoặc chọn danh mục nhanh"):
+    t_go, t_chon = st.tabs(["Gõ câu hỏi trực tiếp", "Chọn từ danh sách thủ tục"])
     with t_go:
-        txt = st.text_input("Nhập yêu cầu của bạn:", label_visibility="collapsed", placeholder="Ví dụ: Đăng ký kết hôn cần giấy tờ gì...")
-        if st.button("Tra cứu văn bản", type="primary") and txt.strip():
+        txt = st.text_input("Nhập nội dung cần tìm:", label_visibility="collapsed", placeholder="Ví dụ: Đăng ký kết hôn cần giấy tờ gì...")
+        if st.button("Tra cứu ngay", type="primary") and txt.strip():
             xu_ly_cau_noi(txt.strip())
             st.rerun()
     with t_chon:
-        nhom_chon = st.selectbox("Chọn lĩnh vực:", list(DANH_MUC_THU_TUC.keys()), format_func=lambda k: DANH_MUC_THU_TUC[k])
+        nhom_chon = st.selectbox("Chọn lĩnh vực hành chính:", list(DANH_MUC_THU_TUC.keys()), format_func=lambda k: DANH_MUC_THU_TUC[k])
         ds = kb.theo_nhom(nhom_chon)
         if ds:
-            tt_chon = st.selectbox("Chọn thủ tục:", ds, format_func=lambda t: t.ten)
-            if st.button("Xem ngay hướng dẫn", type="primary"):
+            tt_chon = st.selectbox("Chọn thủ tục cụ thể:", ds, format_func=lambda t: t.ten)
+            if st.button("Xem hướng dẫn chi tiết", type="primary"):
                 xu_ly_cau_noi(tt_chon.ten)
                 st.rerun()
 
 if auth.nguoi_dang_nhap():
     with st.sidebar:
         st.divider()
-        st.markdown("### Quản trị hệ thống")
+        st.markdown("### Quản trị viên")
         tk = kb.thong_ke()
         st.metric("Tổng số thủ tục", tk["so_thu_tuc"])
         if ss.danh_sach_yeu_cau:
-            st.markdown("### Yêu cầu chờ xử lý")
+            st.markdown("### Yêu cầu hỗ trợ mới")
             for p in ss.danh_sach_yeu_cau[-3:]:
                 st.caption(f"{p['thoi_gian']} — {p['van_de']}")
