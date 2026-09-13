@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng người dân — Giao diện sang trọng, đậm đà bản sắc vùng cao, thân thiện tối đa với bà con."""
+"""Cổng người dân — Giao diện đỉnh cao, kết hợp sự sang trọng hiện đại và bản sắc vùng cao ấm áp."""
 from __future__ import annotations
 
 import hashlib
@@ -9,7 +9,6 @@ from datetime import datetime
 import streamlit as st
 
 from core import kb
-from core.config import NGUONG_TU_TIN
 from core.llm import LoiQuota
 from core.router import dinh_tuyen
 from core.simplify import CAU_HOI_MAC_DINH, don_gian_hoa, thanh_van_ban_doc
@@ -36,97 +35,107 @@ if not kb.load_kb():
     st.error("**Kho dữ liệu trống.** Hãy chạy: `python tools/extract_tthc.py`")
     st.stop()
 
-# Giao diện nâng cấp: Kết hợp giữa phong cách cao cấp (Luxury) và văn hóa vùng cao ấm áp
+# Giao diện nâng cấp toàn diện: Sang trọng, đẳng cấp nhưng cực kỳ gần gũi với đồng bào
 st.markdown("""
 <style>
-  /* Phông nền chung và màu sắc chủ đạo tinh tế */
   .stApp {
-      background: linear-gradient(180deg, #fdfbf7 0%, #f4f7f6 100%);
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
   }
 
-  /* Banner chào mừng đậm chất bản sắc vùng cao sang trọng */
-  .hero-banner {
-      background: linear-gradient(135deg, #0B2545 0%, #134074 100%);
+  /* Banner đỉnh cao mang đậm hơi thở bản làng và số hóa */
+  .vung-cao-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #091e3a 100%);
       color: #ffffff;
-      padding: 24px 20px;
-      border-radius: 16px;
+      padding: 32px 24px;
+      border-radius: 24px;
       text-align: center;
-      box-shadow: 0 10px 25px rgba(11, 37, 69, 0.15);
+      box-shadow: 0 15px 35px rgba(15, 23, 42, 0.25);
       margin-bottom: 25px;
-      border: 1px solid rgba(212, 175, 55, 0.3);
+      border: 1px solid rgba(250, 204, 21, 0.4);
+      position: relative;
+      overflow: hidden;
   }
-  .hero-title {
-      font-size: 24px;
-      font-weight: 700;
-      color: #FFD700;
-      margin-bottom: 8px;
+  .vung-cao-banner::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, #facc15, #38bdf8, #facc15);
+  }
+  .vung-cao-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #facc15;
+      margin-bottom: 10px;
+      letter-spacing: 0.8px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  .vung-cao-slogan {
+      font-size: 16px;
+      color: #e2e8f0;
+      font-weight: 500;
+      font-style: italic;
       letter-spacing: 0.5px;
   }
-  .hero-subtitle {
-      font-size: 15px;
-      color: #E2E8F0;
-      font-weight: 400;
-  }
 
-  /* Tùy chỉnh lựa chọn ngôn ngữ dạng thẻ nút bấm cao cấp */
+  /* Tùy chỉnh nút chọn ngôn ngữ dạng thẻ cao cấp */
   .stRadio > div {
       display: flex;
       justify-content: center;
-      gap: 15px;
+      gap: 16px;
+      margin-bottom: 20px;
   }
   .stRadio label {
       background: #ffffff;
       border: 2px solid #cbd5e1;
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 10px 24px;
-      font-weight: 600;
-      color: #0B2545;
+      font-weight: 700;
+      color: #1e293b;
       cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .stRadio label:hover {
-      border-color: #D4AF37;
-      background: #fffdf5;
+      border-color: #facc15;
+      background: #fffbeb;
       transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(250, 204, 21, 0.2);
   }
 
-  /* Khung Micro sinh động, hiện đại */
-  .voice-box-wrapper {
-      background: linear-gradient(145deg, #ffffff 0%, #f0f4f8 100%);
-      border: 2px dashed #89C2D9;
-      border-radius: 24px;
-      padding: 24px;
+  /* Khung Micro sinh động, bắt mắt */
+  .mic-container {
+      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+      border: 3px dashed #38bdf8;
+      border-radius: 28px;
+      padding: 30px;
       text-align: center;
-      box-shadow: 0 8px 20px rgba(137, 194, 217, 0.2);
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.12);
       margin-bottom: 25px;
       transition: all 0.3s ease;
   }
-  .voice-box-wrapper:hover {
-      border-color: #0B2545;
-      box-shadow: 0 12px 28px rgba(11, 37, 69, 0.12);
+  .mic-container:hover {
+      border-color: #0f172a;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.15);
   }
 
-  /* Thẻ hiển thị kết quả sang trọng, rõ ràng */
-  .the-ket-qua-dep {
+  /* Thẻ kết quả hiển thị cao cấp */
+  .card-ket-qua {
       background: #ffffff;
-      border-left: 6px solid #D4AF37;
-      border-right: 1px solid #e2e8f0;
+      border-left: 6px solid #facc15;
       border-top: 1px solid #e2e8f0;
+      border-right: 1px solid #e2e8f0;
       border-bottom: 1px solid #e2e8f0;
-      padding: 22px;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-      margin-top: 15px;
-      margin-bottom: 15px;
+      padding: 26px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      margin-top: 20px;
+      margin-bottom: 20px;
   }
-  .the-tra-loi {
-      font-size: 18px;
+  .text-highlight {
+      font-size: 20px;
       line-height: 1.6;
-      color: #1e293b;
-  }
-  .the-tra-loi b {
-      color: #0B2545;
+      color: #0f172a;
+      font-weight: 700;
   }
 </style>
 """, unsafe_allow_html=True)
@@ -217,15 +226,15 @@ def xu_ly_cau_noi(van_ban: str) -> None:
     ss.ket_qua = chay_pipeline(van_ban)
 
 
-# ==========================================================================
-# KHU VỰC HERO BANNER & GIAO DIỆN THOẠI
-# ==========================================================================
+# Banner chính với slogan mới cực kỳ cảm xúc và đẳng cấp
 st.markdown("""
-<div class="hero-banner">
-  <div class="hero-title">🎙️ HỎI ĐÁP THỦ TỤC THÔNG MINH</div>
-  <div class="hero-subtitle">Bấm vào biểu tượng micro bên dưới, nói bằng tiếng Mông hoặc tiếng Việt để nhận hướng dẫn chi tiết</div>
+<div class="vung-cao-banner">
+  <div class="vung-cao-title">🎙️ LUẬT VỀ BẢN LÀNG — ẤM LÒNG ĐỒNG BÀO</div>
+  <div class="vung-cao-slogan">"Chuyển đổi số tận tâm, đưa chính sách pháp luật đến từng mái nhà"</div>
 </div>
 """, unsafe_allow_html=True)
+
+st.info("🎤 **Mẹo nhỏ cho bà con:** Hãy bấm vào biểu tượng Micro bên dưới và nói rõ yêu cầu bằng Tiếng Mông hoặc Tiếng Việt. Nếu trình duyệt hỏi quyền micro, hãy bấm **Cho phép (Allow)** nhé.", icon="💡")
 
 ngon_ngu = st.radio(
     "Chọn ngôn ngữ", 
@@ -235,8 +244,9 @@ ngon_ngu = st.radio(
     label_visibility="collapsed"
 )
 
-st.markdown("<div class='voice-box-wrapper'>", unsafe_allow_html=True)
-audio_in = st.audio_input("Bấm vào đây để nói", label_visibility="collapsed")
+st.markdown("<div class='mic-container'>", unsafe_allow_html=True)
+st.markdown("<h3 style='color: #0f172a; margin-bottom: 12px; font-weight: 700;'>Bấm vào micro bên dưới để bắt đầu nói</h3>", unsafe_allow_html=True)
+audio_in = st.audio_input("Nói yêu cầu tại đây", label_visibility="collapsed")
 st.markdown("</div>", unsafe_allow_html=True)
 
 if audio_in is not None:
@@ -245,7 +255,7 @@ if audio_in is not None:
     is_mong = ("Tiếng Mông" in ngon_ngu)
     if van_tay != ss.audio_da_xu_ly and len(raw) > 2000:
         ss.audio_da_xu_ly = van_tay
-        with st.spinner("🎧 Máy đang lắng nghe yêu cầu của bà con…"):
+        with st.spinner("🎧 Máy đang lắng nghe và phân tích yêu cầu…"):
             van_ban, _nguon = nghe(audio_in, tieng_mong=is_mong)
         if not van_ban:
             st.error("Máy chưa nghe rõ, bà con bấm nói lại nhé.")
@@ -259,9 +269,6 @@ if audio_in is not None:
         st.warning("Bản ghi quá ngắn. Bà con bấm micro và nói rõ hơn một chút nhé.")
 
 
-# ==========================================================================
-# KHU VỰC KẾT QUẢ HIỂN THỊ
-# ==========================================================================
 def nut_goi_can_bo(kq: dict) -> None:
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🙋 CẦN CÁN BỘ / TÌNH NGUYỆN VIÊN HỖ TRỢ TRỰC TIẾP",
@@ -295,19 +302,19 @@ def hien_ket_qua(kq: dict) -> None:
     dg = kq["don_gian"]
     st.success(f"📌 **{tt.ten}**  ·  Mã thủ tục: `{tt.ma_thu_tuc}`")
 
-    st.markdown('<div class="the-ket-qua-dep">', unsafe_allow_html=True)
-    st.markdown(f"<div class='the-tra-loi'><b>{dg.get('tom_tat_1_cau','')}</b></div>", unsafe_allow_html=True)
+    st.markdown('<div class="card-ket-qua">', unsafe_allow_html=True)
+    st.markdown(f"<div class='text-highlight'><b>{dg.get('tom_tat_1_cau','')}</b></div>", unsafe_allow_html=True)
     di = dg.get("di_dau", {})
-    st.markdown(f"📍 **Đi đến:** {di.get('noi_don_gian','—')}")
+    st.markdown(f"<br>📍 **Đi đến:** {di.get('noi_don_gian','—')}", unsafe_allow_html=True)
     bb = [m for m in dg.get("mang_gi", []) if m.get("bat_buoc")]
     if bb:
-        st.markdown("🎒 **Giấy tờ cần mang theo:**")
+        st.markdown("<br>🎒 **Giấy tờ cần mang theo:**", unsafe_allow_html=True)
         for m in bb:
             sl = f" — {m['so_luong']}" if m.get("so_luong") else ""
             st.markdown(f"  • {m['ten_don_gian']}{sl}")
     c1, c2 = st.columns(2)
-    c1.markdown(f"⏱️ **Thời gian chờ:** {dg.get('bao_lau','—')}")
-    c2.markdown(f"💰 **Lệ phí:** {dg.get('bao_nhieu_tien','—')}")
+    c1.markdown(f"<br>⏱️ **Thời gian chờ:** {dg.get('bao_lau','—')}", unsafe_allow_html=True)
+    c2.markdown(f"<br>💰 **Lệ phí:** {dg.get('bao_nhieu_tien','—')}", unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
