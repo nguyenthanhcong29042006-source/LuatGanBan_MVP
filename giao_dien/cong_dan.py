@@ -341,10 +341,13 @@ def nut_goi_can_bo(kq: dict) -> None:
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🤝 GỬI YÊU CẦU HỖ TRỢ ĐẾN CÁN BỘ CHUYÊN MÔN", use_container_width=True):
         tt = kq.get("thu_tuc")
+        tuyen = kq.get("tuyen") or {}
+        van_de = tt.ten if tt else tuyen.get("ten_nhom", "Yêu cầu tra cứu thủ tục")
+        
         ss.danh_sach_yeu_cau.append({
             "thoi_gian": datetime.now().strftime("%H:%M - %d/%m"),
-            "van_de": tt.ten if tt else kq["tuyen"]["ten_nhom"],
-            "chi_tiet": kq["cau_noi"],
+            "van_de": van_de,
+            "chi_tiet": kq.get("cau_noi", ""),
             "trang_thai": "Chờ xử lý",
         })
         st.success("Yêu cầu hỗ trợ đã được gửi thành công. Cán bộ chuyên môn sẽ liên hệ trong thời gian sớm nhất.")
