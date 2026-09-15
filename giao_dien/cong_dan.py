@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giao diện chuẩn mực, tốc độ siêu tốc 0.05s."""
+"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giao diện chuẩn mực, tốc độ siêu tốc cho 3G/4G."""
 from __future__ import annotations
 
 import base64
@@ -26,14 +26,14 @@ ss.setdefault("cau_noi", "")
 ss.setdefault("audio_da_xu_ly", "")
 ss.setdefault("la_tieng_mong", True)
 
+# Sử dụng font hệ thống (bỏ Google Fonts CDN để tối ưu tốc độ tải trên mạng 3G/4G yếu)
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
     html, body, [class*="css"] {
-        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
         color: #1f2937;
         background: linear-gradient(180deg, #fcfbf7 0%, #f4f0e8 100%);
     }
