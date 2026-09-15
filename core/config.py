@@ -18,7 +18,6 @@ for _p in (CACHE_SIMPLIFIED, CACHE_AUDIO, AUDIO_BANK, RAW_EXCEL, TTHC_DIR):
     _p.mkdir(parents=True, exist_ok=True)
 
 # ------------------------------------------------------------------ Models
-# Sử dụng các mô hình Gemini Flash chính thức để tối ưu tốc độ phản hồi và độ ổn định
 UU_TIEN_QUALITY = [
     "gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-2.5-pro",
 ]
