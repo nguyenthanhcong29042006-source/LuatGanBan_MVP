@@ -2,15 +2,9 @@
 """Cổng người dân — hỏi đáp thủ tục bằng giọng nói.
 
 Nguyên tắc giao diện (voice-first):
-
-  * MỘT nút. Bà con bấm micro, nói, bấm dừng — hệ thống tự chạy hết chuỗi,
-    không có nút "xử lý" thứ hai.
-  * Không hiện con số kỹ thuật. Bà con không cần biết "độ tin cậy 10%";
-    họ chỉ cần biết máy nghe rõ hay chưa. Mọi chỉ số dời vào mục dành cho
-    cán bộ ở cuối trang.
-  * Chữ nào cũng có loa. Người không đọc được vẫn phải dùng được trọn vẹn,
-    nên mọi nội dung trả lời đều kèm trình phát tiếng.
-  * Gõ chữ là đường phụ, đặt cuối trang, cỡ nhỏ.
+  * MỘT nút. Bà con bấm micro, nói, bấm dừng — hệ thống tự chạy hết chuỗi.
+  * Đầy đủ thông tin hiển thị trực quan ngay ngoài màn hình cho bà con dễ đọc.
+  * Chữ nào cũng có loa hỗ trợ người lớn tuổi.
 """
 from __future__ import annotations
 
@@ -39,7 +33,7 @@ ss.setdefault("ket_qua", None)
 ss.setdefault("cau_noi", "")
 ss.setdefault("audio_da_xu_ly", "")
 
-# Tối ưu giao diện cho mạng 3G/4G vùng cao (Sử dụng font hệ thống siêu nhẹ)
+# Tối ưu giao diện cho mạng 3G/4G vùng cao
 st.markdown("""
 <style>
     #MainMenu {visibility: hidden;}
@@ -80,21 +74,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 if not kb.load_kb():
-    st.error(
-        "**Kho dữ liệu trống.** Hãy chạy một lần:  `python tools/extract_tthc.py`\n\n"
-        "Lệnh này bóc 28 file PDF hướng dẫn đang bị nhúng bên trong 3 file Excel "
-        "ở `file_dichvucong/` ra thành `data/tthc/` + `data/manifest.json`."
-    )
+    st.error("**Kho dữ liệu trống.** Vui lòng khởi tạo cơ sở tri thức dịch vụ công.")
     st.stop()
 
 
-# ==========================================================================
-# HÀM CÓ CACHE (giảm độ trễ: lần 2 trở đi gần như tức thì)
-# ==========================================================================
 @st.cache_data(ttl=3600, show_spinner=False)
 def _dinh_tuyen(cau_noi: str) -> dict:
     r = dinh_tuyen(cau_noi)
-    r["_key"] = r["thu_tuc"].key if r["thu_tuc"] else ""    # ThuTuc không hash được
+    r["_key"] = r["thu_tuc"].key if r["thu_tuc"] else ""
     r.pop("thu_tuc", None)
     return r
 
@@ -111,7 +98,6 @@ def _dich_mong(text: str) -> dict:
 
 @st.cache_data(ttl=24 * 3600, show_spinner=False)
 def _tts_vi(text: str) -> str:
-    """Đọc một đoạn chữ bằng giọng Việt. Trả về đường dẫn file, "" nếu hỏng."""
     try:
         p = tts_tieng_viet(text)
         return str(p) if p else ""
@@ -121,7 +107,6 @@ def _tts_vi(text: str) -> str:
 
 @st.cache_data(ttl=24 * 3600, show_spinner=False)
 def _audio_b64(duong_dan: str) -> tuple[str, str]:
-    """Đọc file âm thanh thành base64 để nhúng thẳng vào nút loa."""
     p = Path(duong_dan)
     if not p.exists():
         return "", ""
@@ -138,7 +123,6 @@ _SVG_DUNG = ('<svg width="34" height="34" viewBox="0 0 24 24" fill="white">'
 
 
 def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
-    """Nút loa tròn, màu xanh dương, bấm một cái là nghe."""
     if not duong_dan:
         return False
     b64, mime = _audio_b64(str(duong_dan))
@@ -182,7 +166,6 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
 
 
 def loa(text: str, *, nhan: str = "Nghe", tu_phat: bool = False) -> None:
-    """Đọc một đoạn chữ bằng giọng Việt rồi hiện nút loa."""
     if not (text or "").strip():
         return
     p = _tts_vi(text)
@@ -190,9 +173,6 @@ def loa(text: str, *, nhan: str = "Nghe", tu_phat: bool = False) -> None:
         nut_loa(p, nhan=nhan, tu_phat=tu_phat)
 
 
-# ==========================================================================
-# PIPELINE — Tối ưu siêu tốc cho mạng vùng cao
-# ==========================================================================
 def _thong_diep_loi(e: Exception) -> str:
     if isinstance(e, LoiQuota):
         return ("Máy đang bận, bà con chờ vài phút rồi hỏi lại nhé. "
@@ -201,7 +181,6 @@ def _thong_diep_loi(e: Exception) -> str:
 
 
 def chay_pipeline_truc_tiep(tt: kb.ThuTuc, cau_noi: str = "", *, phat_giong_mong: bool = True) -> dict:
-    """Tra cứu trực tiếp siêu tốc (0.05s) không chờ đợi vòng lặp AI phức tạp."""
     t0 = time.perf_counter()
     dg = _don_gian_hoa(tt.key, CAU_HOI_MAC_DINH)
     kb_doc = thanh_van_ban_doc(dg)
@@ -334,7 +313,7 @@ la_tieng_mong = ngon_ngu.endswith("Mông")
 ss.la_tieng_mong = la_tieng_mong
 
 # ==========================================================================
-# 2. MỘT NÚT DUY NHẤT (VÕ KHÍ CHÍNH)
+# 2. MỘT NÚT DUY NHẤT
 # ==========================================================================
 st.markdown(
     '<div class="village-voice-box">'
@@ -369,7 +348,7 @@ if audio_in is not None:
 
 
 # ==========================================================================
-# 3. KẾT QUẢ HIỂN THỊ
+# 3. KẾT QUẢ HIỂN THỊ TRỰC QUAN (KHÔNG BỊ ẨN)
 # ==========================================================================
 def nut_goi_can_bo(kq: dict) -> None:
     st.markdown("<br>", unsafe_allow_html=True)
@@ -414,10 +393,11 @@ def hien_ket_qua(kq: dict) -> None:
 
     dg = kq["don_gian"]
     
+    # THẺ KẾT QUẢ CHÍNH
     st.markdown(f"""
     <div class="village-result-card">
         <div style="font-size: 21px; font-weight: 800; color: #92400e; margin-bottom: 10px;">📋 {tt.ten}</div>
-        <div style="font-size: 14px; color: #44403c; line-height: 1.6; margin-bottom: 16px; font-weight: 600;">{dg.get('tom_tat_1_cau','')}</div>
+        <div style="font-size: 15px; color: #44403c; line-height: 1.6; margin-bottom: 16px; font-weight: 600;">{dg.get('tom_tat_1_cau','')}</div>
         <div>
             <span class="village-pill">📍 <b>Nơi thực hiện:</b> {dg.get('di_dau', {}).get('noi_don_gian','—')}</span>
             <span class="village-pill">⏱️ <b>Thời gian giải quyết:</b> {dg.get('bao_lau','—')}</span>
@@ -427,18 +407,34 @@ def hien_ket_qua(kq: dict) -> None:
 
     bb = [m for m in dg.get("mang_gi", []) if m.get("bat_buoc")]
     kbb = [m for m in dg.get("mang_gi", []) if not m.get("bat_buoc")]
+    
     if bb:
-        st.markdown("<div style='margin-top: 14px; font-size: 14px; font-weight: 800; color: #92400e;'>🎒 Hồ sơ, giấy tờ cần chuẩn bị:</div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 16px; font-size: 15px; font-weight: 800; color: #92400e;'>🎒 Hồ sơ, giấy tờ cần chuẩn bị:</div>", unsafe_allow_html=True)
         for m in bb:
             sl = f" — {m['so_luong']}" if m.get("so_luong") else ""
             st.markdown(f"- {m['ten_don_gian']}{sl}")
+
+    # Đưa CÁC BƯỚC THỰC HIỆN và LƯU Ý ra ngoài màn hình chính cho bà con dễ xem
+    if dg.get("cac_buoc"):
+        st.markdown("<div style='margin-top: 16px; font-size: 15px; font-weight: 800; color: #92400e;'>📝 Các bước thực hiện:</div>", unsafe_allow_html=True)
+        for i, b in enumerate(dg["cac_buoc"], 1):
+            st.markdown(f"**{i}.** {b}")
+
+    luu_y_list = dg.get("luu_y", [])
+    if dg.get("chua_ro"):
+        luu_y_list.append("Tài liệu không nêu rõ thời gian cụ thể, vui lòng hỏi cán bộ trực tiếp.")
+    
+    if luu_y_list:
+        st.markdown("<div style='margin-top: 16px; font-size: 15px; font-weight: 800; color: #b45309;'>⚠️ Lưu ý quan trọng cho bà con:</div>", unsafe_allow_html=True)
+        for l in luu_y_list:
+            st.markdown(f"- {l}")
 
     st.markdown("</div>", unsafe_allow_html=True)
 
     if dg.get("_da_duyet"):
         st.caption(f"✅ Nội dung đã được **{dg.get('_nguoi_duyet','cán bộ')}** duyệt.")
 
-    # --- NGHE CÂU TRẢ LỜI ---
+    # --- TRÌNH PHÁT ÂM THANH (LUÔN HIỆN ĐỦ 2 LOA) ---
     uu_tien_mong = bool(kq.get("la_tieng_mong", True)) and bool(kq.get("audio_mong"))
 
     if kq.get("audio_mong"):
@@ -449,48 +445,29 @@ def hien_ket_qua(kq: dict) -> None:
 
     if kq.get("mong"):
         with st.expander("📖 Xem chữ tiếng Mông"):
-            nhan_ortho = ("chữ Mông kiểu Việt Nam" if HMONG_ORTHOGRAPHY == "vn"
-                          else "chữ Mông RPA")
+            nhan_ortho = ("chữ Mông kiểu Việt Nam" if HMONG_ORTHOGRAPHY == "vn" else "chữ Mông RPA")
             st.caption(nhan_ortho)
             st.markdown(f"### {kq['mong']['hien_thi']}")
-            st.text(f"RPA        : {kq['mong']['rpa']}")
-            st.text(f"Phiên âm VN: {kq['mong']['vn']}")
 
-    # Chỉ số kỹ thuật chỉ hiện khi cán bộ đăng nhập
+    # Phần kỹ thuật và file gốc ẩn trong expander gọn gàng
     la_can_bo = bool(auth.nguoi_dang_nhap())
-
-    with st.expander("⚖️ Căn cứ pháp lý & đối chiếu tài liệu gốc"):
+    with st.expander("⚖️ Xem văn bản gốc & tài liệu pháp lý"):
         st.caption(f"Mã thủ tục {tt.ma_thu_tuc} · cấp {tt.cap_thuc_hien}")
         if la_can_bo:
             cot1, cot2 = st.columns(2)
-            cot1.metric("Độ tin cậy bản tóm tắt", f"{dg.get('do_tin_cay', 0):.0%}")
+            cot1.metric("Độ tin cậy tóm tắt", f"{dg.get('do_tin_cay', 0):.0%}")
             cot2.metric("Độ tin cậy phân loại", f"{tuyen.get('tin_cay_thu_tuc', 0):.0%}")
             st.caption(f"Giọng Mông đã dùng: {NHAN_TANG.get(kq.get('tang_tts',''), '—')}")
-            if kq.get("_loi_mong"):
-                st.caption(f"Lỗi tiếng Mông: {kq['_loi_mong'][:200]}")
-        if dg.get("chua_ro"):
-            st.warning("Tài liệu **không nêu rõ**: " + "; ".join(dg["chua_ro"]))
-        for l in dg.get("luu_y", []):
-            st.markdown(f"- {l}")
-        if dg.get("cac_buoc"):
-            st.markdown("**Các bước:**")
-            for i, b in enumerate(dg["cac_buoc"], 1):
-                st.markdown(f"{i}. {b}")
         if dg.get("trich_dan"):
             st.markdown("**Trích nguyên văn tài liệu gốc:**")
             for q in dg["trich_dan"]:
                 st.markdown(f"> {q}")
         if kbb:
-            st.markdown("**Giấy tờ không bắt buộc:** "
-                        + ", ".join(m["ten_don_gian"] for m in kbb))
+            st.markdown("**Giấy tờ không bắt buộc:** " + ", ".join(m["ten_don_gian"] for m in kbb))
         if tt.pdf_path.exists():
             st.download_button("⬇️ Tải file hướng dẫn gốc (PDF)",
                                tt.pdf_path.read_bytes(),
                                file_name=f"{tt.ma_thu_tuc}.pdf", mime="application/pdf")
-        if la_can_bo:
-            tg = kq.get("thoi_gian", {})
-            st.caption("Thời gian xử lý: "
-                       + "  ·  ".join(f"{k} {v:.1f}s" for k, v in tg.items()))
 
     nut_goi_can_bo(kq)
 
@@ -525,8 +502,7 @@ with st.expander("⌨️ Không nói được? Gõ chữ hoặc chọn từ danh
                                  format_func=lambda k: DANH_MUC_THU_TUC[k])
         ds = kb.theo_nhom(nhom_chon)
         if not ds:
-            st.warning("Chưa có dữ liệu cho nhóm này. Nhóm đã có dữ liệu: "
-                       + ", ".join(sorted({n for t in kb.load_kb() for n in t.nhom})))
+            st.warning("Chưa có dữ liệu cho nhóm này.")
         else:
             tt_chon = st.selectbox("Thủ tục cụ thể", ds, format_func=lambda t: t.ten)
             if st.button("Xem hướng dẫn", type="primary", use_container_width=True):
@@ -546,12 +522,7 @@ if auth.nguoi_dang_nhap():
         st.markdown("### Trạng thái hệ thống")
         tk = kb.thong_ke()
         st.metric("Thủ tục trong kho", tk["so_thu_tuc"])
-        st.caption(f"Nhóm có dữ liệu: {tk['so_nhom']}  ·  "
-                   f"{tk['tong_ky_tu']:,} ký tự văn bản gốc")
-        st.caption(f"Giọng Mông: `{TTS_HMONG_PROVIDER}`  ·  "
-                   f"Ngưỡng tin cậy: {NGUONG_TU_TIN:.0%}")
-        if tk["thieu_pdf"]:
-            st.error(f"Thiếu PDF: {', '.join(tk['thieu_pdf'][:5])}")
+        st.caption(f"Nhóm có dữ liệu: {tk['so_nhom']}  ·  {tk['tong_ky_tu']:,} ký tự")
         if ss.danh_sach_yeu_cau:
             st.markdown("### Phiếu chờ cán bộ")
             for p in reversed(ss.danh_sach_yeu_cau[-5:]):
