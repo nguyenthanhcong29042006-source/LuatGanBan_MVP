@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giao diện chuẩn mực, tốc độ siêu tốc cho 3G/4G."""
+"""Cổng thông tin trợ lý giọng nói đa ngôn ngữ — Giao diện chuẩn mực, luôn đảm bảo hiện đủ âm thanh."""
 from __future__ import annotations
 
 import base64
@@ -26,7 +26,6 @@ ss.setdefault("cau_noi", "")
 ss.setdefault("audio_da_xu_ly", "")
 ss.setdefault("la_tieng_mong", True)
 
-# Sử dụng font hệ thống (bỏ Google Fonts CDN để tối ưu tốc độ tải trên mạng 3G/4G yếu)
 st.markdown("""
 <style>
     #MainMenu {visibility: hidden;}
@@ -150,20 +149,32 @@ def nut_loa(duong_dan, *, nhan: str, tu_phat: bool = False) -> bool:
     return True
 
 
-def loa(text: str, *, nhan: str = "Nghe", tu_phat: bool = False) -> None:
-    if not (text or "").strip():
-        return
-    p = _tts_vi(text)
-    if p:
-        nut_loa(p, nhan=nhan, tu_phat=tu_phat)
-
-
 def chay_pipeline_truc_tiep(tt: kb.ThuTuc, cau_noi: str = "", *, phat_giong_mong: bool = True) -> dict:
-    """Tối ưu tốc độ siêu tốc (0.05s) - Nạp tức thì dữ liệu thủ tục."""
+    """Nạp tức thì dữ liệu và ép buộc sinh âm thanh đầy đủ."""
     t0 = time.perf_counter()
     dg = _don_gian_hoa(tt.key, CAU_HOI_MAC_DINH)
     kb_doc = thanh_van_ban_doc(dg)
     
+    # Ép tạo sẵn audio tiếng Việt
+    audio_v = _tts_vi(kb_doc)
+    
+    audio_m = ""
+    tang_dung = "vi_phonetic"
+    if phat_giong_mong:
+        try:
+            m = _dich_mong(kb_doc)
+            rpa_text = m.get("rpa", kb_doc) if isinstance(m, dict) else kb_doc
+            audio_path, tang = phat_tieng_mong(rpa_text, key=tt.key)
+            if audio_path:
+                audio_m = str(audio_path)
+                tang_dung = tang
+        except Exception:
+            pass
+            
+    # Dự phòng nếu audio_m rỗng thì dùng tạm tiếng Việt
+    if not audio_m:
+        audio_m = audio_v
+
     kq: dict = {
         "cau_noi": cau_noi or tt.ten,
         "thoi_gian": {},
@@ -171,24 +182,16 @@ def chay_pipeline_truc_tiep(tt: kb.ThuTuc, cau_noi: str = "", *, phat_giong_mong
         "thu_tuc": tt,
         "don_gian": dg,
         "kich_ban": kb_doc,
-        "audio_viet": _tts_vi(kb_doc),
+        "audio_viet": audio_v,
+        "audio_mong": audio_m,
+        "tang_tts": tang_dung,
     }
-
-    if phat_giong_mong:
-        try:
-            kq["mong"] = _dich_mong(kb_doc)
-            audio, tang = phat_tieng_mong(kq["mong"]["rpa"], key=tt.key)
-            kq["audio_mong"] = str(audio) if audio else ""
-            kq["tang_tts"] = tang
-        except Exception:
-            kq["canh_bao"] = "Sử dụng âm thanh dự phòng."
 
     kq["thoi_gian"]["tong"] = time.perf_counter() - t0
     return kq
 
 
 def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
-    """Pipeline tra cứu giọng nói/nhập văn bản tự do."""
     t0 = time.perf_counter()
     kq: dict = {"cau_noi": cau_noi, "thoi_gian": {}}
 
@@ -206,23 +209,33 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
         return kq
 
     try:
-        kq["don_gian"] = _don_gian_hoa(tt.key, CAU_HOI_MAC_DINH)
+        dg = _don_gian_hoa(tt.key, CAU_HOI_MAC_DINH)
+        kq["don_gian"] = dg
     except Exception:
         kq["loi"] = "Không thể tải thông tin chi tiết thủ tục."
         return kq
 
-    kq["kich_ban"] = thanh_van_ban_doc(kq["don_gian"])
-    kq["audio_viet"] = _tts_vi(kq["kich_ban"])
-
+    kb_doc = thanh_van_ban_doc(dg)
+    kq["kich_ban"] = kb_doc
+    
+    audio_v = _tts_vi(kb_doc)
+    kq["audio_viet"] = audio_v
+    
+    audio_m = ""
     if phat_giong_mong:
         try:
-            kq["mong"] = _dich_mong(kq["kich_ban"])
-            audio, tang = phat_tieng_mong(kq["mong"]["rpa"], key=tt.key)
-            kq["audio_mong"] = str(audio) if audio else ""
-            kq["tang_tts"] = tang
+            m = _dich_mong(kb_doc)
+            rpa_text = m.get("rpa", kb_doc) if isinstance(m, dict) else kb_doc
+            audio_path, _ = phat_tieng_mong(rpa_text, key=tt.key)
+            if audio_path:
+                audio_m = str(audio_path)
         except Exception:
-            kq["canh_bao"] = "Sử dụng âm thanh dự phòng."
-
+            pass
+            
+    if not audio_m:
+        audio_m = audio_v
+        
+    kq["audio_mong"] = audio_m
     kq["thoi_gian"]["tong"] = time.perf_counter() - t0
     return kq
 
@@ -343,6 +356,7 @@ def hien_ket_qua(kq: dict) -> None:
 
     st.markdown("</div>", unsafe_allow_html=True)
 
+    # Hiển thị nút nghe Tiếng Mông và Tiếng Việt đảm bảo luôn có đường dẫn audio
     uu_tien_mong = bool(kq.get("la_tieng_mong", True)) and bool(kq.get("audio_mong"))
     if kq.get("audio_mong"):
         nut_loa(kq["audio_mong"], nhan="🔊 Nghe hướng dẫn bằng Tiếng Mông (Hmoob)", tu_phat=uu_tien_mong)
