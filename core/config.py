@@ -15,23 +15,27 @@ AUDIO_BANK = DATA / "audio_bank"
 RAW_EXCEL = DATA / "raw_excel"
 
 for _p in (CACHE_SIMPLIFIED, CACHE_AUDIO, AUDIO_BANK, RAW_EXCEL, TTHC_DIR):
-    _p.mkdir(parents=True, exist_ok=True)
+    _p.mkdir(parents=True, exist_ok=True)
 
 # ------------------------------------------------------------------ Models
 UU_TIEN_QUALITY = [
-    "gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-2.5-pro",
+    "gemini-3.8-flash", "gemini-3.1-pro", "gemini-pro-latest", "gemini-2.5-pro",
+    "gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash",
+    "gemini-flash-latest", "gemini-2.5-flash",
 ]
 UU_TIEN_FAST = [
-    "gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash",
+    "gemini-3.8-flash", "gemini-3.5-flash-lite", "gemini-flash-lite-latest",
+    "gemini-3.1-flash-lite", "gemini-3.7-flash", "gemini-flash-latest",
+    "gemini-2.5-flash-lite", "gemini-2.5-flash",
 ]
 UU_TIEN_STT = [
-    "gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash",
+    "gemini-3.8-flash", "gemini-3.7-flash", "gemini-flash-latest", "gemini-2.5-flash",
 ]
 
 LOAI_TRU_MODEL = (
-    "image", "-tts", "embedding", "computer-use", "robotics", "lyria",
-    "nano-banana", "deep-research", "transcribe", "customtools",
-    "antigravity", "gemma", "veo", "imagen",
+    "image", "-tts", "embedding", "computer-use", "robotics", "lyria",
+    "nano-banana", "deep-research", "transcribe", "customtools",
+    "antigravity", "gemma", "veo", "imagen",
 )
 
 MODEL_FAST = os.getenv("LGB_MODEL_FAST", "")
@@ -47,14 +51,14 @@ HMONG_ORTHOGRAPHY = os.getenv("LGB_HMONG_ORTHO", "vn")
 
 # ---------------------------------------------------------------- Nhóm TTHC
 DANH_MUC_THU_TUC = {
-    "KHAI_SINH": "ĐĂNG KÝ KHAI SINH",
-    "KET_HON": "ĐĂNG KÝ KẾT HÔN",
-    "DOC_THAN": "XÁC NHẬN TÌNH TRẠNG HÔN NHÂN",
-    "KHAI_TU": "ĐĂNG KÝ KHAI TỬ",
-    "CHUNG_THUC": "SAO Y / CHỨNG THỰC",
-    "DAT_DAI": "THỦ TỤC ĐẤT ĐAI",
-    "TRO_CAP": "TRỢ CẤP XÃ HỘI",
-    "KHAC": "VẤN ĐỀ KHÁC",
+    "KHAI_SINH": "ĐĂNG KÝ KHAI SINH",
+    "KET_HON": "ĐĂNG KÝ KẾT HÔN",
+    "DOC_THAN": "XÁC NHẬN TÌNH TRẠNG HÔN NHÂN",
+    "KHAI_TU": "ĐĂNG KÝ KHAI TỬ",
+    "CHUNG_THUC": "SAO Y / CHỨNG THỰC",
+    "DAT_DAI": "THỦ TỤC ĐẤT ĐAI",
+    "TRO_CAP": "TRỢ CẤP XÃ HỘI",
+    "KHAC": "VẤN ĐỀ KHÁC",
 }
 
 NGUONG_TU_TIN = float(os.getenv("LGB_NGUONG_TU_TIN", "0.55"))
