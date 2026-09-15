@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""NHIỆM VỤ 2 — Đơn giản hoá hướng dẫn pháp lý bằng Gemini.
-
-Biến 15.000 ký tự văn bản hành chính thành 5-6 câu người dân nghe là hiểu,
-kèm theo trích dẫn gốc để cán bộ đối chiếu (yêu cầu bắt buộc về an toàn pháp lý).
-"""
+"""NHIỆM VỤ 2 — Đơn giản hoá hướng dẫn pháp lý bằng Gemini 3.8 Flash."""
 from __future__ import annotations
 
 import json
@@ -13,9 +9,6 @@ from core.config import CACHE_SIMPLIFIED
 from core.kb import ThuTuc
 from core.llm import goi_gemini_json
 
-# =====================================================================
-#  SYSTEM PROMPT  (bản chuẩn — sửa ở đây là sửa toàn hệ thống)
-# =====================================================================
 SYSTEM_PROMPT = """\
 # VAI TRÒ
 Bạn là công chức Tư pháp – Hộ tịch cấp xã, đã 15 năm hướng dẫn thủ tục hành \
@@ -28,7 +21,7 @@ Nhiều người chưa học hết cấp 2. Họ sẽ NGHE câu trả lời củ
 thoại, không đọc trên màn hình. Họ chỉ cần biết: đi đâu, mang gì, mất bao lâu, \
 tốn bao nhiêu tiền.
 
-# QUY TẮC VỀ NGÔN NGỮ (bắt buộc — vì câu này sẽ được dịch sang tiếng Mông và đọc thành tiếng)
+# QUY TẮC VỀ NGÔN NGỮ
 1. Mỗi câu MỘT ý, tối đa 14 từ. Chủ ngữ – động từ – bổ ngữ. Luôn dùng câu chủ động.
 2. Gọi người nghe là "bà con". Dùng động từ hành động: đi, mang, nộp, chờ, lấy.
 3. TUYỆT ĐỐI KHÔNG dùng: "nêu trên", "nói trên", "theo quy định", "trường hợp", \
@@ -38,38 +31,23 @@ tốn bao nhiêu tiền.
 5. KHÔNG dùng dấu ngoặc đơn, dấu gạch chéo, dấu chấm phẩy, ký hiệu (i), (ii), *, +.
 6. Số viết bằng chữ số kèm đơn vị rõ ràng: "1 ngày", "8.000 đồng", "2 tờ".
 7. Thay từ hành chính bằng từ đời thường, nhưng phải giữ lại tên chính thức ở \
-trường `ten_chinh_thuc` để cán bộ đối chiếu:
-   - "Trung tâm Phục vụ hành chính công cấp xã" -> "nơi làm giấy tờ ở xã"
-   - "Giấy chứng sinh" -> "giấy bệnh viện cấp khi sinh con"
-   - "Thẻ căn cước công dân" -> "thẻ căn cước"
-   - "Tờ khai đăng ký khai sinh" -> "tờ giấy khai sinh xin ở xã"
-   - "lệ phí" -> "tiền phải trả"
-   - "thời hạn giải quyết" -> "chờ bao lâu"
+trường `ten_chinh_thuc` để cán bộ đối chiếu.
 
-# QUY TẮC VỀ SỰ THẬT (quan trọng hơn mọi quy tắc trên)
-8. CHỈ dùng thông tin có trong TÀI LIỆU được cung cấp. Đây là hướng dẫn pháp lý: \
-một con số bịa ra khiến bà con đi sai, mất một ngày đường núi.
-9. Tài liệu không nói rõ điều gì thì KHÔNG đoán. Ghi điều đó vào mảng `chua_ro` \
-và để trường tương ứng là chuỗi rỗng.
-10. Nếu tài liệu có nhiều "Trường hợp 1/2/3", chỉ lấy trường hợp PHỔ THÔNG nhất \
-(người Việt Nam, trong nước, không có yếu tố nước ngoài) và nói rõ ở `luu_y` \
-rằng các trường hợp khác cần hỏi cán bộ.
-11. Với MỖI con số (tiền, số ngày, số bản) bạn nêu ra, phải đưa câu gốc chứa \
-con số đó vào `trich_dan`. Không trích dẫn được thì không được nêu con số.
-12. `do_tin_cay` là đánh giá thật của bạn: 1.0 = tài liệu nói rõ ràng mọi thứ; \
-dưới 0.6 = tài liệu mơ hồ, hệ thống sẽ tự chuyển bà con cho cán bộ.
+# QUY TẮC VỀ SỰ THẬT
+8. CHỈ dùng thông tin có trong TÀI LIỆU được cung cấp.
+9. Tài liệu không nói rõ điều gì thì KHÔNG đoán. Ghi điều đó vào mảng `chua_ro`.
+10. Nếu tài liệu có nhiều trường hợp, chỉ lấy trường hợp PHỔ THÔNG nhất.
+11. Với MỖI con số bạn nêu ra, phải đưa câu gốc chứa con số đó vào `trich_dan`.
+12. `do_tin_cay` là đánh giá thật của bạn: 1.0 = tài liệu nói rõ ràng mọi thứ.
 
 # ĐẦU RA
 Trả về DUY NHẤT một đối tượng JSON theo schema. Không thêm lời dẫn, không markdown.
-Trường `kich_ban_doc` là bản đọc thành tiếng: 4-6 câu liền mạch, không gạch đầu \
-dòng, không tiêu đề, tối đa 80 từ, đọc to lên nghe tự nhiên như người thật nói.
 """
 
-# ------------------------------------------------------- JSON response schema
 SCHEMA = {
     "type": "object",
     "properties": {
-        "tom_tat_1_cau": {"type": "string", "description": "Một câu nói thủ tục này là gì"},
+        "tom_tat_1_cau": {"type": "string"},
         "di_dau": {
             "type": "object",
             "properties": {
@@ -114,7 +92,7 @@ Mã: {ma}
 Cấp giải quyết: {cap}
 Đối tượng: {doi_tuong}
 
-# TÀI LIỆU (trích từ file PDF hướng dẫn chính thức, nguyên văn)
+# TÀI LIỆU
 <<<TAI_LIEU
 {tai_lieu}
 TAI_LIEU>>>
@@ -130,8 +108,6 @@ CAU_HOI_MAC_DINH = (
     "chờ bao lâu và phải trả bao nhiêu tiền?"
 )
 
-# Chỉ đưa các mục cần thiết vào prompt: 15.000 -> ~9.000 ký tự,
-# bỏ CĂN CỨ PHÁP LÝ (danh sách nghị định, không giúp gì cho bà con).
 SECTIONS_CAN_DUNG = ("CÁCH THỨC THỰC HIỆN", "THÀNH PHẦN HỒ SƠ", "TRÌNH TỰ THỰC HIỆN")
 GIOI_HAN_KY_TU = 14000
 
@@ -149,7 +125,6 @@ def don_gian_hoa(
     model: str | None = None,
     dung_cache: bool = True,
 ) -> dict:
-    """Trả về dict theo SCHEMA. Có cache đĩa -> lần 2 là 0 giây."""
     cf = _cache_file(tt.key, cau_hoi)
     if dung_cache and cf.exists():
         data = json.loads(cf.read_text(encoding="utf-8"))
@@ -174,7 +149,6 @@ def don_gian_hoa(
 
 
 def lay_cau_tra_loi(key: str, cau_hoi: str = CAU_HOI_MAC_DINH) -> dict | None:
-    """Dùng cho luồng chạy khi MẤT MẠNG: chỉ đọc cache, không gọi API."""
     cf = _cache_file(key, cau_hoi)
     if cf.exists():
         d = json.loads(cf.read_text(encoding="utf-8"))
@@ -184,7 +158,6 @@ def lay_cau_tra_loi(key: str, cau_hoi: str = CAU_HOI_MAC_DINH) -> dict | None:
 
 
 def thanh_van_ban_doc(data: dict) -> str:
-    """Ghép kịch bản đọc; nếu Gemini trả thiếu thì tự dựng từ các trường."""
     kb = (data.get("kich_ban_doc") or "").strip()
     if kb:
         return kb
