@@ -158,6 +158,41 @@ def loa(text: str, *, nhan: str = "Nghe", tu_phat: bool = False) -> None:
         nut_loa(p, nhan=nhan, tu_phat=tu_phat)
 
 
+def chay_pipeline_truc_tiep(tt: kb.ThuTuc, cau_noi: str = "", *, phat_giong_mong: bool = True) -> dict:
+    """Xử lý tra cứu trực tiếp khi đã xác định rõ đối tượng thủ tục."""
+    t0 = time.perf_counter()
+    kq: dict = {
+        "cau_noi": cau_noi or tt.ten,
+        "thoi_gian": {},
+        "tuyen": {"_key": tt.key, "can_can_bo": False, "ten_nhom": tt.ten},
+        "thu_tuc": tt,
+    }
+
+    with st.status("Hệ thống đang xử lý yêu cầu tra cứu...", expanded=False) as box:
+        try:
+            kq["don_gian"] = _don_gian_hoa(tt.key, CAU_HOI_MAC_DINH)
+        except Exception:
+            kq["loi"] = "Không thể tải thông tin chi tiết thủ tục."
+            box.update(label="Lỗi dữ liệu", state="error", expanded=False)
+            return kq
+
+        kq["kich_ban"] = thanh_van_ban_doc(kq["don_gian"])
+        kq["audio_viet"] = _tts_vi(kq["kich_ban"])
+
+        if phat_giong_mong:
+            try:
+                kq["mong"] = _dich_mong(kq["kich_ban"])
+                audio, tang = phat_tieng_mong(kq["mong"]["rpa"], key=tt.key)
+                kq["audio_mong"] = str(audio) if audio else ""
+                kq["tang_tts"] = tang
+            except Exception:
+                kq["canh_bao"] = "Sử dụng âm thanh dự phòng."
+
+        kq["thoi_gian"]["tong"] = time.perf_counter() - t0
+        box.update(label="Đã hoàn tất tra cứu thông tin thủ tục", state="complete", expanded=False)
+    return kq
+
+
 def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
     t0 = time.perf_counter()
     kq: dict = {"cau_noi": cau_noi, "thoi_gian": {}}
@@ -174,7 +209,7 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
         tt = kb.theo_key(tuyen["_key"]) if tuyen["_key"] else None
         kq["thu_tuc"] = tt
 
-        if tuyen["can_can_bo"] or tt is None:
+        if tuyen.get("can_can_bo") or tt is None:
             box.update(label="Cần sự hỗ trợ trực tiếp từ cán bộ chuyên môn", state="complete", expanded=False)
             return kq
 
@@ -204,7 +239,17 @@ def chay_pipeline(cau_noi: str, *, phat_giong_mong: bool = True) -> dict:
 
 def xu_ly_cau_noi(van_ban: str) -> None:
     ss.cau_noi = van_ban
-    kq = chay_pipeline(van_ban)
+    tt_match = None
+    for item in kb.danh_sach():
+        if item.ten.strip().lower() == van_ban.strip().lower():
+            tt_match = item
+            break
+
+    if tt_match:
+        kq = chay_pipeline_truc_tiep(tt_match, cau_noi=van_ban)
+    else:
+        kq = chay_pipeline(van_ban)
+
     kq["la_tieng_mong"] = bool(ss.get("la_tieng_mong", True))
     ss.ket_qua = kq
 
@@ -334,7 +379,10 @@ with st.expander("⌨️ Tra cứu thủ công: Nhập văn bản hoặc chọn 
         if ds:
             tt_chon = st.selectbox("Chọn thủ tục:", ds, format_func=lambda t: t.ten)
             if st.button("Xem chi tiết thủ tục", type="primary"):
-                xu_ly_cau_noi(tt_chon.ten)
+                ss.cau_noi = tt_chon.ten
+                kq = chay_pipeline_truc_tiep(tt_chon)
+                kq["la_tieng_mong"] = bool(ss.get("la_tieng_mong", True))
+                ss.ket_qua = kq
                 st.rerun()
 
 if auth.nguoi_dang_nhap():
