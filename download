@@ -1,0 +1,11 @@
+.git
+.gitignore
+_backup/
+Claude outputs/
+docs/
+**/__pycache__/
+*.pyc
+.streamlit/secrets.toml
+data/users.json
+*.md
+!README.md
