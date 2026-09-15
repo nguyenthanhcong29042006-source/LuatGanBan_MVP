@@ -18,18 +18,15 @@ for _p in (CACHE_SIMPLIFIED, CACHE_AUDIO, AUDIO_BANK, RAW_EXCEL, TTHC_DIR):
     _p.mkdir(parents=True, exist_ok=True)
 
 # ------------------------------------------------------------------ Models
+# Sử dụng các mô hình Gemini Flash chính thức để tối ưu tốc độ phản hồi và độ ổn định
 UU_TIEN_QUALITY = [
-    "gemini-3.8-flash", "gemini-3.1-pro", "gemini-pro-latest", "gemini-2.5-pro",
-    "gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash",
-    "gemini-flash-latest", "gemini-2.5-flash",
+    "gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-2.5-pro",
 ]
 UU_TIEN_FAST = [
-    "gemini-3.8-flash", "gemini-3.5-flash-lite", "gemini-flash-lite-latest",
-    "gemini-3.1-flash-lite", "gemini-3.7-flash", "gemini-flash-latest",
-    "gemini-2.5-flash-lite", "gemini-2.5-flash",
+    "gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash",
 ]
 UU_TIEN_STT = [
-    "gemini-3.8-flash", "gemini-3.7-flash", "gemini-flash-latest", "gemini-2.5-flash",
+    "gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash",
 ]
 
 LOAI_TRU_MODEL = (
