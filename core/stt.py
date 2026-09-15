@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 import io
-from core.llm import goi_gemini_multimodal
+import os
+import streamlit as st
+import google.generativeai as genai
+from core.config import UU_TIEN_STT
 
 SYSTEM_STT_VIET = """\
 Bạn là trợ lý chuyển từ giọng nói sang văn bản (STT).
@@ -27,22 +30,36 @@ Yêu cầu:
 
 
 def nghe(audio_file: io.BytesIO | bytes, *, tieng_mong: bool = False) -> tuple[str, dict]:
-    """Chuyển audio thành văn bản sử dụng mô hình Gemini Flash qua vai_tro='stt'."""
+    """Chuyển audio thành văn bản sử dụng trực tiếp mô hình Gemini Flash."""
     if isinstance(audio_file, io.BytesIO):
         audio_bytes = audio_file.getvalue()
     else:
         audio_bytes = audio_file
 
     system_prompt = SYSTEM_STT_MONG if tieng_mong else SYSTEM_STT_VIET
+    
+    # Lấy API key từ Secrets hoặc biến môi trường
+    api_key = os.getenv("GEMINI_API_KEY") or getattr(st, "secrets", {}).get("GEMINI_API_KEY", "")
+    if not api_key:
+        return "", {"error": "Thiếu GEMINI_API_KEY"}
 
-    ket_qua = goi_gemini_multimodal(
-        audio_bytes=audio_bytes,
-        mime_type="audio/wav",
-        prompt="Hãy nghe và chuyển đổi âm thanh này thành văn bản:",
-        system=system_prompt,
-        vai_tro="stt",
-        temperature=0.0,
-    )
+    genai.configure(api_key=api_key)
+    
+    van_ban = ""
+    for model_name in UU_TIEN_STT:
+        try:
+            model = genai.GenerativeModel(
+                model_name=model_name,
+                system_instruction=system_prompt
+            )
+            response = model.generate_content([
+                {"mime_type": "audio/wav", "data": audio_bytes},
+                "Hãy nghe và chuyển đổi âm thanh này thành văn bản:"
+            ])
+            if response and response.text:
+                van_ban = response.text.strip()
+                break
+        except Exception:
+            continue
 
-    van_ban = (ket_qua or "").strip()
     return van_ban, {"do_dai_bytes": len(audio_bytes)}
