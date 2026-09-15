@@ -63,8 +63,6 @@ def tts_audio_bank(text: str, *, key: str | None = None) -> Path | None:
 
 
 # ------------------------------------------------------- 2. LOCAL NEURAL TTS
-# Không nhúng model vào repo (1.3 GB). Gọi ra ngoài qua 1 script do bạn cấu hình.
-# Xem docs/TTS_HMONG.md để biết cách dựng.
 LOCAL_TTS_SCRIPT = Path(__file__).resolve().parents[1] / "tools" / "tts_hmong_local.py"
 
 
@@ -101,10 +99,11 @@ def tts_tieng_viet(text: str, *, tag: str = "vi") -> Path | None:
     # dự phòng: edge-tts (giọng tự nhiên hơn, vẫn cần mạng)
     try:
         import asyncio
-
         import edge_tts
+
         async def _run():
             await edge_tts.Communicate(text, "vi-VN-HoaiMyNeural").save(str(out))
+
         asyncio.run(_run())
         return out if out.exists() else None
     except Exception:
@@ -124,11 +123,7 @@ def phat_tieng_mong(
     key: str | None = None,
     provider: str | None = None,
 ) -> tuple[Path | None, str]:
-    """Trả về (đường dẫn file âm thanh | None, tên tầng đã dùng).
-
-    Tên tầng dùng để hiện nhãn trung thực trên UI — người dân và ban giám khảo
-    đều cần biết đây là giọng người thật hay giọng máy xấp xỉ.
-    """
+    """Trả về (đường dẫn file âm thanh | None, tên tầng đã dùng)."""
     provider = provider or TTS_HMONG_PROVIDER
     if provider == "off" or not (text_rpa or "").strip():
         return None, "off"
