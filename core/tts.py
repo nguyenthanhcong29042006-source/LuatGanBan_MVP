@@ -88,12 +88,12 @@ def tts_local_neural(text_rpa: str) -> Path | None:
 
 # --------------------------------------------------------- 3. VI PHONETIC TTS
 def tts_tieng_viet(text: str, *, tag: str = "vi") -> Path | None:
-    """TTS tiếng Việt. Dùng gTTS (nhẹ, không cần key). Có thể thay bằng edge-tts."""
+    """TTS tiếng Việt. Dùng gTTS (nhẹ, siêu nén MP3, không cần key). Có thể thay bằng edge-tts."""
     out = CACHE_AUDIO / f"{tag}_{_hash(text, tag)}.mp3"
     if out.exists():
         return out
     try:
-        from gtts import gTTS
+        from gTTS import gTTS
         gTTS(text=text, lang="vi", slow=False).save(str(out))
         return out
     except Exception:
@@ -101,7 +101,6 @@ def tts_tieng_viet(text: str, *, tag: str = "vi") -> Path | None:
     # dự phòng: edge-tts (giọng tự nhiên hơn, vẫn cần mạng)
     try:
         import asyncio
-
         import edge_tts
         async def _run():
             await edge_tts.Communicate(text, "vi-VN-HoaiMyNeural").save(str(out))
