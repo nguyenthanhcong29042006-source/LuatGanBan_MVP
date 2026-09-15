@@ -1,0 +1,33 @@
+# Cách chạy gọn nhất trên máy chủ của trường:
+#
+#   1. Đặt khoá API vào tệp .env cùng thư mục:   GEMINI_API_KEY=xxxxx
+#   2. docker compose up -d
+#   3. Mở http://<địa-chỉ-máy-chủ>:8501
+#
+# Cập nhật khi có mã mới:   git pull && docker compose up -d --build
+
+services:
+  luatganban:
+    build: .
+    container_name: luatganban
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    environment:
+      # Bắt buộc — khoá API Gemini
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      # Tuỳ chọn — để trống thì hệ thống tự dò model khả dụng
+      # LGB_MODEL_QUALITY: ""
+      # LGB_TTS_HMONG: "auto"
+      # LGB_NGUONG_TU_TIN: "0.55"
+    volumes:
+      # Giữ lại câu trả lời đã duyệt giữa các lần khởi động lại
+      - cache:/app/data/cache
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+
+volumes:
+  cache:
